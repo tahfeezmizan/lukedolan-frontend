@@ -40,7 +40,7 @@ export function OpportunitiesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl lg:text-4xl font-bold ">
             Fresh Opportunities
           </h2>
           <Link
@@ -55,23 +55,26 @@ export function OpportunitiesSection() {
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {jobOpportunities.map((job) => (
-            <div key={job.id} className="bg-white rounded-2xl overflow-hidden ">
+            <div
+              key={job.id}
+              className="overflow-hidden border rounded-2xl p-5 group hover:bg-[#414652] transition-colors duration-300"
+            >
               {/* Image Container */}
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src={job.image}
                   alt={job.alt}
                   width={350}
                   height={210}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-full object-cover  group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
               {/* Content */}
-              <div className="p-6 space-y-4">
+              <div className="space-y-4 mt-6">
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors duration-300">
+                  <h3 className="text-xl font-bold group-hover:text-white transition-colors duration-400">
                     {job.title}
                   </h3>
                   <Link
@@ -83,14 +86,14 @@ export function OpportunitiesSection() {
                 </div>
 
                 {/* Location */}
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-gray-600 group-hover:text-white transition-colors duration-300">
                   <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                   <MapPin className="w-4 h-4" />
                   <span className="text-sm font-medium">{job.location}</span>
                 </div>
 
                 {/* Salary */}
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-gray-600 group-hover:text-white transition-colors duration-300">
                   <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                   <DollarSign className="w-4 h-4" />
                   <span className="text-sm font-medium">{job.salary}</span>

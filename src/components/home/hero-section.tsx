@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import heroBg from "../../../public/banner-img.png";
 import cardImg from "../../../public/hero-card.png";
-import Image from "next/image";
 
 export function HeroSection() {
   return (
