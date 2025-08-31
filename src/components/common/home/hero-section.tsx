@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import heroBg from "../../../public/banner-img.png";
-import cardImg from "../../../public/hero-card.png";
+import heroBg from "../../../../public/banner-img.png";
+import cardImg from "../../../../public/hero-card.png";
 
 export function HeroSection() {
   return (

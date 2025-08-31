@@ -53,7 +53,7 @@ const testimonials = [
   },
 ];
 
-import img from "../../../public/Curly hair-pana 1.png";
+import img from "../../../../public/Curly hair-pana 1.png";
 
 export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(1); // Start with featured testimonial

@@ -3,9 +3,9 @@
 import { ArrowRight, DollarSign, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import jobImg1 from "../../../public/job-img (1).png";
-import jobImg2 from "../../../public/job-img (2).png";
-import jobImg3 from "../../../public/job-img (3).png";
+import jobImg1 from "../../../../public/job-img (1).png";
+import jobImg2 from "../../../../public/job-img (2).png";
+import jobImg3 from "../../../../public/job-img (3).png";
 
 const jobOpportunities = [
   {

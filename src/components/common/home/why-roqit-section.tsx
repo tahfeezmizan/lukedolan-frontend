@@ -2,7 +2,7 @@
 
 import { Package, Gauge, MapPin, User } from "lucide-react";
 import Image from "next/image";
-import image from "../../../public/why-roqit-img.png";
+import image from "../../../../public/why-roqit-img.png";
 
 const features = [
   {
