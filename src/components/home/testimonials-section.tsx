@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import Image from "next/image";
 
 const testimonials = [
   {
@@ -52,6 +53,8 @@ const testimonials = [
   },
 ];
 
+import img from "../../../public/Curly hair-pana 1.png";
+
 export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(1); // Start with featured testimonial
 
@@ -76,11 +79,20 @@ export function TestimonialsSection() {
   };
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-slate-200 via-slate-100 to-slate-200">
-      <div className="max-w-7xl mx-auto  px-4 sm:px-6 py-20">
+    <section className="py-20 px-4 bg-[#EBF1FA]">
+      <div className="max-w-7xl mx-auto  px-4 sm:px-6 ">
+        <div className="hidden lg:block w-[450px] h-[450px] -ml-32 -mb-56">
+          <Image
+            src={img.src}
+            alt="testimonial image"
+            width={500}
+            height={500}
+            className="w-full h-full"
+          />
+        </div>
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
             Trusted by Creatives Like you
           </h2>
         </div>
@@ -92,14 +104,14 @@ export function TestimonialsSection() {
               <div
                 key={`${testimonial.id}-${currentIndex}`}
                 className={`bg-white rounded-2xl p-8 shadow-md transition-all duration-300 ${
-                  index === 1 ? "transform scale-105 shadow-xl" : "opacity-60"
+                  index === 1 ? "translate-y-6 " : "bg-[#b9b9b9] blur-xs "
                 }`}
               >
                 {/* Quote Icon */}
-                <div className="mb-6">
+                <div className="mb-6 ">
                   <Quote
                     className={`w-16 h-16 ${
-                      index === 1 ? "text-emerald-600" : "text-gray-300"
+                      index === 1 ? "text-emerald-600 " : "text-gray-300"
                     }`}
                   />
                 </div>
@@ -114,7 +126,7 @@ export function TestimonialsSection() {
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-start gap-2">
                   <div className="w-12 h-12 rounded-full overflow-hidden">
                     <img
                       src={testimonial.avatar}
@@ -171,7 +183,7 @@ export function TestimonialsSection() {
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-end gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -182,14 +194,14 @@ export function TestimonialsSection() {
           </Button>
 
           {/* Dots Indicator */}
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-emerald-600 w-6"
+                    ? "bg-green-900 w-6"
                     : "bg-gray-400 hover:bg-gray-500"
                 }`}
               />
