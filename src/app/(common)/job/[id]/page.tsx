@@ -50,8 +50,8 @@ export default function page<JobInfoProps>() {
   const progressPercentage = (appliedCount / capacity) * 100;
   return (
     <div className="bg-[#EBF1FA]">
-      <div className="max-w-7xl mx-auto  px-4 sm:px-6 py-20 overflow-hidden ">
-        <div className="grid grid-cols-3 gap-6 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden ">
+        <div className="grid grid-cols-3 gap-6 mt-10">
           <div className="col-span-2">
             <JobDescription />
           </div>
