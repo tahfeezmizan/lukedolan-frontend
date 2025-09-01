@@ -40,7 +40,7 @@ export function NewsletterSection() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-none outline-none rounded-none py-8 text-xl text-white"
+                className="border-none outline-none rounded-none py-8 !text-xl !text-white"
               />
               <Button
                 type="submit"

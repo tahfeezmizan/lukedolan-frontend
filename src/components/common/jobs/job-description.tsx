@@ -38,7 +38,7 @@ export const jobInfo: JobInfo = {
 
 export default function JobDescription() {
   return (
-    <aside className="w-full  bg-white p-6 rounded-lg">
+    <aside className="w-full  bg-white p-8 rounded-lg">
       <div className="space-y-8">
         {/* Company Profile */}
         <section>

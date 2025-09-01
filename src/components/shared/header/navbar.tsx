@@ -94,7 +94,11 @@ export function Navbar() {
                   onClick={toggleSearch}
                   className="p-2  hover:text-gray-700 transition-colors"
                 >
-                  <Search className="h-5 w-5" />
+                  <Search
+                    className={`h-5 w-5 ${
+                      pathname === "/" ? "text-white" : "text-black"
+                    }`}
+                  />
                 </button>
               </div>
               <Button className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">

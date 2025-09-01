@@ -32,7 +32,7 @@ export default function JobsSection() {
   ];
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10">
+    <section className="max-w-6xl mx-auto px-4 py-10 pb-20">
       <div className="text-center mb-6 space-y-2">
         <h2 className="text-3xl lg:text-4xl font-bold text-center">
           Find Your <span className="text-green-600">Styler</span>

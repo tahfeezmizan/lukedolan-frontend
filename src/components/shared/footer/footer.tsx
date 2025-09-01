@@ -1,4 +1,7 @@
 import { Rocket } from "lucide-react";
+import Link from "next/link";
+import logo from "../../../../public/logo.png";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -8,10 +11,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo section */}
           <div className="col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Rocket className="h-6 w-6 text-white" />
-              <span className="text-xl font-bold">Roqit</span>
-            </div>
+            <Link href={"/"}>
+              <Image
+                src={logo}
+                alt="Logo"
+                width={165}
+                height={40}
+                className="w-40 h-11"
+              />
+            </Link>
           </div>
 
           {/* Quick Links */}
@@ -19,36 +27,29 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/job"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Find Jobs
-                </a>
+                </Link>
               </li>
+
               <li>
-                <a
-                  href="#"
-                  className="text-gray-200 hover:text-white transition-colors"
-                >
-                  Post a job
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
+                <Link
+                  href="/pricing"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/sing-in"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Sign in
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -58,28 +59,28 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Resources</h3>
             <ul className="space-y-3">
               <li>
-                <a
+                <Link
                   href="#"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Help Centre
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Community
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/contact"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -89,20 +90,20 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-3">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/terms-and-conditions"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="terms-and-conditions"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
