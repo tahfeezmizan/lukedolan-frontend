@@ -205,6 +205,7 @@ export function PostJobForm() {
         <Label className="text-lg font-medium text-gray-90">Salary Range</Label>
         <div className="grid grid-cols-2 gap-4">
           <Input
+            type="number"
             placeholder="Min"
             {...register("salaryMin", {
               required: "Minimum salary is required",
@@ -212,6 +213,7 @@ export function PostJobForm() {
             className="mt-1 p-4 rounded-none !text-lg text-black w-full"
           />
           <Input
+            type="number"
             placeholder="Max"
             {...register("salaryMax", {
               required: "Maximum salary is required",
@@ -273,7 +275,7 @@ export function PostJobForm() {
       {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+        className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-none"
       >
         Job post
       </Button>
