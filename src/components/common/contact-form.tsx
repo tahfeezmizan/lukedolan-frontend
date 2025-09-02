@@ -32,15 +32,15 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="bg-[#EBF1FA] pt-10">
+    <div className="bg-[#EBF1FA] pt-10 text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden ">
         <div className="bg-white p-8 rounded-lg">
           {/* Header Section */}
           <div className="mb-12 bg">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-sm text-gray-600 mb-2">Get Started</p>
-                <h1 className="text-4xl font-bold text-gray-900 text-balance">
+                <p className="text-xl md:text-2xl  mb-2">Get Started</p>
+                <h1 className="text-xl md:text-4xl font-bold  text-balance ">
                   Get in touch with us. We're here to assist you.
                 </h1>
               </div>
@@ -64,7 +64,7 @@ export default function ContactForm() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-xl font-medium  mb-2"
                 >
                   Your Name
                 </label>
@@ -74,14 +74,14 @@ export default function ContactForm() {
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                   required
                 />
               </div>
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-xl font-medium  mb-2"
                 >
                   Email Address
                 </label>
@@ -91,14 +91,14 @@ export default function ContactForm() {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                   required
                 />
               </div>
               <div>
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-xl font-medium  mb-2"
                 >
                   Phone Number (optional)
                 </label>
@@ -108,7 +108,7 @@ export default function ContactForm() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                 />
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function ContactForm() {
             <div className="mb-8">
               <label
                 htmlFor="message"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-xl font-medium  mb-2"
               >
                 Message
               </label>
@@ -125,14 +125,14 @@ export default function ContactForm() {
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
-                className="w-full min-h-32"
+                className="w-full min-h-32 !text-lg border-0  border-b-2 border-black rounded-none outline-none "
                 required
               />
             </div>
 
             <Button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full flex items-center gap-2"
+              className="bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-none flex items-center gap-2"
             >
               Leave us a Message
               <ArrowRight size={18} />
@@ -141,36 +141,32 @@ export default function ContactForm() {
 
           {/* Contact Info Section */}
           <div className="border-t border-gray-200 pt-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="text-sm font-medium text-gray-600 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div className="col-span-2">
+                <h3 className="text-md md:text-xl font-medium  mb-4">
                   Contact Info
                 </h3>
-                <h2 className="text-2xl font-bold text-gray-900 text-balance">
+                <h2 className="text-3xl font-bold  text-balance">
                   We are always happy to assist you
                 </h2>
               </div>
 
-              <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  Email Address
-                </h4>
+              <div className="col-span-1">
+                <h4 className="text-xl font-semibold  mb-2">Email Address</h4>
                 <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
-                <p className="text-gray-700 mb-2">help@info.com</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xl  mb-2">help@info.com</p>
+                <p className="text-lg ">
                   Assistance hours:
                   <br />
                   Monday - Friday 6 am to 8 pm EST
                 </p>
               </div>
 
-              <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  Number
-                </h4>
+              <div className="col-span-1">
+                <h4 className="text-xl font-semibold  mb-2">Number</h4>
                 <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
-                <p className="text-gray-700 mb-2">(808) 998-3256</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xl  mb-2">(808) 998-3256</p>
+                <p className="text-lg ">
                   Assistance hours:
                   <br />
                   Monday - Friday 6 am to 8 pm EST

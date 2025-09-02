@@ -65,46 +65,48 @@ export function WorkExperienceForm() {
     <div className="space-y-8">
       {/* Experience Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Experience</h3>
+        <h3 className="text-3xl font-semibold text-gray-900 mb-4">
+          Experience
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label htmlFor="jobTitle">Job Title</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="jobTitle">Job Title</Label>
             <Input
               id="jobTitle"
               value={formData.jobTitle}
               onChange={(e) => handleInputChange("jobTitle", e.target.value)}
               placeholder="Senior Barber"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="companyName">Company Name</Label>
             <Input
               id="companyName"
               value={formData.companyName}
               onChange={(e) => handleInputChange("companyName", e.target.value)}
               placeholder="Luxe Beauty Lounge"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="location">Location</Label>
             <Input
               id="location"
               value={formData.location}
               onChange={(e) => handleInputChange("location", e.target.value)}
               placeholder="London"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="employmentType">Employment Type</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="employmentType">Employment Type</Label>
             <Input
               id="employmentType"
               value={formData.employmentType}
@@ -112,42 +114,42 @@ export function WorkExperienceForm() {
                 handleInputChange("employmentType", e.target.value)
               }
               placeholder="Full Time"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="space-y-2">
-            <Label htmlFor="startDate">Start Date</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="startDate">Start Date</Label>
             <Input
               id="startDate"
               value={formData.startDate}
               onChange={(e) => handleInputChange("startDate", e.target.value)}
               placeholder="12/02/2025"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="endDate">End Date</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="endDate">End Date</Label>
             <Input
               id="endDate"
               value={formData.endDate}
               onChange={(e) => handleInputChange("endDate", e.target.value)}
               placeholder="30/12/2025"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="experience">Experience</Label>
+            <Label className="text-lg font-medium text-gray-90" htmlFor="experience">Experience</Label>
             <Input
               id="experience"
               value={formData.experience}
               onChange={(e) => handleInputChange("experience", e.target.value)}
               placeholder="2 Years"
-              className="bg-gray-100 border-0"
+              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>

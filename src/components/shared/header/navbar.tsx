@@ -1,18 +1,27 @@
 "use client";
 
+import type React from "react";
+
 import { Button } from "@/components/ui/button";
-import { Menu, Rocket, Search, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, Menu, Search, User, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import logo from "../../../../public/logo.png";
-import { usePathname } from "next/navigation";
 
 export function Navbar() {
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
 
   // Navigation links data
@@ -34,6 +43,16 @@ export function Navbar() {
     if (isSearchOpen) {
       setSearchValue("");
     }
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    console.log("User logged out");
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    console.log("User logged in");
   };
 
   return (
@@ -77,16 +96,18 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Desktop Right Section - Search & Login */}
+            {/* Desktop Right Section - Search & Auth */}
             <div className="hidden lg:flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 transition duration-300">
                 {isSearchOpen && (
                   <input
                     type="text"
                     value={searchValue}
                     onChange={handleSearchChange}
                     placeholder="Search..."
-                    className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:none transition-all"
+                    className={`px-3 py-1 border border-gray-300 rounded-none text-lg ${
+                      pathname === "/" ? "text-white" : "text-black"
+                    }`}
                     autoFocus
                   />
                 )}
@@ -101,11 +122,43 @@ export function Navbar() {
                   />
                 </button>
               </div>
-              <Link href={"/sing-in"}>
-              <Button className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">
-                Login
-              </Button>
-              </Link>
+
+              {isLoggedIn ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
+                      <div className="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center">
+                        <User className="h-6 w-6 text-white" />
+                      </div>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/profile"
+                        className="flex items-center space-x-2"
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="flex items-center space-x-2"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>Logout</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  onClick={handleLogin}
+                  className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+                >
+                  Login
+                </Button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -115,9 +168,17 @@ export function Navbar() {
                 className="p-2  transition-colors"
               >
                 {isMobileMenuOpen ? (
-                  <X className="h-8 w-8" />
+                  <X
+                    className={`h-8 w-8 ${
+                      pathname === "/" ? "text-white" : "text-black"
+                    }`}
+                  />
                 ) : (
-                  <Menu className="h-8 w-8" />
+                  <Menu
+                    className={`h-8 w-8 ${
+                      pathname === "/" ? "text-white" : "text-black"
+                    }`}
+                  />
                 )}
               </button>
             </div>
@@ -131,14 +192,16 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="hover:text-white hover:bg-green-900 px-3 py-2 text-base font-normal transition-colors"
+                    className={`px-3 py-2 text-base font-normal transition-colors ${
+                      pathname === "/" ? "text-white" : "text-black"
+                    }`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}
                   </Link>
                 ))}
 
-                {/* Mobile Search & Login */}
+                {/* Mobile Search & Auth */}
                 <div className="px-3 pt-4 border-t border-gray-200">
                   {isSearchOpen && (
                     <div className="mb-4">
@@ -147,7 +210,9 @@ export function Navbar() {
                         value={searchValue}
                         onChange={handleSearchChange}
                         placeholder="Search..."
-                        className="w-full px-3 py-2 border rounded-md text-sm focus:none nt"
+                        className={`w-full px-3 py-2 text-lg border rounded-none ${
+                          pathname === "/" ? "text-white" : "text-black"
+                        } `}
                         autoFocus
                       />
                     </div>
@@ -157,11 +222,39 @@ export function Navbar() {
                       onClick={toggleSearch}
                       className="p-2 transition-colors"
                     >
-                      <Search className="h-5 w-5 " />
+                      <Search
+                        className={`h-5 w-5 ${
+                          pathname === "/" ? "text-white" : "text-black"
+                        }`}
+                      />
                     </button>
-                    <Button className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">
-                      Login
-                    </Button>
+
+                    {isLoggedIn ? (
+                      <div className="flex items-center space-x-2">
+                        <Link
+                          href="/profile"
+                          className="text-sm hover:text-green-900 transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <Button
+                          onClick={handleLogout}
+                          variant="outline"
+                          size="sm"
+                          className="text-sm bg-transparent"
+                        >
+                          Logout
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        onClick={handleLogin}
+                        className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+                      >
+                        Login
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

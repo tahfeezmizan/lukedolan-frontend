@@ -24,6 +24,7 @@ export function ResumeUpload() {
   };
 
   const handleRemoveResume = () => {
+    alert("Are you sure you want to remove your resume?");
     console.log("Resume removed");
     setUploadedFile(null);
   };
@@ -33,11 +34,13 @@ export function ResumeUpload() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left side - Upload instructions */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             Upload your recent resume or CV
           </h2>
-          <p className="text-gray-600">Upload your most up-to-date resume</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-lg font-medium text-gray-90">
+            Upload your most up-to-date resume
+          </p>
+          <p className="text-base text-gray-500">
             File types: DOC, DOCX, PDF, TXT
           </p>
         </div>
@@ -46,7 +49,7 @@ export function ResumeUpload() {
         <div className="space-y-4">
           {uploadedFile && (
             <div className="space-y-2">
-              <p className="font-medium text-gray-900">{uploadedFile}</p>
+              <p className="text-lg font-medium text-gray-90">{uploadedFile}</p>
             </div>
           )}
 
@@ -76,7 +79,7 @@ export function ResumeUpload() {
           {uploadedFile && (
             <button
               onClick={handleRemoveResume}
-              className="text-red-600 hover:text-red-800 text-sm underline"
+              className="text-base text-red-600 hover:text-red-800 underline"
             >
               Remove your resume
             </button>
