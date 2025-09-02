@@ -1,11 +1,9 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Edit } from "lucide-react";
-import { PersonalDetailsForm } from "./personal-details-form";
+import { useRouter, useSearchParams } from "next/navigation";
 import { EducationForm } from "./education-form";
+import { PersonalDetailsForm } from "./personal-details-form";
 import { WorkExperienceForm } from "./work-experience-form";
 
 export default function ProfilePage() {
@@ -54,7 +52,7 @@ export default function ProfilePage() {
           className="w-full"
         >
           <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="personal-details">Personal Details</TabsTrigger>
+            <TabsTrigger value="overview">Over View</TabsTrigger>
             <TabsTrigger value="personal-details">Personal Details</TabsTrigger>
             <TabsTrigger value="education">Education</TabsTrigger>
             <TabsTrigger value="work-experience">Work Experience</TabsTrigger>
