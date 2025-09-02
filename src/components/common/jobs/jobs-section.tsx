@@ -28,7 +28,7 @@ export default function JobsSection() {
       type: "Part-time",
       salary: "£25,000 – £30,000 / year",
       posted: "1 week ago",
-    },
+  },
   ];
 
   return (
