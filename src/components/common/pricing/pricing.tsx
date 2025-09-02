@@ -37,20 +37,20 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="bg-[#EBF1FA] pt-">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden ">
+    <div className="bg-[#EBF1FA] pt-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidde">
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 text-balance">
             Choose your plan
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto text-pretty">
+          <p className="text-base text-gray-600 max-w-2xl mx-auto text-pretty">
             Boost your job post to reach more candidates and hire faster.
           </p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
           {pricingPlans.map((plan, index) => (
             <PricingCard
               key={index}

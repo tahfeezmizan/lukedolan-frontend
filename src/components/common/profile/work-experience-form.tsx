@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 
 interface WorkExperienceData {
   jobTitle: string;
@@ -27,6 +27,10 @@ export function WorkExperienceForm() {
     experience: "",
   });
 
+  const [workExperiences, setWorkExperiences] = useState<WorkExperienceData[]>(
+    []
+  );
+
   const handleInputChange = (
     field: keyof WorkExperienceData,
     value: string
@@ -38,7 +42,23 @@ export function WorkExperienceForm() {
   };
 
   const handleAddExperience = () => {
-    console.log("Work Experience Form Data:", formData);
+    setWorkExperiences((prev) => [...prev, formData]);
+    console.log("Added Work Experience:", formData);
+
+    // reset form after adding
+    setFormData({
+      jobTitle: "",
+      companyName: "",
+      location: "",
+      employmentType: "",
+      startDate: "",
+      endDate: "",
+      experience: "",
+    });
+  };
+
+  const handleSave = () => {
+    console.log("All Work Experiences:", workExperiences);
   };
 
   return (
@@ -49,12 +69,7 @@ export function WorkExperienceForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label
-              htmlFor="jobTitle"
-              className="text-sm font-medium text-gray-700"
-            >
-              Job Title
-            </Label>
+            <Label htmlFor="jobTitle">Job Title</Label>
             <Input
               id="jobTitle"
               value={formData.jobTitle}
@@ -65,17 +80,12 @@ export function WorkExperienceForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="companyName"
-              className="text-sm font-medium text-gray-700"
-            >
-              Company Name
-            </Label>
+            <Label htmlFor="companyName">Company Name</Label>
             <Input
               id="companyName"
               value={formData.companyName}
               onChange={(e) => handleInputChange("companyName", e.target.value)}
-              placeholder="Luxe Beauty Longue"
+              placeholder="Luxe Beauty Lounge"
               className="bg-gray-100 border-0"
             />
           </div>
@@ -83,12 +93,7 @@ export function WorkExperienceForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label
-              htmlFor="location"
-              className="text-sm font-medium text-gray-700"
-            >
-              Location
-            </Label>
+            <Label htmlFor="location">Location</Label>
             <Input
               id="location"
               value={formData.location}
@@ -99,12 +104,7 @@ export function WorkExperienceForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="employmentType"
-              className="text-sm font-medium text-gray-700"
-            >
-              Employment Type
-            </Label>
+            <Label htmlFor="employmentType">Employment Type</Label>
             <Input
               id="employmentType"
               value={formData.employmentType}
@@ -119,12 +119,7 @@ export function WorkExperienceForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="space-y-2">
-            <Label
-              htmlFor="startDate"
-              className="text-sm font-medium text-gray-700"
-            >
-              Start Date
-            </Label>
+            <Label htmlFor="startDate">Start Date</Label>
             <Input
               id="startDate"
               value={formData.startDate}
@@ -135,12 +130,7 @@ export function WorkExperienceForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="endDate"
-              className="text-sm font-medium text-gray-700"
-            >
-              End Date
-            </Label>
+            <Label htmlFor="endDate">End Date</Label>
             <Input
               id="endDate"
               value={formData.endDate}
@@ -151,12 +141,7 @@ export function WorkExperienceForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="experience"
-              className="text-sm font-medium text-gray-700"
-            >
-              Experience
-            </Label>
+            <Label htmlFor="experience">Experience</Label>
             <Input
               id="experience"
               value={formData.experience}
@@ -166,13 +151,26 @@ export function WorkExperienceForm() {
             />
           </div>
         </div>
+      </div>
 
+      {/* Action Buttons */}
+      <div className="flex gap-4">
         <Button
           onClick={handleAddExperience}
-          className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          type="button"
+          className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
-          Add Experience
+          Add Work Experience
+        </Button>
+
+        <Button
+          onClick={handleSave}
+          type="button"
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+        >
+          <Save className="h-4 w-4" />
+          Save
         </Button>
       </div>
     </div>

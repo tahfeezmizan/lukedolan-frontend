@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 
 interface EducationData {
   degreeTitle: string;
@@ -29,6 +29,8 @@ export function EducationForm() {
     duration: "",
   });
 
+  const [educations, setEducations] = useState<EducationData[]>([]);
+
   const handleInputChange = (field: keyof EducationData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -37,7 +39,24 @@ export function EducationForm() {
   };
 
   const handleAddEducation = () => {
-    console.log("Education Form Data:", formData);
+    setEducations((prev) => [...prev, formData]);
+    console.log("Added Education:", formData);
+
+    // reset form after adding
+    setFormData({
+      degreeTitle: "",
+      major: "",
+      instituteName: "",
+      result: "",
+      cgpa: "",
+      scale: "",
+      yearOfPassing: "",
+      duration: "",
+    });
+  };
+
+  const handleSave = () => {
+    console.log("All Educations:", educations);
   };
 
   return (
@@ -50,12 +69,7 @@ export function EducationForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label
-              htmlFor="degreeTitle"
-              className="text-sm font-medium text-gray-700"
-            >
-              Degree Title
-            </Label>
+            <Label htmlFor="degreeTitle">Degree Title</Label>
             <Input
               id="degreeTitle"
               value={formData.degreeTitle}
@@ -66,12 +80,7 @@ export function EducationForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="major"
-              className="text-sm font-medium text-gray-700"
-            >
-              Major
-            </Label>
+            <Label htmlFor="major">Major</Label>
             <Input
               id="major"
               value={formData.major}
@@ -84,12 +93,7 @@ export function EducationForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="space-y-2">
-            <Label
-              htmlFor="instituteName"
-              className="text-sm font-medium text-gray-700"
-            >
-              Institute Name
-            </Label>
+            <Label htmlFor="instituteName">Institute Name</Label>
             <Input
               id="instituteName"
               value={formData.instituteName}
@@ -102,12 +106,7 @@ export function EducationForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="result"
-              className="text-sm font-medium text-gray-700"
-            >
-              Result
-            </Label>
+            <Label htmlFor="result">Result</Label>
             <Input
               id="result"
               value={formData.result}
@@ -118,9 +117,7 @@ export function EducationForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cgpa" className="text-sm font-medium text-gray-700">
-              CGPA
-            </Label>
+            <Label htmlFor="cgpa">CGPA</Label>
             <Input
               id="cgpa"
               value={formData.cgpa}
@@ -133,12 +130,7 @@ export function EducationForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="space-y-2">
-            <Label
-              htmlFor="scale"
-              className="text-sm font-medium text-gray-700"
-            >
-              Scale
-            </Label>
+            <Label htmlFor="scale">Scale</Label>
             <Input
               id="scale"
               value={formData.scale}
@@ -149,46 +141,49 @@ export function EducationForm() {
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="yearOfPassing"
-              className="text-sm font-medium text-gray-700"
-            >
-              Year of passing
-            </Label>
+            <Label htmlFor="yearOfPassing">Year of Passing</Label>
             <Input
               id="yearOfPassing"
               value={formData.yearOfPassing}
               onChange={(e) =>
                 handleInputChange("yearOfPassing", e.target.value)
               }
-              placeholder="27 Years"
+              placeholder="2022"
               className="bg-gray-100 border-0"
             />
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="duration"
-              className="text-sm font-medium text-gray-700"
-            >
-              Duration
-            </Label>
+            <Label htmlFor="duration">Duration</Label>
             <Input
               id="duration"
               value={formData.duration}
               onChange={(e) => handleInputChange("duration", e.target.value)}
-              placeholder="Doe"
+              placeholder="4 Years"
               className="bg-gray-100 border-0"
             />
           </div>
         </div>
+      </div>
 
+      {/* Action Buttons */}
+      <div className="flex gap-4">
         <Button
           onClick={handleAddEducation}
-          className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          type="button"
+          className="bg-green-600 hover:bg-green-700  text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
           Add Education
+        </Button>
+
+        <Button
+          onClick={handleSave}
+          type="button"
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+        >
+          <Save className="h-4 w-4" />
+          Save
         </Button>
       </div>
     </div>

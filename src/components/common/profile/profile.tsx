@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { EducationForm } from "./education-form";
 import { PersonalDetailsForm } from "./personal-details-form";
 import { WorkExperienceForm } from "./work-experience-form";
+import { ResumeUpload } from "./resume-upload";
+import { ProfileOverview } from "./profile-overview";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -51,18 +53,32 @@ export default function ProfilePage() {
           onValueChange={handleTabChange}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="overview">Over View</TabsTrigger>
             <TabsTrigger value="personal-details">Personal Details</TabsTrigger>
+            <TabsTrigger value="resume">Resume / CV</TabsTrigger>
             <TabsTrigger value="education">Education</TabsTrigger>
             <TabsTrigger value="work-experience">Work Experience</TabsTrigger>
           </TabsList>
 
           <TabsContent
+            value="overview"
+            className="bg-white rounded-lg p-8 shadow-sm"
+          >
+            <ProfileOverview />
+          </TabsContent>
+          <TabsContent
             value="personal-details"
             className="bg-white rounded-lg p-8 shadow-sm"
           >
             <PersonalDetailsForm />
+          </TabsContent>
+
+          <TabsContent
+            value="resume"
+            className="bg-white rounded-lg p-8 shadow-sm"
+          >
+            <ResumeUpload />
           </TabsContent>
 
           <TabsContent

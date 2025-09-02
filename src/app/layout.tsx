@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
+import { PageLoading } from "@/components/shared/page-loading";
 
 const montserrat = Montserrat({
   variable: "--font-Montserrat",
@@ -19,7 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable}`}>{children}</body>
+      <body className={`${montserrat.variable}`}>
+        <Suspense >
+          <PageLoading />
+          {children}
+        </Suspense>
+      </body>
     </html>
   );
 }
