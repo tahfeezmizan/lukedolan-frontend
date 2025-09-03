@@ -21,7 +21,7 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const pathname = usePathname();
 
   // Navigation links data
@@ -46,13 +46,9 @@ export function Navbar() {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setIsOpen(!isOpen);
+    
     console.log("User logged out");
-  };
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    console.log("User logged in");
   };
 
   return (
@@ -123,7 +119,7 @@ export function Navbar() {
                 </button>
               </div>
 
-              {isLoggedIn ? (
+              {isOpen ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
@@ -143,7 +139,7 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={handleLogout}
+                      onClick={() => handleLogout()}
                       className="flex items-center space-x-2"
                     >
                       <LogOut className="h-4 w-4" />
@@ -152,12 +148,11 @@ export function Navbar() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button
-                  onClick={handleLogin}
-                  className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
-                >
-                  Login
-                </Button>
+                <Link href={"/sing-in"}>
+                  <Button className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">
+                    Login
+                  </Button>
+                </Link>
               )}
             </div>
 
@@ -229,7 +224,7 @@ export function Navbar() {
                       />
                     </button>
 
-                    {isLoggedIn ? (
+                    {isOpen ? (
                       <div className="flex items-center space-x-2">
                         <Link
                           href="/profile"
@@ -239,7 +234,7 @@ export function Navbar() {
                           Profile
                         </Link>
                         <Button
-                          onClick={handleLogout}
+                          onClick={() => setIsOpen(!isOpen)}
                           variant="outline"
                           size="sm"
                           className="text-sm bg-transparent"
@@ -248,12 +243,11 @@ export function Navbar() {
                         </Button>
                       </div>
                     ) : (
-                      <Button
-                        onClick={handleLogin}
-                        className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
-                      >
-                        Login
-                      </Button>
+                      <Link href={"/sing-in"}>
+                        <Button className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">
+                          Login
+                        </Button>
+                      </Link>
                     )}
                   </div>
                 </div>

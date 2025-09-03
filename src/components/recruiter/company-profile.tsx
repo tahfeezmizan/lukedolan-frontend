@@ -1,21 +1,18 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Building2,
-  Mail,
-  Phone,
-  Globe,
-  MapPin,
-  Linkedin,
-  Twitter,
   Facebook,
+  Globe,
   Instagram,
-  Edit,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter
 } from "lucide-react";
-import Link from "next/link";
 
 interface CompanyData {
   companyName: string;

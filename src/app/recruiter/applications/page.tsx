@@ -1,15 +1,13 @@
 "use client";
 
 import { ApplicationsList } from "@/components/recruiter/applications-list";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 export default function ApplicationsPage() {
   const handleJobTypeChange = (value: string) => {

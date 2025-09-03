@@ -2,22 +2,6 @@ import JobDescription from "@/components/common/jobs/job-description";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-interface JobInfoProps {
-  appliedCount: number;
-  capacity: number;
-  applyBefore: string;
-  postedOn: string;
-  jobType: string;
-  salary: string;
-  categories: string[];
-  requiredSkills: string[];
-  companyProfile: string;
-  description: string;
-  responsibilities: string[];
-  whoYouAre: string[];
-  niceToHaves: string[];
-}
-
 const jobData = {
   appliedCount: 5,
   capacity: 10,
@@ -35,7 +19,7 @@ const jobData = {
   ],
 };
 
-export default function page<JobInfoProps>() {
+export default function page() {
   const {
     appliedCount,
     capacity,

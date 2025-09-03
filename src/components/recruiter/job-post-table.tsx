@@ -1,6 +1,5 @@
 "use client";
 
-import { MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MoreVertical } from "lucide-react";
 
 const jobPosts = [
   {
@@ -89,19 +89,6 @@ const jobPosts = [
 ];
 
 export function JobPostTable() {
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "approved":
-        return "bg-green-100 text-green-800";
-      case "rejected":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="overflow-x-auto">

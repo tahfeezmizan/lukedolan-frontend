@@ -2,6 +2,7 @@
 
 import { Mail, Phone, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const applications = [
   {
@@ -49,7 +50,9 @@ export function ApplicationsList() {
             <div className="flex items-start gap-4">
               {/* Avatar */}
               <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                <img
+                <Image
+                  width={52}
+                  height={52}
                   src={application.avatar}
                   alt={application.name}
                   className="w-full h-full object-cover"

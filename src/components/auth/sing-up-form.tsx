@@ -162,7 +162,7 @@ export function SingupForm() {
             })}
           />
           <Label htmlFor="terms" className="text-sm font-normal">
-            I have read and agree to roqit's Terms and conditions
+            I have read and agree to roqit&apos;s Terms and conditions
           </Label>
         </div>
         {errors.agreeToTerms && (

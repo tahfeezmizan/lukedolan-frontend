@@ -1,7 +1,6 @@
-import { Rocket } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../../public/logo.png";
-import Image from "next/image";
 
 export function Footer() {
   return (

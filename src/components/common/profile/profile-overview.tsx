@@ -1,10 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Building, FileText, ExternalLink, X } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Building } from "lucide-react";
 
 export function ProfileOverview() {
   // Sample data based on the forms we created
@@ -16,15 +14,6 @@ export function ProfileOverview() {
     location: "Bangladesh",
     timezone: "Your timezone",
     avatar: "/professional-headshot.png",
-
-    lookingFor:
-      "Dear Hiring Manager I am a skilled front-end developer with React, NodeJS, ExpressJS, MongoDB, Firebase, Tailwind CSS, and Bootstrap. I want a collaborative office environment with supportive colleagues, where innovation and teamwork drive success I am excited to contribute and grow with your team.",
-
-    achievements:
-      "I completed 21-Day Code Web Development Bootcamp and achieved a top 10 ranking! Grateful for the invaluable skills gained and the supportive community that made it all possible. I'm excited to start the next chapter of my coding journey!",
-
-    achievementLink:
-      "https://drive.google.com/file/d/1qDBFv-y1m_74Y3lEqucwO9g5yZ8pluU2/view?usp=sharing",
 
     workExperience: {
       title: "React Frontend Engineer",
@@ -138,7 +127,7 @@ export function ProfileOverview() {
           </div>
 
           {/* Looking For Section */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h3 className="text-sm font-medium text-gray-700 mb-3">
               Looking for
             </h3>
@@ -147,14 +136,14 @@ export function ProfileOverview() {
                 {profileData.lookingFor}
               </p>
             </div>
-          </div>
+          </div> */}
 
           {/* Achievements Section */}
           <div className="mb-8">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">
+            {/* <h3 className="text-sm font-medium text-gray-700 mb-3">
               Achievements
-            </h3>
-            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+            </h3> */}
+            {/* <div className="bg-gray-50 p-4 rounded-lg space-y-3">
               <p className="text-gray-800 leading-relaxed">
                 {profileData.achievements}
               </p>
@@ -166,7 +155,7 @@ export function ProfileOverview() {
               >
                 {profileData.achievementLink}
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Experience Section */}

@@ -122,13 +122,15 @@ export function TestimonialsSection() {
                     index === 1 ? "text-gray-900" : "text-gray-500"
                   }`}
                 >
-                  "{testimonial.quote}"
+                  {testimonial.quote}
                 </blockquote>
 
                 {/* Author */}
                 <div className="flex flex-col items-start gap-2">
                   <div className="w-12 h-12 rounded-full overflow-hidden">
-                    <img
+                    <Image
+                      width={52}
+                      height={52}
                       src={testimonial.avatar}
                       alt={testimonial.author}
                       className="w-full h-full object-cover"
@@ -158,15 +160,16 @@ export function TestimonialsSection() {
                 <Quote className="w-16 h-16 text-emerald-600" />
               </div>
 
-              {/* Quote Text */}
               <blockquote className="text-gray-900 text-lg leading-relaxed mb-8 font-medium">
-                "{testimonials[currentIndex].quote}"
+                {testimonials[currentIndex].quote}
               </blockquote>
 
               {/* Author */}
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden">
-                  <img
+                  <Image
+                    width={52}
+                    height={52}
                     src={testimonials[currentIndex].avatar}
                     alt={testimonials[currentIndex].author}
                     className="w-full h-full object-cover"

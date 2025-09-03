@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export function TopNavbar() {
   return (
@@ -25,7 +26,9 @@ export function TopNavbar() {
               className="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 h-auto"
             >
               <div className="w-10 h-10 rounded-full overflow-hidden">
-                <img
+                <Image
+                width={10}
+                height={10}
                   src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
                   alt="John Doe"
                   className="w-full h-full object-cover"

@@ -1,10 +1,10 @@
 "use client";
 
-import { Rocket, User, Briefcase, FileText, Building } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Briefcase, FileText, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
 import logo from "../../../public/logo.png";
 
 const sidebarItems = [

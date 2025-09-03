@@ -1,7 +1,6 @@
 // components/JobCard.tsx
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { MapPin, Briefcase, Calendar, Navigation, CirclePoundSterling } from "lucide-react";
+import { CardContent } from "@/components/ui/card";
+import { Briefcase, Calendar, CirclePoundSterling, Navigation } from "lucide-react";
 import Link from "next/link";
 
 type JobCardProps = {

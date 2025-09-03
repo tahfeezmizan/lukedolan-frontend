@@ -2,14 +2,13 @@
 
 import type React from "react";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
-import { ImageIcon, Eye } from "lucide-react";
-import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
+import { ImageIcon } from "lucide-react";
+import { useState } from "react";
 
 interface CompanyFormData {
   companyName: string;

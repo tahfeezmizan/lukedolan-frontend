@@ -41,7 +41,7 @@ export default function ContactForm() {
               <div>
                 <p className="text-xl md:text-2xl  mb-2">Get Started</p>
                 <h1 className="text-xl md:text-4xl font-bold  text-balance ">
-                  Get in touch with us. We're here to assist you.
+                  Get in touch with us. We&apos;re here to assist you.
                 </h1>
               </div>
               <div className="flex flex-col gap-3">

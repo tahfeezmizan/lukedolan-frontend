@@ -35,7 +35,7 @@ export default function TermsAndConditions() {
               <li>Employers must provide accurate business and job details.</li>
               <li>
                 Users are responsible for ensuring compliance with their
-                country's employment laws.
+                country&apos;s employment laws.
               </li>
             </ul>
           </section>

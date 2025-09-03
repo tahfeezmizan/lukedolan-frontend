@@ -122,7 +122,7 @@ export function LoginForm() {
       <div className="space-y-4">
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
           </p>
           <Link href={"/sing-up"}>
             <Button className="bg-transparent text-black hover:bg-transparent border shadow-none outline-none rounded-none">
