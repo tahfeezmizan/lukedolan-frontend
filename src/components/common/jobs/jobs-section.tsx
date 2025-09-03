@@ -110,14 +110,14 @@ export default function JobsSection() {
           <SidebarFilter />
         </div>
 
-        <div className="col-span-2 space-y-6">
+        <div className="col-span-1 md:col-span-2 space-y-6">
           {currentJobs.map((job, index) => (
             <JobCard key={startIndex + index} {...job} />
           ))}
 
           {totalPages > 1 && (
             <div className="flex justify-between mt-8">
-              <Pagination>
+              <Pagination className="!justify-end">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious

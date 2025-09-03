@@ -23,7 +23,7 @@ export default function JobCard({
 }: JobCardProps) {
   return (
     <div className="w-full bg-white hover:shadow-md transition rounded-lg">
-      <CardContent className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-5">
+      <CardContent className="flex flex-col lg:flex-row justify-between items-start sm:items-center gap-6 md:gap-4 p-5">
         {/* Left Info */}
         <div>
           <h3 className="text-xl font-semibold leading-loose">{title}</h3>
@@ -42,7 +42,7 @@ export default function JobCard({
         </div>
 
         {/* Right Info */}
-        <div className="flex flex-col justify-between sm:items-end gap-5">
+        <div className="flex flex-row-reverse lg:flex-col justify-between lg:justify-between sm:items-end gap-3 md:gap-5">
           <Link
             href={"job/1"}
             className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-none"
