@@ -1,7 +1,7 @@
 // components/JobCard.tsx
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Briefcase, Calendar } from "lucide-react";
+import { MapPin, Briefcase, Calendar, Navigation, CirclePoundSterling } from "lucide-react";
 import Link from "next/link";
 
 type JobCardProps = {
@@ -22,33 +22,39 @@ export default function JobCard({
   posted,
 }: JobCardProps) {
   return (
-    <Card className="w-full shadow-sm hover:shadow-md transition rounded-2xl">
+    <div className="w-full bg-white hover:shadow-md transition rounded-lg">
       <CardContent className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-5">
         {/* Left Info */}
         <div>
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <p className="text-gray-500">{company}</p>
-          <div className="flex flex-wrap gap-3 mt-2 text-sm text-gray-600">
+          <h3 className="text-xl font-semibold leading-loose">{title}</h3>
+          <p className="text-gray-800 font-normal">Company: {company}</p>
+          <div className="flex flex-wrap gap-3 mt-2 text-md text-gray-700">
             <span className="flex items-center gap-1">
-              <MapPin size={16} /> {location}
+              <Navigation size={16} className="text-green-950 " /> {location}
             </span>
             <span className="flex items-center gap-1">
-              <Briefcase size={16} /> {type}
+              <Briefcase size={16} className="text-green-950 " /> {type}
             </span>
             <span className="flex items-center gap-1">
-              <Calendar size={16} /> {posted}
+              <Calendar size={16} className="text-green-950 " /> {posted}
             </span>
           </div>
         </div>
 
         {/* Right Info */}
-        <div className="flex flex-col sm:items-end gap-2">
-          <p className="font-medium text-green-600">{salary}</p>
-          <Link href={"job/1"} className="bg-green-600 hover:bg-green-700 text-white">
+        <div className="flex flex-col justify-between sm:items-end gap-5">
+          <Link
+            href={"job/1"}
+            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-none"
+          >
             Apply Now
           </Link>
+          <div className="flex items-center justify-between gap-2">
+            <CirclePoundSterling size={20} className="bg-green-900 text-white rounded-full"  />
+            <p className="font-medium text-gray-700">{salary}</p>
+          </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 }

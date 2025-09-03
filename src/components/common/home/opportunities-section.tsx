@@ -44,7 +44,7 @@ export function OpportunitiesSection() {
             Fresh Opportunities
           </h2>
           <Link
-            href={"/"}
+            href={"/job"}
             className="bg-green-900 hover:bg-green-800 text-white px-8 py-2 text-lg font-medium rounded-none flex items-center justify-between gap-2"
           >
             Browse All Jobs

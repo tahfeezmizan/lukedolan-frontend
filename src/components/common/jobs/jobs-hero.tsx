@@ -4,7 +4,7 @@ import jobHeroImg from "../../../../public/job-hero.png";
 
 export default function JobsHero() {
   return (
-    <div className="max-w-7xl mx-auto  px-4 sm:px-6 pt-36 pb-10 overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-4 overflow-hidden">
       <div className="flex items-center justify-center">
         <Image
           src={jobHeroImg.src}

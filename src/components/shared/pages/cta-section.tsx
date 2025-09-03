@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import bg from "../../../../public/cta-section-img.png";
+import Link from "next/link";
 
 export function CtaSection() {
   return (
@@ -17,12 +18,14 @@ export function CtaSection() {
         <h2 className="text-3xl md:text-6xl font-bold leading-tight text-balance mb-6">
           Ready to Post Your First Job?
         </h2>
-        <Button
-          size="lg"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 md:px-12 py-4 md:py-6 text-lg font-medium rounded-none"
-        >
-          Post a job now
-        </Button>
+        <Link href={"/job"}>
+          <Button
+            size="lg"
+            className="bg-green-900 hover:bg-green-800 text-white px-8 md:px-12 py-4 md:py-6 text-lg font-medium rounded-none"
+          >
+            Post a job now
+          </Button>
+        </Link>
       </div>
     </section>
   );

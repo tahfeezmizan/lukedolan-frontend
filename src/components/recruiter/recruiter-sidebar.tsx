@@ -11,7 +11,7 @@ const sidebarItems = [
   {
     icon: User,
     label: "Profile",
-    href: "/recruiter/company",
+    href: "/recruiter",
   },
   {
     icon: Briefcase,
