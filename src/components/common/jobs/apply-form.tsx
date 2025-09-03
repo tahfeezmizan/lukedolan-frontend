@@ -29,7 +29,7 @@ export default function ApplyForm() {
     if (e.target.files && e.target.files[0]) {
       setFormData((prev) => ({
         ...prev,
-        resume: e.target.files[0],
+        resume: e.target.files?.[0] || null,
       }));
     }
   };
