@@ -47,7 +47,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     setIsOpen(!isOpen);
-    
+
     console.log("User logged out");
   };
 
