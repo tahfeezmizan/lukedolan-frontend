@@ -6,31 +6,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "../../../public/logo.png";
+import { SidebarItem } from "@/lib/sidebar-config";
 
-const sidebarItems = [
-  {
-    icon: User,
-    label: "Profile",
-    href: "/recruiter",
-  },
-  {
-    icon: Briefcase,
-    label: "Jobs",
-    href: "/recruiter/job-post",
-  },
-  {
-    icon: FileText,
-    label: "Applications",
-    href: "/recruiter/applications",
-  },
-  // {
-  //   icon: User,
-  //   label: "Overview",
-  //   href: "/recruiter/overview",
-  // },
-];
+// const sidebarItems = [
+//   {
+//     icon: User,
+//     label: "Profile",
+//     href: "/recruiter",
+//   },
+//   {
+//     icon: Briefcase,
+//     label: "Jobs",
+//     href: "/recruiter/job-post",
+//   },
+//   {
+//     icon: FileText,
+//     label: "Applications",
+//     href: "/recruiter/applications",
+//   },
+//   // {
+//   //   icon: User,
+//   //   label: "Overview",
+//   //   href: "/recruiter/overview",
+//   // },
+// ];
 
-export function RecruiterSidebar() {
+export function RecruiterSidebar({
+  sidebarItems,
+}: {
+  sidebarItems: SidebarItem[];
+}) {
   const pathname = usePathname();
 
   return (
