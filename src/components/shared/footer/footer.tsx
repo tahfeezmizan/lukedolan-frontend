@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../../public/logo.png";
+import whiteLogo from "@/assets/white-logo.png";
 
 export function Footer() {
   return (
@@ -12,7 +12,7 @@ export function Footer() {
           <div className="col-span-1">
             <Link href={"/"}>
               <Image
-                src={logo}
+                src={whiteLogo }
                 alt="Logo"
                 width={165}
                 height={40}

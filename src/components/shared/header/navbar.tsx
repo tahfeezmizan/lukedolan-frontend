@@ -14,7 +14,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import logo from "../../../../public/logo.png";
+import logo from "@/assets/logo.png";
+import whiteLogo from "@/assets/white-logo.png";
 
 export function Navbar() {
   // State to control mobile menu visibility
@@ -65,13 +66,23 @@ export function Navbar() {
             {/* Logo Section */}
             <div className="flex items-center space-x-2">
               <Link href={"/"}>
-                <Image
-                  src={logo}
-                  alt="Logo"
-                  width={165}
-                  height={40}
-                  className="w-40 h-11"
-                />
+                {pathname === "/" ? (
+                  <Image
+                    src={whiteLogo}
+                    alt="Logo"
+                    width={165}
+                    height={40}
+                    className="w-40 h-11"
+                  />
+                ) : (
+                  <Image
+                    src={logo}
+                    alt="Logo"
+                    width={165}
+                    height={40}
+                    className="w-40 h-11"
+                  />
+                )}
               </Link>
             </div>
 
