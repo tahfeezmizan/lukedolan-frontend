@@ -2,7 +2,8 @@
 
 import { Package, Gauge, MapPin, User } from "lucide-react";
 import Image from "next/image";
-import image from "../../../../public/why-roqit-img.png";
+import image from "@/assets/why-roqit-img.png";
+import arrowImage from "@/assets/arrow-roqite.png";
 
 const features = [
   {
@@ -29,15 +30,14 @@ const features = [
 
 export function WhyRoqitSection() {
   return (
-    <section className="bg-white ">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Content */}
-        <div className="mx-4 lg:ml-80  space-y-8 mt-10 lg:mt-0">
-          <h2 className="pl-4 text-4xl  font-bold text-black leading-tight mb-10">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+      <div className="flex flex-col md:flex-row gap-10 items-center justify-between overflow-hidden">
+        <div className="flex-1 space-y-8 ">
+          <h2 className=" text-4xl  font-bold text-black leading-tight mb-10">
             Why Roqit?
           </h2>
 
-          <div className="space-y-8 pl-0 md:pl-4">
+          <div className="space-y-8 ">
             {features.map((feature, index) => (
               <div key={index} className="flex items-start gap-4 ">
                 <div className="flex-shrink-0 w-12 h-12 bg-green-900 rounded-full flex items-center justify-center ">
@@ -54,14 +54,13 @@ export function WhyRoqitSection() {
           </div>
         </div>
 
-        <div className="">
+        <div className="flex-1 ">
           <Image
-            src={image}
-            alt="Professional barber chair in vintage salon setting"
-            className="w-full h-auto object-cover"
-            layout="responsive"
-            width={500}
-            height={500}
+            src={image.src}
+            width={632}
+            height={556}
+            className="w-full lg:w-[632px] h-full lg:h-[556px] mr-0"
+            alt="why roqit"
           />
         </div>
       </div>

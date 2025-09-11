@@ -1,7 +1,7 @@
 import { CtaSection } from "@/components/shared/pages/cta-section";
 import { DiscoverSection } from "@/components/common/home/discover-section";
 import { HeroSection } from "@/components/common/home/hero-section";
-import { OpportunitiesSection } from "@/components/common/home/opportunities-section";
+import { RecentJob } from "@/components/common/home/recent-job";
 import { TestimonialsSection } from "@/components/common/home/testimonials-section";
 import { WhyRoqitSection } from "@/components/common/home/why-roqit-section";
 import React from "react";
@@ -13,7 +13,7 @@ export default function page() {
       <HeroSection />
       <DiscoverSection />
       <WhyRoqitSection />
-      <OpportunitiesSection />
+      <RecentJob />
       <CtaSection />
       <TestimonialsSection />
       <NewsletterSection />
