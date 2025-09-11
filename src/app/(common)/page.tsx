@@ -6,6 +6,8 @@ import { TestimonialsSection } from "@/components/common/home/testimonials-secti
 import { WhyRoqitSection } from "@/components/common/home/why-roqit-section";
 import React from "react";
 import { NewsletterSection } from "@/components/shared/pages/newsletter-section";
+import HiringHero from "@/components/common/home/hiring-hero";
+import { TalentSection } from "@/components/common/home/talent-section";
 
 export default function page() {
   return (
@@ -14,8 +16,8 @@ export default function page() {
       <DiscoverSection />
       <WhyRoqitSection />
       <RecentJob />
-      <CtaSection />
-      <TestimonialsSection />
+      <HiringHero />
+      <TalentSection />
       <NewsletterSection />
     </div>
   );
