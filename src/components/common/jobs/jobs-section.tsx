@@ -12,74 +12,74 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Image from "next/image";
-import SVGImage from '../../../../public/rocket.png'
-
+import SVGImage from "@/assets/rocket.png";
+import companyLogo from "@/assets/company-logo (1).png";
+import companyLogo2 from "@/assets/company-logo (2).png";
+import companyLogo3 from "@/assets/company-logo (3).png";
+import companyLogo4 from "@/assets/company-logo (4).png";
+import companyLogo5 from "@/assets/company-logo (5).png";
 
 export default function JobsSection() {
   const allJobs = [
     {
-      title: "Senior Hair Stylist",
-      company: "Nova Hair Solutions",
-      location: "London, UK",
-      type: "Full-time",
-      salary: "£40,000 – £50,000 / year",
-      posted: "2 days ago",
+      id: 1,
+      companyLogo: companyLogo,
+      experienceLevel: "Experienced",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "London, UK"
     },
     {
-      title: "Junior Hair Stylist",
-      company: "Glow Salon",
-      location: "Manchester, UK",
-      type: "Part-time",
-      salary: "£25,000 – £30,000 / year",
-      posted: "1 week ago",
+      id: 2,
+      companyLogo: companyLogo2,
+      experienceLevel: "Experienced",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "string"
     },
     {
-      title: "Makeup Artist",
-      company: "Beauty Studio Pro",
-      location: "Birmingham, UK",
-      type: "Full-time",
-      salary: "£30,000 – £35,000 / year",
-      posted: "3 days ago",
+      id: 3,
+      companyLogo: companyLogo3,
+      experienceLevel: "Experienced",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "string"
     },
     {
-      title: "Nail Technician",
-      company: "Luxury Nails",
-      location: "London, UK",
-      type: "Part-time",
-      salary: "£22,000 – £28,000 / year",
-      posted: "5 days ago",
+      id: 4,
+      companyLogo: companyLogo4,
+      experienceLevel: "Beginner",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "string"
     },
     {
-      title: "Barber",
-      company: "Classic Cuts",
-      location: "Leeds, UK",
-      type: "Full-time",
-      salary: "£28,000 – £35,000 / year",
-      posted: "1 day ago",
+      id: 5,
+      companyLogo: companyLogo5,
+      experienceLevel: "Experienced",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "string"
     },
     {
-      title: "Beauty Therapist",
-      company: "Spa Retreat",
-      location: "Manchester, UK",
-      type: "Full-time",
-      salary: "£26,000 – £32,000 / year",
-      posted: "4 days ago",
-    },
-    {
-      title: "Hair Colorist",
-      company: "Color Me Beautiful",
-      location: "London, UK",
-      type: "Full-time",
-      salary: "£35,000 – £42,000 / year",
-      posted: "6 days ago",
-    },
-    {
-      title: "Eyebrow Specialist",
-      company: "Brow Bar",
-      location: "Bristol, UK",
-      type: "Part-time",
-      salary: "£20,000 – £25,000 / year",
-      posted: "2 weeks ago",
+      id: 6,
+      companyLogo: companyLogo,
+      experienceLevel: "Freshers",
+      daysLeft: "30 days to go",
+      companyName: "Hair & Care Saloon",
+      jobTitle: "Senior Hair Stylist",
+      salary: "40,000 – 50,000",
+      location: "string"
     },
   ];
 

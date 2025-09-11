@@ -8,7 +8,6 @@ export default function page() {
     <div className="bg-[#EBF1FA]">
       <JobsHero />
       <JobsSection />
-      <CtaSection />
     </div>
   );
 }
