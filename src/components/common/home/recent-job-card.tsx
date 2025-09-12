@@ -8,7 +8,6 @@ export default function RecentJobCard({ job }: { job: JobCardProps }) {
   const { id, companyLogo, experienceLevel, daysLeft, companyName, jobTitle } =
     job;
 
-  console.log(id);
 
   return (
     <div key={id} className="overflow-hidden bg-white rounded-2xl p-5">

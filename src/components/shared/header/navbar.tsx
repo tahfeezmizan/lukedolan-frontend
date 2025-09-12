@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import logo from "@/assets/logo.png";
 import whiteLogo from "@/assets/white-logo.png";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
   // State to control mobile menu visibility
@@ -105,31 +106,6 @@ export function Navbar() {
 
             {/* Desktop Right Section - Search & Auth */}
             <div className="hidden lg:flex items-center space-x-4">
-              <div className="flex items-center space-x-2 transition duration-300">
-                {isSearchOpen && (
-                  <input
-                    type="text"
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                    placeholder="Search..."
-                    className={`px-3 py-1 border border-gray-300 rounded-none text-lg ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
-                    autoFocus
-                  />
-                )}
-                <button
-                  onClick={toggleSearch}
-                  className="p-2  hover:text-gray-700 transition-colors"
-                >
-                  <Search
-                    className={`h-5 w-5 ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
-                  />
-                </button>
-              </div>
-
               {isOpen ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -209,37 +185,14 @@ export function Navbar() {
 
                 {/* Mobile Search & Auth */}
                 <div className="px-3 pt-4 border-t border-gray-200">
-                  {isSearchOpen && (
-                    <div className="mb-4">
-                      <input
-                        type="text"
-                        value={searchValue}
-                        onChange={handleSearchChange}
-                        placeholder="Search..."
-                        className={`w-full px-3 py-2 text-lg border rounded-none ${
-                          pathname === "/" ? "text-white" : "text-black"
-                        } `}
-                        autoFocus
-                      />
-                    </div>
-                  )}
                   <div className="flex items-center justify-between">
-                    <button
-                      onClick={toggleSearch}
-                      className="p-2 transition-colors"
-                    >
-                      <Search
-                        className={`h-5 w-5 ${
-                          pathname === "/" ? "text-white" : "text-black"
-                        }`}
-                      />
-                    </button>
+                    
 
                     {isOpen ? (
                       <div className="flex items-center space-x-2">
                         <Link
                           href="/profile"
-                          className="text-sm hover:text-green-900 transition-colors"
+                          className="text-sm text-black hover:text-green-900 transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           Profile
@@ -247,8 +200,8 @@ export function Navbar() {
                         <Button
                           onClick={() => setIsOpen(!isOpen)}
                           variant="outline"
-                          size="sm"
-                          className="text-sm bg-transparent"
+                          size="sm" 
+                          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
                         >
                           Logout
                         </Button>
