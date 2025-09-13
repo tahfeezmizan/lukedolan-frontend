@@ -1,12 +1,11 @@
 "use client";
 
+import logo from "@/assets/white-logo.png";
+import { SidebarItem } from "@/lib/sidebar-config";
 import { cn } from "@/lib/utils";
-import { Briefcase, FileText, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logo from "../../../public/logo.png";
-import { SidebarItem } from "@/lib/sidebar-config";
 
 // const sidebarItems = [
 //   {
