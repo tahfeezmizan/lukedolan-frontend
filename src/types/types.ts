@@ -11,3 +11,14 @@ export type JobCardProps = {
   salary?: string;
   location?: string;
 };
+
+
+export interface TalentProps {
+  id: number;
+  name: string;
+  title: string;
+  experience: string;
+  skills: string;
+  price: string;
+  image: string | StaticImageData; // if you're using Next.js `Image` import
+}

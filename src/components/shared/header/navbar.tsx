@@ -24,6 +24,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 // Types for user roles
 type UserRole = "guest" | "applicant" | "recruiter";
@@ -55,8 +56,8 @@ export function Navbar() {
       case "recruiter":
         return [
           { href: "/", label: "Home" },
+          { href: "/job", label: "Jobs" },
           { href: "/find-talent", label: "Find Talent" },
-          { href: "/available-for-work", label: "Available for work" },
           { href: "/pricing", label: "Pricing" },
           { href: "/contact", label: "Contact Us" },
         ];
@@ -91,13 +92,13 @@ export function Navbar() {
   return (
     <nav className="text-white relative">
       <div
-        className={`${
-          pathname === "/"
-            ? "absolute top-0 lg:top-12 left-0"
-            : "absolute top-0"
-        } w-full z-50`}
+        className={cn(
+          "absolute top-0 w-full z-50 ",
+          pathname === "/" && "lg:top-12 left-0",
+          pathname !== "/" && "bg-[#EBF1FA] border-b"
+        )}
       >
-        <div className=" max-w-7xl mx-auto px-4 sm:px-6 py-2 rounded-md bg-white/10 backdrop-blur-[5px] ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 rounded-md bg-white/10 backdrop-blur-[5px]">
           <div className="flex justify-between items-center h-16">
             {/* Logo Section */}
             <div className="flex items-center space-x-2">
@@ -124,15 +125,15 @@ export function Navbar() {
 
             {/* Desktop Navigation Links */}
             <div
-              className={`hidden lg:flex items-center space-x-3 ${
-                pathname === "/" ? "text-white" : "text-black"
+              className={`hidden lg:flex items-center space-x-3  ${
+                pathname === "/" ? "text-white" : "text-green-900"
               }`}
             >
               {navigationLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3  text-xl font-normal"
+                  className="px-3 font-medium text-xl "
                 >
                   {link.label}
                 </Link>
@@ -253,43 +254,43 @@ export function Navbar() {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex ">
+            <div className="lg:hidden flex items-center">
               {user &&
               (user.role === "applicant" || user.role === "recruiter") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
-                  <button
+                  <Button
                     onClick={handleMessage}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors ${
+                    className={`p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent ${
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
                     <MessageCircle className="h-6 w-6" />
-                  </button>
+                  </Button>
 
                   {/* Notification Icon */}
-                  <button
+                  <Button
                     onClick={handleNotification}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors ${
+                    className={`p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent ${
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
                     <Bell className="h-6 w-6" />
-                  </button>
+                  </Button>
 
                   {/* Profile Dropdown */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
-                        <div className="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center">
                           {user.avatar ? (
                             <Image
                               src={user.avatar}
                               alt="Profile"
-                              width={40}
-                              height={40}
-                              className="w-10 h-10 rounded-full"
+                              width={30}
+                              height={30}
+                              className="w-6 h-6 rounded-full"
                             />
                           ) : (
                             <User className="h-6 w-6 text-white" />
@@ -351,14 +352,14 @@ export function Navbar() {
               >
                 {isMobileMenuOpen ? (
                   <X
-                    className={`h-8 w-8 ${
-                      pathname === "/" ? "text-white" : "text-black"
+                    className={`h-8 w-8  ${
+                      pathname === "/" ? "text-white" : "text-white"
                     }`}
                   />
                 ) : (
                   <Menu
-                    className={`h-8 w-8 ${
-                      pathname === "/" ? "text-white" : "text-black"
+                    className={`h-8 w-8  !bg-transparent ${
+                      pathname === "/" ? "text-white " : ""
                     }`}
                   />
                 )}

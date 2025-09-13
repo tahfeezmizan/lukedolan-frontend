@@ -3,7 +3,6 @@ import Link from "next/link";
 // import heroBg from "../../../../public/banner-img.png";
 import heroBg from "@/assets/hero-bg.png";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 
 export function HeroSection() {
   return (
