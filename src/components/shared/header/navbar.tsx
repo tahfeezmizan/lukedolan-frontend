@@ -42,7 +42,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   // Mock user state - replace with your actual auth logic
-  const [user, setUser] = useState<User | null>({ role: "recruiter" });
+  const [user, setUser] = useState<User | null>({ role: "applicant" });
 
   // Navigation links based on user role
   const getNavigationLinks = (userRole: UserRole) => {
