@@ -8,6 +8,8 @@ import {
   Mail,
   MessageSquare,
 } from "lucide-react";
+
+
 export default function ApplicantProfile() {
   return (
     <section className=" px-4 bg-slate-100">

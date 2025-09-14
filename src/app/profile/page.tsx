@@ -1,4 +1,4 @@
-import ProfilePage from "@/components/common/profile/profile";
+import ProfilePage from "@/components/profile/profile";
 import React from "react";
 
 export default function page() {

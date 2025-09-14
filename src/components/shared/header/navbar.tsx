@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import logo from "@/assets/logo.png";
 import whiteLogo from "@/assets/white-logo.png";
 import { Button } from "@/components/ui/button";
@@ -10,21 +9,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import {
+  Bell,
+  FileText,
   LogOut,
   Menu,
+  MessageCircle,
+  Plus,
   User,
   X,
-  MessageCircle,
-  Bell,
-  Plus,
-  FileText,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 // Types for user roles
 type UserRole = "guest" | "applicant" | "recruiter";
@@ -266,7 +265,7 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
-                    <MessageCircle className="h-6 w-6" />
+                  <MessageCircle className="h-6 w-6" />
                   </Button>
 
                   {/* Notification Icon */}

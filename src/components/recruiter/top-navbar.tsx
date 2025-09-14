@@ -1,9 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 
 const user = {
@@ -11,15 +9,15 @@ const user = {
   name: "John Doe",
   avatar:
     "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-};  
+};
 
-
-export function TopNavbar() {
+export function TopNavbar({ title }: { title: string }) {
+  const role = title.replace(/^\/+/, "")
   return (
     <div className="fixed top-0 left-64 right-0 h-16 bg-white border-b border-gray-200 z-30">
       <div className="flex items-center justify-between h-full px-6">
         {/* Page Title */}
-        <h1 className="text-2xl font-bold text-gray-900">Recruiter Panel</h1>
+        <h1 className="text-2xl font-bold text-gray-900 capitalize">{role} Panel</h1>
 
         {/* User Profile Dropdown */}
         <DropdownMenu>
@@ -37,7 +35,6 @@ export function TopNavbar() {
               />
             </div>
             <span className="font-semibold text-gray-900">John Doe</span>
-          
           </Button>
         </DropdownMenu>
       </div>

@@ -1,9 +1,14 @@
 "use client";
 
+import {
+  adminItems,
+  recruiterItems,
+  applicantItems,
+  SidebarItems,
+} from "@/lib/sidebar-nav-config";
 import { usePathname } from "next/navigation";
-import { recruiterItems, adminItems } from "@/lib/sidebar-config";
-import { RecruiterSidebar } from "../recruiter/recruiter-sidebar";
 import { TopNavbar } from "../recruiter/top-navbar";
+import { DashboardSidebar } from "./dashboard-sidebar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -12,18 +17,38 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
 
+  const role = pathname.split("/")[1];
+
   // Decide which sidebar to show
-  const isAdmin = pathname.startsWith("/admin");
-  const sidebarItems = isAdmin ? adminItems : recruiterItems;
+  let sidebarItems: SidebarItems;
+  let dashboardTitle = "";
+
+  switch (role) {
+    case "admin":
+      sidebarItems = adminItems;
+      dashboardTitle = "Admin";
+      break;
+    case "recruiter":
+      sidebarItems = recruiterItems;
+      dashboardTitle = "Recruiter";
+      break;
+    case "profile":
+      sidebarItems = applicantItems;
+      dashboardTitle = "Applicant";
+      break;
+    default:
+      sidebarItems = [];
+      dashboardTitle = "Dashboard";
+  }
 
   return (
     <div className="min-h-screen bg-[#F5F6FA]">
-      <RecruiterSidebar sidebarItems={sidebarItems} />
-      <TopNavbar />
+      <DashboardSidebar sidebarItems={sidebarItems} />
+      <TopNavbar title={dashboardTitle} />
 
       {/* Main Content Area */}
-      <main className="ml-64 pt-16">
-        <div className="p-6">{children}</div>
+      <main className="pt-16">
+        <div className="p-6 bg-[#EBF1FA]">{children}</div>
       </main>
     </div>
   );

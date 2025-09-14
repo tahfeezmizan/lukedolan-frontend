@@ -3,17 +3,50 @@ import {
   FileText,
   LayoutDashboard,
   LucideIcon,
+  MessageCircle,
   Settings,
   User,
 } from "lucide-react";
 
+// Individual sidebar item
 export interface SidebarItem {
   icon: LucideIcon;
   label: string;
   href: string;
 }
 
-export const recruiterItems = [
+// Roles type (optional but useful for role-based logic)
+export type DashboardRole = "admin" | "recruiter" | "applicant";
+
+// Sidebar arrays type
+export type SidebarItems = SidebarItem[];
+
+// Applicant sidebar items
+export const applicantItems: SidebarItems = [
+  {
+    icon: User,
+    label: "Profile",
+    href: "/profile",
+  },
+  {
+    icon: MessageCircle,
+    label: "Messages",
+    href: "/profile/messages",
+  },
+  {
+    icon: FileText,
+    label: "Applied Jobs",
+    href: "/profile/applied-jobs",
+  },
+  // {
+  //   icon: User,
+  //   label: "Overview",
+  //   href: "/recruiter/overview",
+  // },
+];
+
+// Recruiter sidebar items
+export const recruiterItems: SidebarItems = [
   {
     icon: User,
     label: "Profile",
@@ -36,7 +69,8 @@ export const recruiterItems = [
   // },
 ];
 
-export const adminItems = [
+// Admin sidebar items
+export const adminItems: SidebarItems = [
   {
     icon: LayoutDashboard,
     label: "Dashboard",
