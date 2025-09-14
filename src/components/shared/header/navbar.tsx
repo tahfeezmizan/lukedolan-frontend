@@ -50,7 +50,7 @@ export function Navbar() {
       case "applicant":
         return [
           { href: "/", label: "Home" },
-          { href: "/search-job", label: "Search Job" },
+          { href: "/job", label: "Search Job" },
           { href: "/contact", label: "Contact Us" },
         ];
       case "recruiter":
@@ -66,7 +66,7 @@ export function Navbar() {
           { href: "/", label: "Home" },
           { href: "/find-talent", label: "Find Talent" },
 
-          { href: "/search-job", label: "Search Job" },
+          { href: "/job", label: "Search Job" },
           { href: "/pricing", label: "Pricing" },
           { href: "/contact", label: "Contact Us" },
         ];
@@ -237,8 +237,8 @@ export function Navbar() {
                       variant="outline"
                       className={`px-6 py-2 text-base font-medium rounded-none border-2 ${
                         pathname === "/"
-                          ? "border-white bg-transparent text-white hover:bg-white hover:text-black"
-                          : "border-black text-black hover:bg-black hover:text-white"
+                          ? "border-green-900 bg-transparent text-white hover:bg-white hover:text-black"
+                          : "border-green-900 text-black hover:bg-green-900 hover:text-white"
                       }`}
                     >
                       Login

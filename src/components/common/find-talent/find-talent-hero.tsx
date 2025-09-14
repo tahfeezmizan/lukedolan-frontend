@@ -48,7 +48,7 @@ export default function FindTalentHero() {
               />
               <Button
                 type="submit"
-                className="bg-green-900 text-lg px-6 py-8 text-white flex items-center hover:bg-green-700 font-medium rounded-none "
+                className="bg-green-900 text-lg px-6 py-8 text-white  hover:bg-green-700 font-medium rounded-none flex items-center"
               >
                 <Search />
                 Search
