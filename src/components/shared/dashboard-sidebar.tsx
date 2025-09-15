@@ -16,7 +16,7 @@ export function DashboardSidebar({
   const pathname = usePathname();
 
   return (
-    <div className="w-full h-full bg-slate-800 text-white z-40 flex flex-col justify-between pb-20">
+    <div className="w-full h-dvh bg-slate-800 text-white z-40 flex flex-col justify-between pb-20">
       {/* Logo */}
       <div className="">
         <div className="flex items-center gap-3 p-6 border-b border-slate-700">
@@ -53,6 +53,7 @@ export function DashboardSidebar({
           })}
         </nav>
       </div>
+
       <div className="flex items-center space-x-2 pl-6">
         <LogOut className="h-4 w-4" />
         <span>Logout</span>
