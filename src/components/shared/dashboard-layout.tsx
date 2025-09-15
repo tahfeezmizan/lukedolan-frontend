@@ -42,12 +42,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F6FA]">
-      <DashboardSidebar sidebarItems={sidebarItems} />
-      <TopNavbar title={dashboardTitle} />
+    <div className="min-h-screen grid grid-cols-6 bg-[#F5F6FA]">
+      <div className="col-span-1">
+        <DashboardSidebar sidebarItems={sidebarItems} />
+      </div>
 
       {/* Main Content Area */}
-      <main className="pt-16">
+      <main className="col-span-5">
+        <TopNavbar title={dashboardTitle} />
         <div className="p-6 bg-[#EBF1FA]">{children}</div>
       </main>
     </div>

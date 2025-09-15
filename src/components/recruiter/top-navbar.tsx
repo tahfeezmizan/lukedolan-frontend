@@ -14,7 +14,7 @@ const user = {
 export function TopNavbar({ title }: { title: string }) {
   const role = title.replace(/^\/+/, "")
   return (
-    <div className="fixed top-0 left-64 right-0 h-16 bg-white border-b border-gray-200 z-30">
+    <div className=" h-16 bg-white border-b border-gray-200 z-30">
       <div className="flex items-center justify-between h-full px-6">
         {/* Page Title */}
         <h1 className="text-2xl font-bold text-gray-900 capitalize">{role} Panel</h1>
