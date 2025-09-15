@@ -58,6 +58,11 @@ export const recruiterItems: SidebarItems = [
     href: "/recruiter/job-post",
   },
   {
+    icon: MessageCircle,
+    label: "Messages",
+    href: "/recruiter/messages",
+  },
+  {
     icon: FileText,
     label: "Applications",
     href: "/recruiter/applications",
@@ -75,6 +80,11 @@ export const adminItems: SidebarItems = [
     icon: LayoutDashboard,
     label: "Dashboard",
     href: "/admin",
+  },
+  {
+    icon: MessageCircle,
+    label: "Messages",
+    href: "/admin/messages",
   },
   {
     icon: User,
