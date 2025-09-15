@@ -118,7 +118,7 @@ export function SidebarFilter() {
             placeholder="Job title or keyword"
             value={filterData.search}
             onChange={(e) => handleInputChange("search", e.target.value)}
-            className="pl-10 pr-4 py-2 w-full rounded-none !text-md text-black"
+            className="pl-10 pr-4 py-2 w-full rounded-lg !text-md text-black"
           />
         </div>
         <div className="relative">
@@ -128,7 +128,7 @@ export function SidebarFilter() {
             placeholder="Location"
             value={filterData.location}
             onChange={(e) => handleInputChange("location", e.target.value)}
-            className="pl-10 pr-4 py-2 w-full rounded-none !text-md text-black"
+            className="pl-10 pr-4 py-2 w-full rounded-lg !text-md text-black"
           />
         </div>
       </div>
@@ -142,7 +142,7 @@ export function SidebarFilter() {
           value={filterData.category}
           onValueChange={(val) => handleInputChange("category", val)}
         >
-          <SelectTrigger className="mt-1 p-4 rounded-none !text-md text-black w-full">
+          <SelectTrigger className="mt-1 p-4 rounded-lg !text-md text-black w-full">
             <SelectValue placeholder="Anytime" />
           </SelectTrigger>
           <SelectContent>

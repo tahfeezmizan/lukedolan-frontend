@@ -44,7 +44,7 @@ export default function FindTalentHero() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 required
-                className="border-none outline-none rounded-none pl-4 py-8 !text-xl"
+                className="border-none outline-none rounded-lg pl-4 py-8 !text-xl"
               />
               <Button
                 type="submit"

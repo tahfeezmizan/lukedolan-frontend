@@ -38,7 +38,7 @@ export default function ResetPasswordForm() {
             <Input
               id="email"
               type="text"
-              className="p-5 rounded-none !text-xl text-black"
+              className="p-5 rounded-lg !text-xl text-black"
               placeholder="example@gmail.com"
               {...register("email", {
                 required: "email is required",
@@ -58,7 +58,7 @@ export default function ResetPasswordForm() {
         {/* Submit */}
         <Button
           type="submit"
-          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
         >
           Reset email
         </Button>

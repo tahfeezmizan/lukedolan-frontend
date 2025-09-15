@@ -62,7 +62,7 @@ export function PostJobForm() {
           id="jobTitle"
           placeholder="Hair Stylist"
           {...register("jobTitle", { required: "Job title is required" })}
-          className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+          className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
         />
         {errors.jobTitle && (
           <p className="text-red-500 text-sm">{errors.jobTitle.message}</p>
@@ -83,7 +83,7 @@ export function PostJobForm() {
           rules={{ required: "Job category is required" }}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="mt-1 p-4 rounded-none !text-lg text-black w-full">
+              <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -171,7 +171,7 @@ export function PostJobForm() {
               {...register("startingDate", {
                 required: "Starting date is required",
               })}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full pl-10"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full pl-10"
             />
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
@@ -190,7 +190,7 @@ export function PostJobForm() {
               id="endDate"
               type="date"
               {...register("endDate", { required: "End date is required" })}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full pl-10"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full pl-10"
             />
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
@@ -210,7 +210,7 @@ export function PostJobForm() {
             {...register("salaryMin", {
               required: "Minimum salary is required",
             })}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
           />
           <Input
             type="number"
@@ -218,7 +218,7 @@ export function PostJobForm() {
             {...register("salaryMax", {
               required: "Maximum salary is required",
             })}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
           />
         </div>
         {(errors.salaryMin || errors.salaryMax) && (
@@ -240,7 +240,7 @@ export function PostJobForm() {
           {...register("jobDescription", {
             required: "Job description is required",
           })}
-          className="mt-1 p-4 rounded-none !text-lg text-black w-full min-h-[120px] resize-none"
+          className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
         />
         {errors.jobDescription && (
           <p className="text-red-500 text-sm">
@@ -263,7 +263,7 @@ export function PostJobForm() {
           {...register("jobResponsibilities", {
             required: "Job responsibilities are required",
           })}
-          className="mt-1 p-4 rounded-none !text-lg text-black w-full min-h-[120px] resize-none"
+          className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
         />
         {errors.jobResponsibilities && (
           <p className="text-red-500 text-sm">
@@ -275,7 +275,7 @@ export function PostJobForm() {
       {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-none"
+        className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-lg"
       >
         Job post
       </Button>

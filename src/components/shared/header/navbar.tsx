@@ -41,7 +41,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   // Mock user state - replace with your actual auth logic
-  const [user, setUser] = useState<User | null>({ role: "applicant" });
+  const [user, setUser] = useState<User | null>({ role: "recruiter" });
 
   // Navigation links based on user role
   const getNavigationLinks = (userRole: UserRole) => {
@@ -234,7 +234,7 @@ export function Navbar() {
                   <Link href={"/login"}>
                     <Button
                       variant="outline"
-                      className={`px-6 py-2 text-base font-medium rounded-none border-2 ${
+                      className={`px-6 py-2 text-base font-medium rounded-lg border-2 ${
                         pathname === "/"
                           ? "border-green-900 bg-transparent text-white hover:bg-white hover:text-black"
                           : "border-green-900 text-black hover:bg-green-900 hover:text-white"
@@ -244,7 +244,7 @@ export function Navbar() {
                     </Button>
                   </Link>
                   <Link href={"/sing-up"}>
-                    <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-none">
+                    <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg">
                       Sign Up
                     </Button>
                   </Link>
@@ -397,7 +397,7 @@ export function Navbar() {
                       >
                         <Button
                           variant="outline"
-                          className={`w-full px-6 py-2 text-base font-medium rounded-none border-2 ${
+                          className={`w-full px-6 py-2 text-base font-medium rounded-lg border-2 ${
                             pathname === "/"
                               ? "border-white bg-transparent text-white hover:bg-white hover:text-black"
                               : "border-black text-black hover:bg-black hover:text-white"
@@ -410,7 +410,7 @@ export function Navbar() {
                         href={"/sign-up"}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-none">
+                        <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg">
                           Sign Up
                         </Button>
                       </Link>

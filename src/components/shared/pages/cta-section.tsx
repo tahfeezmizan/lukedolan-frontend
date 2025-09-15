@@ -21,7 +21,7 @@ export function CtaSection() {
         <Link href={"/job"}>
           <Button
             size="lg"
-            className="bg-green-900 hover:bg-green-800 text-white px-8 md:px-12 py-4 md:py-6 text-lg font-medium rounded-none"
+            className="bg-green-900 hover:bg-green-800 text-white px-8 md:px-12 py-4 md:py-6 text-lg font-medium rounded-lg"
           >
             Post a job now
           </Button>

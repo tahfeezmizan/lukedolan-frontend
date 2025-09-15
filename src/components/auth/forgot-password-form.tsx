@@ -42,7 +42,7 @@ export default function ForgotPasswordForm() {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              className="p-5 rounded-none !text-xl text-black"
+              className="p-5 rounded-lg !text-xl text-black"
               placeholder="••••••••"
               {...register("password", {
                 required: "Password is required",
@@ -78,7 +78,7 @@ export default function ForgotPasswordForm() {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              className="p-5 rounded-none !text-xl text-black"
+              className="p-5 rounded-lg !text-xl text-black"
               placeholder="••••••••"
               {...register("password", {
                 required: "Password is required",
@@ -110,7 +110,7 @@ export default function ForgotPasswordForm() {
         {/* Submit */}
         <Button
           type="submit"
-          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
         >
           Reset Password
         </Button>

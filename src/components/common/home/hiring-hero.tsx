@@ -39,7 +39,7 @@ export default function HiringHero() {
           <Link href={"/"}>
             <Button
               size="lg"
-              className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+              className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
             >
               Post a job now
             </Button>

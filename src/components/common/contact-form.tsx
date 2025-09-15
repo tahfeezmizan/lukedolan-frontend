@@ -74,7 +74,7 @@ export default function ContactForm() {
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
                   required
                 />
               </div>
@@ -91,7 +91,7 @@ export default function ContactForm() {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
                   required
                 />
               </div>
@@ -108,7 +108,7 @@ export default function ContactForm() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
                 />
               </div>
             </div>
@@ -125,14 +125,14 @@ export default function ContactForm() {
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
-                className="w-full min-h-32 !text-lg border-0  border-b-2 border-black rounded-none outline-none "
+                className="w-full min-h-32 !text-lg border-0  border-b-2 border-black rounded-lg outline-none "
                 required
               />
             </div>
 
             <Button
               type="submit"
-              className="bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-none flex items-center gap-2"
+              className="bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg flex items-center gap-2"
             >
               Leave us a Message
               <ArrowRight size={18} />

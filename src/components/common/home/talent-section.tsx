@@ -44,7 +44,7 @@ export function TalentSection() {
           </h2>
           <Link
             href={"/job"}
-            className="bg-transparent  text-black hover:text-white hover:bg-green-800 border-2 border-green-900  px-6 py-1 text-lg font-medium rounded-none duration-300 flex items-center justify-between gap-2"
+            className="bg-transparent  text-black hover:text-white hover:bg-green-800 border-2 border-green-900  px-6 py-1 text-lg font-medium rounded-lg duration-300 flex items-center justify-between gap-2"
           >
             Explore all
             <ArrowRight className="w-4 h-4 " />

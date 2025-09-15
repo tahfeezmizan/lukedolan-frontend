@@ -109,21 +109,21 @@ export function TalentSidebar() {
             placeholder="Location"
             value={filterData.location}
             onChange={(e) => handleInputChange("location", e.target.value)}
-            className="pl-10 pr-4 py-2 w-full rounded-none !text-md text-black"
+            className="pl-10 pr-4 py-2 w-full rounded-lg !text-md text-black"
           />
         </div>
       </div>
 
-      <hr className="border-t border-gray-200" />
+      {/* <hr className="border-t border-gray-200" /> */}
 
       {/* Category Section */}
-      <div className="space-y-3">
+      <div className="space-y-3 pb-4">
         <h3 className="text-lg font-medium text-black">Category</h3>
         <Select
           value={filterData.category}
           onValueChange={(val) => handleInputChange("category", val)}
         >
-          <SelectTrigger className="mt-1 p-4 rounded-none !text-md text-black w-full">
+          <SelectTrigger className="mt-1 p-4 rounded-lg !text-md text-black w-full">
             <SelectValue placeholder="Anytime" />
           </SelectTrigger>
           <SelectContent>
@@ -135,10 +135,10 @@ export function TalentSidebar() {
         </Select>
       </div>
 
-      <hr className="border-t border-gray-200" />
+      {/* <hr className="border-t border-gray-200" /> */}
 
       {/* Job Type Section */}
-      <div className="space-y-4">
+      <div className="space-y-4 pb-3">
         <h3 className="text-lg font-medium text-black">Job Type</h3>
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
@@ -183,7 +183,7 @@ export function TalentSidebar() {
         </div>
       </div>
 
-      <hr className="border-t border-gray-200" />
+      {/* <hr className="border-t border-gray-200" /> */}
 
       {/* Salary Range Section */}
       <div className="space-y-4">

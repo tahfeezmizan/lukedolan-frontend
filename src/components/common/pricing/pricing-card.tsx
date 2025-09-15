@@ -45,7 +45,7 @@ export function PricingCard({
         <Link href={"/"}>
           <Button
             onClick={onGetStarted}
-            className="w-full px-8 py-6 text-lg font-medium rounded-none border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300 "
+            className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300 "
           >
             Get Started
           </Button>

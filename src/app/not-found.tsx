@@ -27,7 +27,7 @@ export default function NotFound() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none">
+          <Button asChild className="bg-green-900 hover:bg-green-800  text-white px-8 py-4 text-lg font-medium rounded-lg">
             <Link href="/" className="flex items-center gap-2">
               <Home className="w-4 h-4" />
               Go Home
@@ -37,7 +37,7 @@ export default function NotFound() {
           <Button
             variant="outline"
             onClick={() => window.history.back()}
-            className="bg-transparent hover:bg-green-800 hover:text-white border-2 border-green-900 hover:border-green-800 text-black px-6 py-4 text-lg font-medium rounded-none duration-300"
+            className="bg-transparent hover:bg-green-800 hover:text-white border-2 border-green-900 hover:border-green-800 text-black px-6 py-4 text-lg font-medium rounded-lg duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
             Go Back

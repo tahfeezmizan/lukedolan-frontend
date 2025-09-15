@@ -134,7 +134,7 @@ export default function page() {
 
             <div className="">
               <Link href={"/job/1/1"}>
-                <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-none">
+                <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg">
                   Apply Now
                 </Button>
               </Link>

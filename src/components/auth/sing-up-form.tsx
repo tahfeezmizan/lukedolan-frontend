@@ -49,7 +49,7 @@ export function SingupForm() {
             <Input
               id="firstName"
               type="text"
-              className="p-5 rounded-none !text-lg text-black "
+              className="p-5 rounded-lg !text-lg text-black "
               placeholder="John"
               {...register("firstName", { required: "First name is required" })}
             />
@@ -64,7 +64,7 @@ export function SingupForm() {
             <Input
               id="lastName"
               type="text"
-              className="p-5 rounded-none !text-lg text-black "
+              className="p-5 rounded-lg !text-lg text-black "
               placeholder="Smith"
               {...register("lastName", { required: "Last name is required" })}
             />
@@ -81,7 +81,7 @@ export function SingupForm() {
           <Input
             id="email"
             type="email"
-            className="p-5 rounded-none !text-lg text-black "
+            className="p-5 rounded-lg !text-lg text-black "
             placeholder="example@gmail.com"
             {...register("email", {
               required: "Email is required",
@@ -103,7 +103,7 @@ export function SingupForm() {
           <Input
             id="password"
             type={showPassword ? "text" : "password"}
-            className="p-5 rounded-none !text-lg text-black "
+            className="p-5 rounded-lg !text-lg text-black "
             placeholder="••••••••"
             {...register("password", {
               required: "Password is required",
@@ -132,7 +132,7 @@ export function SingupForm() {
           <Input
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
-            className="p-5 rounded-none !text-lg text-black "
+            className="p-5 rounded-lg !text-lg text-black "
             placeholder="••••••••"
             {...register("confirmPassword", {
               required: "Confirm password is required",
@@ -171,7 +171,7 @@ export function SingupForm() {
 
         <Button
           type="submit"
-          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
         >
           Sign up
         </Button>

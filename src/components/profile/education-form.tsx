@@ -75,7 +75,7 @@ export function EducationForm() {
               value={formData.degreeTitle}
               onChange={(e) => handleInputChange("degreeTitle", e.target.value)}
               placeholder="Bachelor of Computer Science"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -86,7 +86,7 @@ export function EducationForm() {
               value={formData.major}
               onChange={(e) => handleInputChange("major", e.target.value)}
               placeholder="BSc in CSE"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -101,7 +101,7 @@ export function EducationForm() {
                 handleInputChange("instituteName", e.target.value)
               }
               placeholder="X International University"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -112,7 +112,7 @@ export function EducationForm() {
               value={formData.result}
               onChange={(e) => handleInputChange("result", e.target.value)}
               placeholder="Grade"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -123,7 +123,7 @@ export function EducationForm() {
               value={formData.cgpa}
               onChange={(e) => handleInputChange("cgpa", e.target.value)}
               placeholder="3.00"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -136,7 +136,7 @@ export function EducationForm() {
               value={formData.scale}
               onChange={(e) => handleInputChange("scale", e.target.value)}
               placeholder="4"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -149,7 +149,7 @@ export function EducationForm() {
                 handleInputChange("yearOfPassing", e.target.value)
               }
               placeholder="2022"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -160,7 +160,7 @@ export function EducationForm() {
               value={formData.duration}
               onChange={(e) => handleInputChange("duration", e.target.value)}
               placeholder="4 Years"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -171,7 +171,7 @@ export function EducationForm() {
         <Button
           onClick={handleAddEducation}
           type="button"
-          className="bg-green-600 hover:bg-green-700  text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+          className="bg-green-600 hover:bg-green-700  text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
           Add Education
@@ -180,7 +180,7 @@ export function EducationForm() {
         <Button
           onClick={handleSave}
           type="button"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
         >
           <Save className="h-4 w-4" />
           Save

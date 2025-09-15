@@ -9,7 +9,7 @@ export default function JobPostPage() {
         <div className="">
           <Link
             href={"/recruiter/job-post/post-job"}
-            className="bg-green-900 hover:bg-green-800 text-white px-8 py-2 text-lg font-medium rounded-none"
+            className="bg-green-900 hover:bg-green-800 text-white px-8 py-2 text-lg font-medium rounded-lg"
           >
             Post Job
           </Link>

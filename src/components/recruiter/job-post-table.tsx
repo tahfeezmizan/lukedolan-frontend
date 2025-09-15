@@ -97,7 +97,7 @@ export function JobPostTable() {
             <tr className="border-b border-gray-200 bg-gray-50">
               <th className="text-left py-4 px-6 font-semibold text-gray-700">
                 Job Title
-              </th>
+              </th> 
               <th className="text-left py-4 px-6 font-semibold text-gray-700">
                 Location
               </th>

@@ -9,14 +9,13 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-
 export default function ApplicantProfile() {
   return (
     <section className=" px-4 bg-slate-100">
       <div className="max-w-7xl mx-auto py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-12 ">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-10 ">
           {/* Left Column - Profile Card */}
-          <div className="col-auto md:col-span-1 bg-white p-6">
+          <div className="col-auto md:col-span-1 bg-white p-6 rounded-lg overflow-hidden">
             {/* Profile Header */}
             <div className="text-center mb-8">
               <div className="relative inline-block mb-6">
@@ -34,6 +33,11 @@ export default function ApplicantProfile() {
               <p className="text-gray-600 font-medium">
                 Senior Hair Specialist
               </p>
+              <div className="mt-4">
+                <span className="bg-green-900/70 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
+                  Open to work
+                </span>
+              </div>
             </div>
 
             {/* Languages */}
@@ -121,13 +125,8 @@ export default function ApplicantProfile() {
           </div>
 
           {/* Right Column - Resume/CV */}
-          <div className="col-span-2 space-y-6">
-            <div className="flex justify-end  mt-10 lg:mt-2">
-              <span className="bg-green-900 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
-                Open to work
-              </span>
-            </div>
-            <div className="bg-white p-8 shadow">
+          <div className="col-span-2 space-y-6 ">
+            <div className="bg-white p-8 rounded-lg overflow-hidden">
               {/* Header */}
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
@@ -277,7 +276,7 @@ export default function ApplicantProfile() {
             </div>
 
             {/* Download Resume Button */}
-            <Button className="w-full bg-green-900 text-lg px-6 py-5 text-white  hover:bg-green-700 font-medium rounded-none flex items-center justify-center gap-2">
+            <Button className="w-full rounded-lg bg-green-900 text-lg px-6 py-5 text-white  hover:bg-green-700 font-medium flex items-center justify-center gap-2">
               <Download className="w-4 h-4" />
               Download Resume
             </Button>

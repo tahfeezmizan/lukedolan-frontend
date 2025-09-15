@@ -8,7 +8,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
   return (
     <div
       key={talent.id}
-      className="bg-white border overflow-hidden border-gray-200 shadow"
+      className="bg-white rounded-lg overflow-hidden border border-gray-200  "
     >
       <Link href={`/find-talent/${talent.id}`}>
         <div className="p-4 bg-gray-100 space-y-3 relative">

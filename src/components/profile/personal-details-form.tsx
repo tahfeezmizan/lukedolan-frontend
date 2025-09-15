@@ -89,7 +89,7 @@ export function PersonalDetailsForm() {
               id="lastName"
               placeholder="Doe"
               {...register("lastName", { required: "Last name is required" })}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
             {errors.lastName && (
               <p className="text-red-500 text-sm">{errors.lastName.message}</p>
@@ -106,7 +106,7 @@ export function PersonalDetailsForm() {
               id="firstName"
               placeholder="John"
               {...register("firstName", { required: "First name is required" })}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
             {errors.firstName && (
               <p className="text-red-500 text-sm">{errors.firstName.message}</p>
@@ -123,7 +123,7 @@ export function PersonalDetailsForm() {
               id="middleName"
               placeholder="N/A"
               {...register("middleName")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
           <div>
@@ -137,7 +137,7 @@ export function PersonalDetailsForm() {
               id="preferredName"
               placeholder="Joe"
               {...register("preferredName")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -155,7 +155,7 @@ export function PersonalDetailsForm() {
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200">
+                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
                     <SelectValue placeholder="Male" />
                   </SelectTrigger>
                   <SelectContent>
@@ -182,7 +182,7 @@ export function PersonalDetailsForm() {
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200">
+                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
                     <SelectValue placeholder="Single" />
                   </SelectTrigger>
                   <SelectContent>
@@ -206,7 +206,7 @@ export function PersonalDetailsForm() {
               id="citizenship"
               placeholder="Philippines"
               {...register("citizenship")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -223,7 +223,7 @@ export function PersonalDetailsForm() {
               id="birthday"
               type="date"
               {...register("birthday")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
           <div>
@@ -234,7 +234,7 @@ export function PersonalDetailsForm() {
               id="age"
               placeholder="27 Years"
               {...register("age")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
           <div>
@@ -249,7 +249,7 @@ export function PersonalDetailsForm() {
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200">
+                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
                     <SelectValue placeholder="No" />
                   </SelectTrigger>
                   <SelectContent>
@@ -278,7 +278,7 @@ export function PersonalDetailsForm() {
               id="completeAddress"
               placeholder="BLK208 L26 ..."
               {...register("completeAddress")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -286,25 +286,25 @@ export function PersonalDetailsForm() {
               id="cityMunicipality"
               placeholder="General Trias"
               {...register("cityMunicipality")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
             <Input
               id="province"
               placeholder="Cavite"
               {...register("province")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
             <Input
               id="zipPostalCode"
               placeholder="4107"
               {...register("zipPostalCode")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
             <Input
               id="country"
               placeholder="Philippines"
               {...register("country")}
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -318,7 +318,7 @@ export function PersonalDetailsForm() {
             id="mobile"
             placeholder="+0000 0000 0000"
             {...register("mobile")}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
           />
         </div>
       </div>
@@ -327,7 +327,7 @@ export function PersonalDetailsForm() {
       <div className="pt-4">
         <Button
           type="submit"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
         >
           Save
         </Button>

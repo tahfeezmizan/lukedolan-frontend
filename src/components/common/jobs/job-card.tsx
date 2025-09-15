@@ -47,7 +47,7 @@ export default function JobCard({
         <div className="flex flex-row-reverse lg:flex-col justify-between lg:justify-between sm:items-end gap-3 md:gap-5">
           <Link
             href={`job/${id}`}
-            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-none"
+            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
           >
             Apply Now
           </Link>

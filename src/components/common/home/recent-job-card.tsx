@@ -8,9 +8,8 @@ export default function RecentJobCard({ job }: { job: JobCardProps }) {
   const { id, companyLogo, experienceLevel, daysLeft, companyName, jobTitle } =
     job;
 
-
   return (
-    <div key={id} className="overflow-hidden bg-white rounded-2xl p-5">
+    <div key={id} className="rounded-lg overflow-hidden bg-white  p-5">
       <div className="flex justify-between items-start mb-8">
         <Image
           src={companyLogo}
@@ -35,7 +34,7 @@ export default function RecentJobCard({ job }: { job: JobCardProps }) {
           </div>
           <Link
             href={`/job/${id}`}
-            className="bg-green-900 hover:bg-green-800 text-white px-1.5 py-0.5 text-base rounded-none"
+            className="bg-green-900 hover:bg-green-800 text-white px-1.5 py-0.5 text-base rounded-lg"
           >
             View Details
           </Link>

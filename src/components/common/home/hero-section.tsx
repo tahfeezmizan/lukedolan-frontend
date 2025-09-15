@@ -30,7 +30,7 @@ export function HeroSection() {
           <Link href={"/job"}>
             <Button
               size="lg"
-              className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none"
+              className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
             >
               Hire now
             </Button>
@@ -39,7 +39,7 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="secondary"
-              className="bg-transparent hover:bg-green-800 border-2 border-green-900 hover:border-green-800 text-white px-6 py-4 text-lg font-medium rounded-none duration-300"
+              className="bg-transparent hover:bg-green-800 border-2 border-green-900 hover:border-green-800 text-white px-6 py-4 text-lg font-medium rounded-lg duration-300"
             >
               Get hired
             </Button>

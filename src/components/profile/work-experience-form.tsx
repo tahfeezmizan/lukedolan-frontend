@@ -77,7 +77,7 @@ export function WorkExperienceForm() {
               value={formData.jobTitle}
               onChange={(e) => handleInputChange("jobTitle", e.target.value)}
               placeholder="Senior Barber"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -88,7 +88,7 @@ export function WorkExperienceForm() {
               value={formData.companyName}
               onChange={(e) => handleInputChange("companyName", e.target.value)}
               placeholder="Luxe Beauty Lounge"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -101,7 +101,7 @@ export function WorkExperienceForm() {
               value={formData.location}
               onChange={(e) => handleInputChange("location", e.target.value)}
               placeholder="London"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -114,7 +114,7 @@ export function WorkExperienceForm() {
                 handleInputChange("employmentType", e.target.value)
               }
               placeholder="Full Time"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -127,7 +127,7 @@ export function WorkExperienceForm() {
               value={formData.startDate}
               onChange={(e) => handleInputChange("startDate", e.target.value)}
               placeholder="12/02/2025"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -138,7 +138,7 @@ export function WorkExperienceForm() {
               value={formData.endDate}
               onChange={(e) => handleInputChange("endDate", e.target.value)}
               placeholder="30/12/2025"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
 
@@ -149,7 +149,7 @@ export function WorkExperienceForm() {
               value={formData.experience}
               onChange={(e) => handleInputChange("experience", e.target.value)}
               placeholder="2 Years"
-              className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
             />
           </div>
         </div>
@@ -160,7 +160,7 @@ export function WorkExperienceForm() {
         <Button
           onClick={handleAddExperience}
           type="button"
-          className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+          className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
         >
           <Plus className="h-4 w-4" />
           Add Work Experience
@@ -169,7 +169,7 @@ export function WorkExperienceForm() {
         <Button
           onClick={handleSave}
           type="button"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-none flex items-center gap-2"
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
         >
           <Save className="h-4 w-4" />
           Save

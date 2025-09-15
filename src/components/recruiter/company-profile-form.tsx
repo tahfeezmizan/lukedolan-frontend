@@ -106,7 +106,7 @@ export function CompanyProfileForm() {
             placeholder="Hair Stylist"
             value={formData.companyName}
             onChange={(e) => handleInputChange("companyName", e.target.value)}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
           />
         </div>
 
@@ -123,7 +123,7 @@ export function CompanyProfileForm() {
             placeholder="Company descriptions"
             value={formData.description}
             onChange={(e) => handleInputChange("description", e.target.value)}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full min-h-[120px]"
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px]"
           />
         </div>
 
@@ -146,7 +146,7 @@ export function CompanyProfileForm() {
                 placeholder="example@gmail.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -161,7 +161,7 @@ export function CompanyProfileForm() {
                 placeholder="0000 0000 0000"
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -176,7 +176,7 @@ export function CompanyProfileForm() {
                 placeholder="https://example.com"
                 value={formData.website}
                 onChange={(e) => handleInputChange("website", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -191,7 +191,7 @@ export function CompanyProfileForm() {
                 placeholder="London"
                 value={formData.location}
                 onChange={(e) => handleInputChange("location", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
           </div>
@@ -213,7 +213,7 @@ export function CompanyProfileForm() {
                 placeholder="https://example.com"
                 value={formData.linkedin}
                 onChange={(e) => handleInputChange("linkedin", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -228,7 +228,7 @@ export function CompanyProfileForm() {
                 placeholder="0000 0000 0000"
                 value={formData.twitter}
                 onChange={(e) => handleInputChange("twitter", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -243,7 +243,7 @@ export function CompanyProfileForm() {
                 placeholder="https://example.com"
                 value={formData.facebook}
                 onChange={(e) => handleInputChange("facebook", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
@@ -258,7 +258,7 @@ export function CompanyProfileForm() {
                 placeholder=""
                 value={formData.instagram}
                 onChange={(e) => handleInputChange("instagram", e.target.value)}
-                className="mt-1 p-4 rounded-none !text-lg text-black w-full"
+                className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
           </div>
@@ -267,7 +267,7 @@ export function CompanyProfileForm() {
         {/* Submit Button */}
         <Button
           type="submit"
-          className="w-full mt-5 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-none"
+          className="w-full mt-5 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg"
         >
           Save Change
         </Button>

@@ -32,7 +32,7 @@ export function NewsletterSection() {
           </div>
 
           {/* Right side - Email form */}
-          <div className="lg:justify-self-end w-full lg:max-w-md bg-[#FFFFFF1A] overflow-hidden rounded-md">
+          <div className="lg:justify-self-end w-full lg:max-w-md bg-[#FFFFFF1A] !text-white overflow-hidden rounded-md">
             <form onSubmit={handleSubmit} className="flex ">
               <Input
                 type="email"
@@ -40,7 +40,7 @@ export function NewsletterSection() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-none outline-none rounded-none py-8 !text-xl !text-white"
+                className="border-none outline-none rounded-lg py-8 !text-xl !text-white"
               />
               <Button
                 type="submit"
