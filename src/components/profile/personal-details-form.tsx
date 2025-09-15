@@ -312,45 +312,12 @@ export function PersonalDetailsForm() {
 
       {/* Contact Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact</h3>
+        <h3 className="text-lg font-semibold text-gray-900 ">Contact</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             id="mobile"
             placeholder="+0000 0000 0000"
             {...register("mobile")}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
-          />
-          <Input
-            id="landline"
-            placeholder="+6320 000 0000"
-            {...register("landline")}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
-          />
-        </div>
-      </div>
-
-      {/* Emergency Contact Section */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          In case of emergency, please contact.
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input
-            id="emergencyMobile"
-            placeholder="+0000 0000 0000"
-            {...register("emergencyMobile")}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
-          />
-          <Input
-            id="emergencyLandline"
-            placeholder="+0000 0000 0000"
-            {...register("emergencyLandline")}
-            className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
-          />
-          <Input
-            id="emergencyRelationship"
-            placeholder="Spouse"
-            {...register("emergencyRelationship")}
             className="mt-1 p-4 rounded-none !text-lg text-black w-full bg-gray-200"
           />
         </div>
