@@ -11,152 +11,213 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Avatar } from "../ui/avatar";
+import Image from "next/image";
 
-interface PersonalDetailsData {
-  lastName: string;
+import profilePic from "@/assets/telent-person.png";
+import { useState } from "react";
+
+interface EssentialPersonalData {
   firstName: string;
-  middleName: string;
-  preferredName: string;
-  gender: string;
-  maritalStatus: string;
-  citizenship: string;
-  birthday: string;
-  age: string;
-  previousEmployee: string;
-  completeAddress: string;
-  cityMunicipality: string;
-  province: string;
-  zipPostalCode: string;
-  country: string;
+  lastName: string;
+  email: string;
   mobile: string;
-  landline: string;
-  emergencyMobile: string;
-  emergencyLandline: string;
-  emergencyRelationship: string;
+  birthday: string;
+  gender: string;
+  address: string;
+  city: string;
+  country: string;
+  image: FileList;
 }
 
 export function PersonalDetailsForm() {
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<PersonalDetailsData>({
+  } = useForm<EssentialPersonalData>({
     defaultValues: {
-      lastName: "",
       firstName: "",
-      middleName: "",
-      preferredName: "",
-      gender: "",
-      maritalStatus: "",
-      citizenship: "",
-      birthday: "",
-      age: "",
-      previousEmployee: "",
-      completeAddress: "",
-      cityMunicipality: "",
-      province: "",
-      zipPostalCode: "",
-      country: "",
+      lastName: "",
+      email: "",
       mobile: "",
-      landline: "",
-      emergencyMobile: "",
-      emergencyLandline: "",
-      emergencyRelationship: "",
+      birthday: "",
+      gender: "",
+      address: "",
+      city: "",
+      country: "",
     },
   });
 
-  const onSubmit = (data: PersonalDetailsData) => {
-    console.log("Personal Details Form Data:", data);
+  const onSubmit = (data: EssentialPersonalData) => {
+    console.log("Personal Details Form Data:", {
+      ...data,
+      image: data.image?.[0], // log the uploaded file
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <div className="space-y-8">
       {/* Basic Information Section */}
+      <h3 className="text-3xl font-semibold text-gray-900 mb-4">
+        Personal Information
+      </h3>
       <div>
-        <h3 className="text-3xl font-semibold text-gray-900 mb-4">
-          Basic Information
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <Label
-              htmlFor="lastName"
-              className="text-lg font-medium text-gray-900"
-            >
-              Last Name
-            </Label>
-            <Input
-              id="lastName"
-              placeholder="Doe"
-              {...register("lastName", { required: "Last name is required" })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
+          <div className="">
+            <div>
+              <Label
+                htmlFor="firstName"
+                className="text-lg font-medium text-gray-900"
+              >
+                First Name *
+              </Label>
+              <Input
+                id="firstName"
+                placeholder="John"
+                {...register("firstName", {
+                  required: "First name is required",
+                })}
+                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-sm">
+                  {errors.firstName.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label
+                htmlFor="lastName"
+                className="text-lg font-medium text-gray-900"
+              >
+                Last Name *
+              </Label>
+              <Input
+                id="lastName"
+                placeholder="Doe"
+                {...register("lastName", { required: "Last name is required" })}
+                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-sm">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* profile image section */}
+          <div className="flex items-center gap-7">
+            <Image
+              src={previewImage || profilePic}
+              alt="Profile Picture"
+              width={80}
+              height={80}
+              className="rounded-full mb-4"
             />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+
+            <Input
+              id="image"
+              type="file"
+              accept="image/*"
+              {...register("image", { required: "Image is required" })}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setPreviewImage(URL.createObjectURL(file));
+                }
+              }}
+              className="rounded-sm !text-lg text-black"
+            />
+            {errors.image && (
+              <p className="text-red-500 text-sm">{errors.image.message}</p>
             )}
-          </div>
-          <div>
-            <Label
-              htmlFor="firstName"
-              className="text-lg font-medium text-gray-900"
-            >
-              First Name
-            </Label>
-            <Input
-              id="firstName"
-              placeholder="John"
-              {...register("firstName", { required: "First name is required" })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm">{errors.firstName.message}</p>
-            )}
-          </div>
-          <div>
-            <Label
-              htmlFor="middleName"
-              className="text-lg font-medium text-gray-900"
-            >
-              Middle Name
-            </Label>
-            <Input
-              id="middleName"
-              placeholder="N/A"
-              {...register("middleName")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-          </div>
-          <div>
-            <Label
-              htmlFor="preferredName"
-              className="text-lg font-medium text-gray-900"
-            >
-              Preferred Name
-            </Label>
-            <Input
-              id="preferredName"
-              placeholder="Joe"
-              {...register("preferredName")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <Label
+              htmlFor="email"
+              className="text-lg font-medium text-gray-900"
+            >
+              Email Address *
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="john.doe@example.com"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="mobile"
+              className="text-lg font-medium text-gray-900"
+            >
+              Mobile Number *
+            </Label>
+            <Input
+              id="mobile"
+              placeholder="+0000 0000 0000"
+              {...register("mobile", { required: "Mobile number is required" })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+            />
+            {errors.mobile && (
+              <p className="text-red-500 text-sm">{errors.mobile.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <Label
+              htmlFor="birthday"
+              className="text-lg font-medium text-gray-900"
+            >
+              Date of Birth *
+            </Label>
+            <Input
+              id="birthday"
+              type="date"
+              {...register("birthday", {
+                required: "Date of birth is required",
+              })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+            />
+            {errors.birthday && (
+              <p className="text-red-500 text-sm">{errors.birthday.message}</p>
+            )}
+          </div>
           <div>
             <Label
               htmlFor="gender"
               className="text-lg font-medium text-gray-900"
             >
-              Gender
+              Gender *
             </Label>
             <Controller
               name="gender"
               control={control}
+              rules={{ required: "Gender is required" }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
-                    <SelectValue placeholder="Male" />
+                  <SelectTrigger className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100">
+                    <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="male">Male</SelectItem>
@@ -169,96 +230,9 @@ export function PersonalDetailsForm() {
                 </Select>
               )}
             />
-          </div>
-          <div>
-            <Label
-              htmlFor="maritalStatus"
-              className="text-lg font-medium text-gray-900"
-            >
-              Marital Status
-            </Label>
-            <Controller
-              name="maritalStatus"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
-                    <SelectValue placeholder="Single" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="single">Single</SelectItem>
-                    <SelectItem value="married">Married</SelectItem>
-                    <SelectItem value="divorced">Divorced</SelectItem>
-                    <SelectItem value="widowed">Widowed</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-          <div>
-            <Label
-              htmlFor="citizenship"
-              className="text-lg font-medium text-gray-900"
-            >
-              Citizenship
-            </Label>
-            <Input
-              id="citizenship"
-              placeholder="Philippines"
-              {...register("citizenship")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div>
-            <Label
-              htmlFor="birthday"
-              className="text-lg font-medium text-gray-900"
-            >
-              Birthday
-            </Label>
-            <Input
-              id="birthday"
-              type="date"
-              {...register("birthday")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-          </div>
-          <div>
-            <Label htmlFor="age" className="text-lg font-medium text-gray-900">
-              Age
-            </Label>
-            <Input
-              id="age"
-              placeholder="27 Years"
-              {...register("age")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-          </div>
-          <div>
-            <Label
-              htmlFor="previousEmployee"
-              className="text-lg font-medium text-gray-900"
-            >
-              Have you been a previous employee?
-            </Label>
-            <Controller
-              name="previousEmployee"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200">
-                    <SelectValue placeholder="No" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
+            {errors.gender && (
+              <p className="text-red-500 text-sm">{errors.gender.message}</p>
+            )}
           </div>
         </div>
       </div>
@@ -269,69 +243,69 @@ export function PersonalDetailsForm() {
         <div className="space-y-4">
           <div>
             <Label
-              htmlFor="completeAddress"
+              htmlFor="address"
               className="text-lg font-medium text-gray-900"
             >
-              Complete Address
+              Street Address *
             </Label>
             <Input
-              id="completeAddress"
-              placeholder="BLK208 L26 ..."
-              {...register("completeAddress")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              id="address"
+              placeholder="123 Main Street"
+              {...register("address", { required: "Address is required" })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
             />
+            {errors.address && (
+              <p className="text-red-500 text-sm">{errors.address.message}</p>
+            )}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Input
-              id="cityMunicipality"
-              placeholder="General Trias"
-              {...register("cityMunicipality")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-            <Input
-              id="province"
-              placeholder="Cavite"
-              {...register("province")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-            <Input
-              id="zipPostalCode"
-              placeholder="4107"
-              {...register("zipPostalCode")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
-            <Input
-              id="country"
-              placeholder="Philippines"
-              {...register("country")}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label
+                htmlFor="city"
+                className="text-lg font-medium text-gray-900"
+              >
+                City *
+              </Label>
+              <Input
+                id="city"
+                placeholder="General Trias"
+                {...register("city", { required: "City is required" })}
+                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+              />
+              {errors.city && (
+                <p className="text-red-500 text-sm">{errors.city.message}</p>
+              )}
+            </div>
+            <div>
+              <Label
+                htmlFor="country"
+                className="text-lg font-medium text-gray-900"
+              >
+                Country *
+              </Label>
+              <Input
+                id="country"
+                placeholder="Philippines"
+                {...register("country", { required: "Country is required" })}
+                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+              />
+              {errors.country && (
+                <p className="text-red-500 text-sm">{errors.country.message}</p>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Contact Section */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 ">Contact</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input
-            id="mobile"
-            placeholder="+0000 0000 0000"
-            {...register("mobile")}
-            className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
-          />
         </div>
       </div>
 
       {/* Save Button */}
       <div className="pt-4">
         <Button
-          type="submit"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
+          onClick={handleSubmit(onSubmit)}
+          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-sm"
         >
           Save
         </Button>
       </div>
-    </form>
+    </div>
   );
 }
