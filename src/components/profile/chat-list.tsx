@@ -3,68 +3,19 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-// const mockChats = [
-//   {
-//     id: "1",
-//     name: "Nova Hair Studio",
-//     lastMessage: "We want to invite you for a qui...",
-//     timestamp: "12 mins ago",
-//     avatar: chatImg,
-//     unread: true,
-//   },
-//   {
-//     id: "2",
-//     name: "Glamour Nails",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "3",
-//     name: "Glamour Nails",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "4",
-//     name: "Nova Hair Studio",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "5",
-//     name: "Nova Hair Studio",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "6",
-//     name: "Nova Hair Studio",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "7",
-//     name: "Glamour Nails",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-//   {
-//     id: "8",
-//     name: "Glamour Nails",
-//     lastMessage: "Hey thanks for your interview...",
-//     timestamp: "3:40 PM",
-//     avatar: chatImg,
-//   },
-// ];
+import { usePathname } from "next/navigation";
 
 export default function ChatList({ messages }: { messages: any[] }) {
+  const pathname = usePathname();
+
+  // base path condition
+  let basePath = "/recruiter/messages";
+  if (pathname.startsWith("/profile/messages")) {
+    basePath = "/profile/messages";
+  } else if (pathname.startsWith("/admin/messages")) {
+    basePath = "/admin/messages";
+  }
+
   return (
     <div className="w-full bg-white border-r border-gray-200 flex flex-col">
       <div className="p-4 border-b border-gray-200">
@@ -87,7 +38,7 @@ export default function ChatList({ messages }: { messages: any[] }) {
                   : ""
               }`}
             >
-              <Link href={`/profile/messages/${chat.id}`}>
+              <Link href={`${basePath}/${chat.id}`}>
                 <div className="flex items-start space-x-3">
                   <div className="relative">
                     <Image

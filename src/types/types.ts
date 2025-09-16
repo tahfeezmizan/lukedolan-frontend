@@ -31,3 +31,13 @@ export interface AppliedJob {
   expires: string; // same here
   action: string;
 }
+
+export type ApplicantJob = {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  applicationDate: string; // ISO date string (e.g., "2025-09-14")
+  Skills: string[];
+  Action: string; // URL or route
+};

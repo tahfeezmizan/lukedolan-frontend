@@ -48,8 +48,8 @@ export const applicantItems: SidebarItems = [
 // Recruiter sidebar items
 export const recruiterItems: SidebarItems = [
   {
-    icon: User,
-    label: "Profile",
+    icon: LayoutDashboard,
+    label: "Overview",
     href: "/recruiter",
   },
   {

@@ -1,116 +1,147 @@
 "use client";
 
-import { Mail, Phone, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
-const applications = [
+const jobPosts = [
   {
     id: 1,
-    name: "John Doe",
-    position: "Senior Hair Stylist",
-    location: "San Francisco, CA",
-    appliedOn: "April 15, 2025",
-    experience: "5 years",
-    avatar:
-      "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
+    fullName: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    phone: "+1-202-555-0147",
+    applicationDate: "2025-09-10",
+    Skills: ["React", "Next.js", "Tailwind CSS"],
+    Action: "/applications/1",
   },
   {
     id: 2,
-    name: "John Doe",
-    position: "Senior Hair Stylist",
-    location: "San Francisco, CA",
-    appliedOn: "April 15, 2025",
-    experience: "5 years",
-    avatar:
-      "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
+    fullName: "Michael Smith",
+    email: "michael.smith@example.com",
+    phone: "+1-202-555-0179",
+    applicationDate: "2025-09-11",
+    Skills: ["Node.js", "Express", "MongoDB"],
+    Action: "/applications/2",
   },
   {
     id: 3,
-    name: "John Doe",
-    position: "Senior Hair Stylist",
-    location: "San Francisco, CA",
-    appliedOn: "April 15, 2025",
-    experience: "5 years",
-    avatar:
-      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
+    fullName: "Sophia Lee",
+    email: "sophia.lee@example.com",
+    phone: "+44-7911-123456",
+    applicationDate: "2025-09-12",
+    Skills: ["UI/UX Design", "Figma", "Adobe XD"],
+    Action: "/applications/3",
+  },
+  {
+    id: 4,
+    fullName: "David Brown",
+    email: "david.brown@example.com",
+    phone: "+61-412-345-678",
+    applicationDate: "2025-09-13",
+    Skills: ["Python", "Django", "REST APIs"],
+    Action: "/applications/4",
+  },
+  {
+    id: 5,
+    fullName: "Emma Garcia",
+    email: "emma.garcia@example.com",
+    phone: "+34-612-789-456",
+    applicationDate: "2025-09-14",
+    Skills: ["Project Management", "Agile", "Scrum"],
+    Action: "/applications/5",
   },
 ];
 
 export function ApplicationsList() {
+  const handleJobTypeChange = (value: string) => {
+    console.log("Selected Job Type:", value);
+  };
   return (
-    <div className="space-y-6">
-      {applications.map((application) => (
-        <div
-          key={application.id}
-          className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
-        >
-          <div className="flex items-start justify-between">
-            {/* Left side - Profile info */}
-            <div className="flex items-start gap-4">
-              {/* Avatar */}
-              <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                <Image
-                  width={52}
-                  height={52}
-                  src={application.avatar}
-                  alt={application.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+    <div className="">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold text-gray-900">Applications</h2>
 
-              {/* Profile details */}
-              <div className="space-y-1">
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {application.name}
-                </h3>
-                <p className="text-gray-700 font-medium">
-                  {application.position}
-                </p>
-                <p className="text-gray-600">{application.location}</p>
-              </div>
-            </div>
-
-            {/* Right side - Application details */}
-            <div className="text-right space-y-1">
-              <p className="text-sm text-gray-600">
-                Applied On: {application.appliedOn}
-              </p>
-              <p className="text-sm text-gray-600">
-                Experience: {application.experience}
-              </p>
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex items-center gap-3 mt-6">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2 hover:bg-gray-50"
-            >
-              <Mail className="w-4 h-4" />
-              Email
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2 hover:bg-gray-50"
-            >
-              <Phone className="w-4 h-4" />
-              Call
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2 hover:bg-gray-50"
-            >
-              <FileText className="w-4 h-4" />
-              Resume
-            </Button>
-          </div>
+          {/* Dropdown Menu for Job Types */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Job Types</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onSelect={() => handleJobTypeChange("Full-time")}
+              >
+                Senior Hair Stylist
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => handleJobTypeChange("Part-time")}
+              >
+                Hair Stylist
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      ))}
+
+        <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Full Name
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Email
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Phone
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Application Date
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Skills
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {jobPosts.map((job) => (
+                <tr
+                  key={job.id}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <td className="py-4 px-6">
+                    <div className="font-medium text-gray-900">
+                      {job.fullName}
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">{job.email}</td>
+                  <td className="py-4 px-6 text-gray-700">{job.phone}</td>
+                  <td className="py-4 px-6 text-gray-700">
+                    {job.applicationDate}
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">{job.Skills}</td>
+
+                  <td className="py-4 px-6">
+                    <Link href={`/recruiter/applications/${job.id}`}>
+                      <Button className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold">
+                        View Details
+                      </Button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

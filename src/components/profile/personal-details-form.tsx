@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -10,9 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Avatar } from "../ui/avatar";
 import Image from "next/image";
+import { Controller, useForm } from "react-hook-form";
 
 import profilePic from "@/assets/telent-person.png";
 import { useState } from "react";
