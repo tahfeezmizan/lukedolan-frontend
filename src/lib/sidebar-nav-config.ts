@@ -53,6 +53,11 @@ export const recruiterItems: SidebarItems = [
     href: "/recruiter",
   },
   {
+    icon: LayoutDashboard,
+    label: "Company",
+    href: "/recruiter/company",
+  },
+  {
     icon: Briefcase,
     label: "Jobs",
     href: "/recruiter/job-post",

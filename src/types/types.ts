@@ -1,3 +1,4 @@
+import { LucideIcon } from "lucide-react";
 import { StaticImageData } from "next/image";
 
 // types/job.ts
@@ -40,4 +41,12 @@ export type ApplicantJob = {
   applicationDate: string; // ISO date string (e.g., "2025-09-14")
   Skills: string[];
   Action: string; // URL or route
+};
+
+export type StatItem = {
+  title: string;
+  value: string | number;
+  change: string;
+  changeText: string;
+  icon: LucideIcon;
 };
