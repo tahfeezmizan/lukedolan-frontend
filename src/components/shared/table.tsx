@@ -22,7 +22,9 @@ export default function Table({ appliedJobs }: { appliedJobs: AppliedJob[] }) {
           <td className="py-4 px-6 text-gray-700">{jobs.expires}</td>
 
           <td className="py-4 px-6">
-            <Button>View Details</Button>
+            <Button className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold">
+              View Details
+            </Button>
           </td>
         </tr>
       ))}

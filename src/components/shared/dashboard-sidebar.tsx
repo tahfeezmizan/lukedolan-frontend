@@ -6,14 +6,24 @@ import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "../ui/button";
 
 export function DashboardSidebar({
   sidebarItems,
 }: {
   sidebarItems: SidebarItem[];
 }) {
+  const [user, setUser] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    setUser(false);
+    router.push("/");
+    console.log("User logged out");
+  };
 
   return (
     <div className="w-full h-dvh bg-slate-800 text-white z-40 flex flex-col justify-between pb-20">
@@ -54,10 +64,14 @@ export function DashboardSidebar({
         </nav>
       </div>
 
-      <div className="flex items-center space-x-2 pl-6">
-        <LogOut className="h-4 w-4" />
+      <Button
+        onClick={handleLogout}
+        variant="ghost"
+        className="text-lg !pl-5 flex items-center justify-start hover:bg-green-700 hover:text-white rounded-none"
+      >
+        <LogOut className="w-5 h-5" />
         <span>Logout</span>
-      </div>
+      </Button>
     </div>
   );
 }
