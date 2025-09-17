@@ -46,7 +46,37 @@ export type ApplicantJob = {
 export type StatItem = {
   title: string;
   value: string | number;
-  change: string;
-  changeText: string;
   icon: LucideIcon;
+};
+
+export type Column<T> = {
+  key: keyof T;
+  label: string;
+};
+
+export type JobData = {
+  userId: string;
+  jobTitle: string;
+  companyName: string;
+  salary: string;
+  jobType: string;
+  applications: number;
+};
+
+export type UserData = {
+  userId: string;
+  name: string;
+  email: string;
+  role: string;
+  phone: string;
+  jobsApplied: number;
+};
+
+export type CompanyData = {
+  recruiterId: string;
+  recruiterName: string;
+  companyName: string;
+  jobPosted: number;
+  renewalDate: string;
+  paymentStatus: string;
 };

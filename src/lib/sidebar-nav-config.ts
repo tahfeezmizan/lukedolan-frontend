@@ -1,6 +1,8 @@
 import {
   Briefcase,
+  Building2,
   FileText,
+  Grid2x2Plus,
   LayoutDashboard,
   LucideIcon,
   MessageCircle,
@@ -92,18 +94,23 @@ export const adminItems: SidebarItems = [
     href: "/admin/messages",
   },
   {
+    icon: Building2,
+    label: "Company",
+    href: "/admin/company",
+  },
+  {
     icon: User,
     label: "Users",
     href: "/admin/users",
   },
   {
     icon: Briefcase,
-    label: "Jobs",
+    label: "Jobs Listing ",
     href: "/admin/jobs",
   },
   {
-    icon: Settings,
-    label: "Settings",
-    href: "/admin/settings",
+    icon: Grid2x2Plus,
+    label: "Category",
+    href: "/admin/category",
   },
 ];
