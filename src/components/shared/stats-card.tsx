@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { StatItem } from "@/types/types";
-import { Briefcase, Users, DollarSign, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 export function StatsCard({ stats }: { stats: StatItem[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {stats.map((stat) => (
-        <Card key={stat.title} className="bg-white">
+        <Card key={stat.title} className="bg-white shadow-none">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -27,7 +27,7 @@ export function StatsCard({ stats }: { stats: StatItem[] }) {
                 </div>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <stat.icon className="w-6 h-6 text-green-600" />
+                <stat.icon className="w-6 h-6 !text-green-900" />
               </div>
             </div>
           </CardContent>

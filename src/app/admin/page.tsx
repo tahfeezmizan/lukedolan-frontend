@@ -1,5 +1,6 @@
-import { ApplicationChart } from "@/components/recruiter/application-chart";
-import RecruiterOverview from "@/components/recruiter/recruiter-overview";
+import Charts from "@/components/admin/charts";
+import FeaturePurchaseChart from "@/components/admin/feature-purchase-chart";
+import RevenueChart from "@/components/admin/revenue-chart";
 import { StatsCard } from "@/components/shared/stats-card";
 import { Briefcase, DollarSign, Users } from "lucide-react";
 
@@ -38,7 +39,15 @@ export default function page() {
       </div>
 
       <StatsCard stats={stats} />
-      
+      {/* <Charts /> */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2">
+          <RevenueChart />
+        </div>
+        <div className="col-span-2">
+          <FeaturePurchaseChart />
+        </div>
+      </div>
     </div>
   );
 }
