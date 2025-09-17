@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LucideIcon,
   MessageCircle,
+  ReceiptText,
   Settings,
   User,
 } from "lucide-react";
@@ -40,11 +41,7 @@ export const applicantItems: SidebarItems = [
     label: "Applied Jobs",
     href: "/profile/applied-jobs",
   },
-  // {
-  //   icon: User,
-  //   label: "Overview",
-  //   href: "/recruiter/overview",
-  // },
+
 ];
 
 // Recruiter sidebar items
@@ -114,9 +111,13 @@ export const adminItems: SidebarItems = [
     href: "/admin/subscription",
   },
   {
+    icon: ReceiptText,
+    label: "Terms & Conditions",
+    href: "/admin/terms-conditions",
+  },
+  {
     icon: Grid2x2Plus,
     label: "Category",
     href: "/admin/category",
   },
 ];
- 

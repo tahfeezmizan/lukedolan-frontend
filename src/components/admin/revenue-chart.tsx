@@ -26,16 +26,11 @@ const revenueData = [
 
 export default function RevenueChart() {
   return (
-    <Card className="bg-white">
+    <Card className="bg-white shadow-none border-none">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-gray-900">
           Revenue
         </CardTitle>
-        <div className="flex items-center space-x-2">
-          <span className="text-green-600 text-sm font-medium">
-            ↗ (+5) more in 2025
-          </span>
-        </div>
       </CardHeader>
       <CardContent className="pr-0">
         <ChartContainer
@@ -45,7 +40,7 @@ export default function RevenueChart() {
               color: "#6366F1",
             },
           }}
-          className="h-[300px] !w-full"
+          className="h-96 !w-full"
         >
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart

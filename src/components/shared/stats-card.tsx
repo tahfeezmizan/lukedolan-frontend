@@ -5,7 +5,7 @@ export function StatsCard({ stats }: { stats: StatItem[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {stats.map((stat) => (
-        <Card key={stat.title} className="bg-white shadow-none">
+        <Card key={stat.title} className="bg-white shadow-none border-none">
           <CardContent className="px-6 py-2">
             <div className="flex items-center justify-between">
               <div>
