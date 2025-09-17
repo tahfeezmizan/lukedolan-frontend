@@ -45,7 +45,7 @@ export type ApplicantJob = {
 
 export type StatItem = {
   title: string;
-  value: string | number;
+  value: string;
   icon: LucideIcon;
 };
 

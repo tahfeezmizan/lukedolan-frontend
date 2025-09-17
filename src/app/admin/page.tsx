@@ -8,22 +8,16 @@ const stats = [
   {
     title: "Total Job Post",
     value: "40,689",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
     icon: Briefcase,
   },
   {
     title: "Total Applicant",
     value: "3,689 ",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
     icon: Users,
   },
   {
     title: "Money Spend",
     value: "14,154",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
     icon: DollarSign,
   },
 ];
@@ -44,7 +38,7 @@ export default function page() {
         <div className="col-span-2">
           <RevenueChart />
         </div>
-        <div className="col-span-2">
+        <div className="col-span-1">
           <FeaturePurchaseChart />
         </div>
       </div>

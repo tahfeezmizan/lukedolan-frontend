@@ -109,8 +109,14 @@ export const adminItems: SidebarItems = [
     href: "/admin/jobs",
   },
   {
+    icon: Briefcase,
+    label: "Subscription",
+    href: "/admin/subscription",
+  },
+  {
     icon: Grid2x2Plus,
     label: "Category",
     href: "/admin/category",
   },
 ];
+ 
