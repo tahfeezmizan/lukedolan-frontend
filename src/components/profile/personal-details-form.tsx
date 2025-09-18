@@ -10,11 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
-
-import profilePic from "@/assets/telent-person.png";
-import { useState } from "react";
 
 interface EssentialPersonalData {
   firstName: string;
@@ -26,12 +22,9 @@ interface EssentialPersonalData {
   address: string;
   city: string;
   country: string;
-  image: FileList;
 }
 
 export function PersonalDetailsForm() {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-
   const {
     register,
     handleSubmit,
@@ -54,7 +47,6 @@ export function PersonalDetailsForm() {
   const onSubmit = (data: EssentialPersonalData) => {
     console.log("Personal Details Form Data:", {
       ...data,
-      image: data.image?.[0], // log the uploaded file
     });
   };
 
@@ -66,74 +58,40 @@ export function PersonalDetailsForm() {
       </h3>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
-          <div className="">
-            <div>
-              <Label
-                htmlFor="firstName"
-                className="text-lg font-medium text-gray-900"
-              >
-                First Name *
-              </Label>
-              <Input
-                id="firstName"
-                placeholder="John"
-                {...register("firstName", {
-                  required: "First name is required",
-                })}
-                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-sm">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label
-                htmlFor="lastName"
-                className="text-lg font-medium text-gray-900"
-              >
-                Last Name *
-              </Label>
-              <Input
-                id="lastName"
-                placeholder="Doe"
-                {...register("lastName", { required: "Last name is required" })}
-                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-sm">
-                  {errors.lastName.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* profile image section */}
-          <div className="flex items-center gap-7">
-            <Image
-              src={previewImage || profilePic}
-              alt="Profile Picture"
-              width={80}
-              height={80}
-              className="rounded-full mb-4"
-            />
-
+          <div>
+            <Label
+              htmlFor="firstName"
+              className="text-lg font-medium text-gray-900"
+            >
+              First Name *
+            </Label>
             <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              {...register("image", { required: "Image is required" })}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  setPreviewImage(URL.createObjectURL(file));
-                }
-              }}
-              className="rounded-sm !text-lg text-black"
+              id="firstName"
+              placeholder="John"
+              {...register("firstName", {
+                required: "First name is required",
+              })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
             />
-            {errors.image && (
-              <p className="text-red-500 text-sm">{errors.image.message}</p>
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="lastName"
+              className="text-lg font-medium text-gray-900"
+            >
+              Last Name *
+            </Label>
+            <Input
+              id="lastName"
+              placeholder="Doe"
+              {...register("lastName", { required: "Last name is required" })}
+              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName.message}</p>
             )}
           </div>
         </div>
@@ -222,9 +180,6 @@ export function PersonalDetailsForm() {
                     <SelectItem value="male">Male</SelectItem>
                     <SelectItem value="female">Female</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
-                    <SelectItem value="prefer-not-to-say">
-                      Prefer not to say
-                    </SelectItem>
                   </SelectContent>
                 </Select>
               )}

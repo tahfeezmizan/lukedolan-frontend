@@ -18,7 +18,8 @@ export function DashboardSidebar({
   const [user, setUser] = useState(true);
   const pathname = usePathname();
 
-  console.log(pathname);
+  console.log(user);
+
   const router = useRouter();
 
   const handleLogout = () => {

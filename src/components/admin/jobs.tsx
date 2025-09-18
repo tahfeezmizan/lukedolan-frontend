@@ -1,9 +1,7 @@
-import React from "react";
-import { StatsCard } from "../shared/stats-card";
-import { Calendar, Users } from "lucide-react";
-import JobTable from "./user-table";
-import AdminTable from "./table";
 import { Column, JobData } from "@/types/types";
+import { Calendar, Users } from "lucide-react";
+import { StatsCard } from "../shared/stats-card";
+import AdminTable from "./table";
 
 const stats = [
   {

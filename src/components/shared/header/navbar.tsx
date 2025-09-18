@@ -37,7 +37,7 @@ interface User {
 export function Navbar() {
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const pathname = usePathname();
 
   // Mock user state - replace with your actual auth logic

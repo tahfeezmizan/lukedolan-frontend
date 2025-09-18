@@ -1,7 +1,4 @@
 import ApplicantProfile from "@/components/common/find-talent/applicant-profile";
-import Image from "next/image";
-import React from "react";
-import heroImg from "@/assets/applicant-banner-img.png";
 
 export default function page() {
   return (

@@ -1,4 +1,3 @@
-import Charts from "@/components/admin/charts";
 import FeaturePurchaseChart from "@/components/admin/feature-purchase-chart";
 import RevenueChart from "@/components/admin/revenue-chart";
 import { StatsCard } from "@/components/shared/stats-card";

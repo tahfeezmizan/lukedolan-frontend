@@ -37,7 +37,10 @@ export function TalentSidebar() {
     salaryRange: [0, 100000],
   });
 
-  const handleInputChange = (field: keyof FilterData, value: any) => {
+  const handleInputChange = <K extends keyof FilterData>(
+    field: K,
+    value: FilterData[K]
+  ) => {
     setFilterData((prev) => ({
       ...prev,
       [field]: value,
@@ -72,19 +75,6 @@ export function TalentSidebar() {
       }
     }
   };
-
-  // const handleClearAll = () => {
-  //   setFilterData({
-  //     location: "",
-  //     category: "anytime",
-  //     jobType: {
-  //       fullTime: false,
-  //       partTime: false,
-  //       contract: false,
-  //     },
-  //     salaryRange: [0, 9000],
-  //   });
-  // };
 
   // Log filter state every second
   useEffect(() => {

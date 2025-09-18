@@ -8,6 +8,7 @@ import {
   Mail,
   MessageSquare,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function ApplicantProfile() {
   return (
@@ -20,7 +21,9 @@ export default function ApplicantProfile() {
             <div className="text-center mb-8">
               <div className="relative inline-block mb-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden mx-auto shadow-lg ">
-                  <img
+                  <Image
+                    width={32}
+                    height={32}
                     src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
                     alt="John Doe"
                     className="w-full h-full object-cover"
@@ -131,7 +134,9 @@ export default function ApplicantProfile() {
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden">
-                    <img
+                    <Image
+                      width={16}
+                      height={16}
                       src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
                       alt="John Doe"
                       className="w-full h-full object-cover"

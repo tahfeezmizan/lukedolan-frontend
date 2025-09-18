@@ -39,7 +39,10 @@ export function SidebarFilter() {
     salaryRange: [0, 100000],
   });
 
-  const handleInputChange = (field: keyof FilterData, value: any) => {
+  const handleInputChange = <K extends keyof FilterData>(
+    field: K,
+    value: FilterData[K]
+  ) => {
     setFilterData((prev) => ({
       ...prev,
       [field]: value,
@@ -92,7 +95,7 @@ export function SidebarFilter() {
   // Log filter state every second
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("Filter Data:", filterData); 
+      console.log("Filter Data:", filterData);
     }, 5000);
     return () => clearInterval(interval);
   }, [filterData]);

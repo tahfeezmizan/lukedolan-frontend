@@ -7,6 +7,7 @@ import { PersonalDetailsForm } from "./personal-details-form";
 import { WorkExperienceForm } from "./work-experience-form";
 import { ResumeUpload } from "./resume-upload";
 import { ProfileOverview } from "./profile-overview";
+import ProfileSection from "./profile-section";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function ProfilePage() {
           onValueChange={handleTabChange}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-5 bg-white mb-8">
             <TabsTrigger value="profile">Over View</TabsTrigger>
             <TabsTrigger value="personal-details">Personal Details</TabsTrigger>
             <TabsTrigger value="resume">Resume / CV</TabsTrigger>
@@ -36,34 +37,36 @@ export default function ProfilePage() {
 
           <TabsContent
             value="profile"
-            className="bg-white rounded-lg p-8 shadow-sm"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
           >
+            
             <ProfileOverview />
           </TabsContent>
           <TabsContent
             value="personal-details"
-            className="bg-white rounded-lg p-8 shadow-sm"
+            className="bg-white rounded-lg p-8 shadow-none border-none space-y-6"
           >
+            <ProfileSection />
             <PersonalDetailsForm />
           </TabsContent>
 
           <TabsContent
             value="resume"
-            className="bg-white rounded-lg p-8 shadow-sm"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
           >
             <ResumeUpload />
           </TabsContent>
 
           <TabsContent
             value="education"
-            className="bg-white rounded-lg p-8 shadow-sm"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
           >
             <EducationForm />
           </TabsContent>
 
           <TabsContent
             value="work-experience"
-            className="bg-white rounded-lg p-8 shadow-sm"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
           >
             <WorkExperienceForm />
           </TabsContent>

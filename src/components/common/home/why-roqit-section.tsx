@@ -1,9 +1,8 @@
 "use client";
 
-import { Package, Gauge, MapPin, User } from "lucide-react";
-import Image from "next/image";
 import image from "@/assets/why-roqit-img.png";
-import arrowImage from "@/assets/arrow-roqite.png";
+import { Gauge, MapPin, Package, User } from "lucide-react";
+import Image from "next/image";
 
 const features = [
   {

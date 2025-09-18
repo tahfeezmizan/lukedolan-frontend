@@ -7,8 +7,7 @@ import {
   LucideIcon,
   MessageCircle,
   ReceiptText,
-  Settings,
-  User,
+  User
 } from "lucide-react";
 
 // Individual sidebar item

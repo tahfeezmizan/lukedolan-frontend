@@ -1,6 +1,5 @@
-import { AlertTriangle, Calendar, CheckCircle, Users } from "lucide-react";
+import { AlertTriangle, CheckCircle, Users } from "lucide-react";
 import { PricingCard } from "../common/pricing/pricing-card";
-import User from "./user";
 import { StatsCard } from "../shared/stats-card";
 
 const stats = [

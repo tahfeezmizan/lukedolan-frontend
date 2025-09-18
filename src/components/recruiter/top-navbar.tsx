@@ -4,12 +4,6 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 
-const user = {
-  panel: "recruiter",
-  name: "John Doe",
-  avatar:
-    "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-};
 
 export function TopNavbar({ title }: { title: string }) {
   const role = title.replace(/^\/+/, "")
