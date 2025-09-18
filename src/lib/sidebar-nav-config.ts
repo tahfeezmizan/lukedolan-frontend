@@ -7,7 +7,7 @@ import {
   LucideIcon,
   MessageCircle,
   ReceiptText,
-  User
+  User,
 } from "lucide-react";
 
 // Individual sidebar item
@@ -15,6 +15,7 @@ export interface SidebarItem {
   icon: LucideIcon;
   label: string;
   href: string;
+  priority?: number; // Added priority for serialization
 }
 
 // Roles type (optional but useful for role-based logic)
@@ -40,7 +41,6 @@ export const applicantItems: SidebarItems = [
     label: "Applied Jobs",
     href: "/profile/applied-jobs",
   },
-
 ];
 
 // Recruiter sidebar items

@@ -236,7 +236,7 @@ export function Navbar() {
                       variant="outline"
                       className={`px-6 py-2 text-base font-medium rounded-lg border-2 ${
                         pathname === "/"
-                          ? "border-green-900 bg-transparent text-white hover:bg-white hover:text-black"
+                          ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
                           : "border-green-900 text-black hover:bg-green-900 hover:text-white"
                       }`}
                     >
@@ -265,7 +265,7 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
-                  <MessageCircle className="h-6 w-6" />
+                    <MessageCircle className="h-6 w-6" />
                   </Button>
 
                   {/* Notification Icon */}

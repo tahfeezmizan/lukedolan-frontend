@@ -21,7 +21,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       </div>
 
       <div className="flex-1 lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">{children}</div>
+        <div className="w-full max-w-lg ">{children}</div>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -10,62 +9,96 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 
-type SingupFormData = {
+type SignupFormData = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
   agreeToTerms: boolean;
+  role: "applicant" | "recruiter";
+  companyName?: string;
 };
 
-export function SingupForm() {
+export function SignupForm() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<SingupFormData>();
+  } = useForm<SignupFormData>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [role, setRole] = useState<"applicant" | "recruiter">("applicant");
 
-  const onSubmit = (data: SingupFormData) => {
-    console.log("Signup form data:", data);
+  const onSubmit = (data: SignupFormData) => {
+    const formData = { ...data, role };
+    console.log("Selected role:", formData);
+    // console.log("Form data:", data);
   };
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="!text-lg font-semibold tracking-tight">Sign up</h1>
+      {/* Custom role switch */}
+
+      <div className="space-y-1 text-center">
+        <h1 className="!text-3xl font-semibold tracking-tight">Sign up</h1>
+      </div>
+
+      <div className="flex justify-center mb-4">
+        <div className="flex  !rounded-lg overflow-hidden">
+          <Button
+            type="button"
+            onClick={() => setRole("applicant")}
+            className={`px-6 py-2 font-medium transition-colors !rounded-none hover:bg-green-500 hover:text-white ${
+              role === "applicant"
+                ? "bg-green-200 text-green-900"
+                : "bg-white text-gray-700"
+            }`}
+          >
+            Job Seeker
+          </Button>
+          <Button
+            type="button"
+            onClick={() => setRole("recruiter")}
+            className={`px-6 py-2 font-medium transition-colors !rounded-none hover:bg-green-500 hover:text-white ${
+              role === "recruiter"
+                ? "bg-green-200 text-green-900"
+                : "bg-white text-gray-700"
+            }`}
+          >
+            Company
+          </Button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-lg ">
+          <div className="space-y-1">
+            <Label htmlFor="firstName" className="text-lg">
               First name
             </Label>
             <Input
               id="firstName"
               type="text"
-              className="p-5 rounded-lg !text-lg text-black "
               placeholder="John"
+              className="p-5 rounded-lg !text-lg text-black"
               {...register("firstName", { required: "First name is required" })}
             />
             {errors.firstName && (
               <p className="text-red-500 text-sm">{errors.firstName.message}</p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-lg ">
+          <div className="space-y-1">
+            <Label htmlFor="lastName" className="text-lg">
               Last name
             </Label>
             <Input
               id="lastName"
               type="text"
-              className="p-5 rounded-lg !text-lg text-black "
               placeholder="Smith"
+              className="p-5 rounded-lg !text-lg text-black"
               {...register("lastName", { required: "Last name is required" })}
             />
             {errors.lastName && (
@@ -74,15 +107,15 @@ export function SingupForm() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-lg ">
+        <div className="space-y-1">
+          <Label htmlFor="email" className="text-lg">
             Email
           </Label>
           <Input
             id="email"
             type="email"
-            className="p-5 rounded-lg !text-lg text-black "
             placeholder="example@gmail.com"
+            className="p-5 rounded-lg !text-lg text-black"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -96,15 +129,37 @@ export function SingupForm() {
           )}
         </div>
 
-        <div className="space-y-2 relative">
-          <Label htmlFor="password" className="text-lg ">
+        {role === "recruiter" && (
+          <div className="space-y-1">
+            <Label htmlFor="companyName" className="text-lg">
+              Company Name
+            </Label>
+            <Input
+              id="companyName"
+              type="text"
+              placeholder="Enter your company name"
+              className="p-5 rounded-lg !text-lg text-black"
+              {...register("companyName", {
+                required: "Company name is required",
+              })}
+            />
+            {errors.companyName && (
+              <p className="text-red-500 text-sm">
+                {errors.companyName.message}
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="space-y-1 relative">
+          <Label htmlFor="password" className="text-lg">
             Password
           </Label>
           <Input
             id="password"
             type={showPassword ? "text" : "password"}
-            className="p-5 rounded-lg !text-lg text-black "
             placeholder="••••••••"
+            className="p-5 rounded-lg !text-lg text-black"
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -113,40 +168,40 @@ export function SingupForm() {
               },
             })}
           />
-          <button
+          <Button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-11 text-gray-600"
+            className="absolute right-3 top-9 bg-transparent hover:bg-transparent text-gray-600"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
+          </Button>
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
         </div>
 
-        <div className="space-y-2 relative">
-          <Label htmlFor="confirmPassword" className="text-lg ">
+        <div className="space-y-1 relative">
+          <Label htmlFor="confirmPassword" className="text-lg">
             Confirm password
           </Label>
           <Input
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
-            className="p-5 rounded-lg !text-lg text-black "
             placeholder="••••••••"
+            className="p-5 rounded-lg !text-lg text-black"
             {...register("confirmPassword", {
               required: "Confirm password is required",
               validate: (value) =>
                 value === watch("password") || "Passwords do not match",
             })}
           />
-          <button
+          <Button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-11 text-gray-600"
+            className="absolute right-3 top-9 bg-transparent hover:bg-transparent text-gray-600"
           >
             {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
+          </Button>
           {errors.confirmPassword && (
             <p className="text-red-500 text-sm">
               {errors.confirmPassword.message}
@@ -171,16 +226,16 @@ export function SingupForm() {
 
         <Button
           type="submit"
-          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
+          className="w-full mt-4 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-xl font-medium rounded-lg"
         >
           Sign up
         </Button>
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-base text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-green-600 hover:underline">
+          <Link href="/login" className="text-green-900 hover:underline">
             Sign in
           </Link>
         </p>

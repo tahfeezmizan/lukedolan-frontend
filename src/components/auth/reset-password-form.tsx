@@ -58,7 +58,7 @@ export default function ResetPasswordForm() {
         {/* Submit */}
         <Button
           type="submit"
-          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
+          className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg"
         >
           Reset email
         </Button>
