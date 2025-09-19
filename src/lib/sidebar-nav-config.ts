@@ -70,11 +70,6 @@ export const recruiterItems: SidebarItems = [
     label: "Applications",
     href: "/recruiter/applications",
   },
-  // {
-  //   icon: User,
-  //   label: "Overview",
-  //   href: "/recruiter/overview",
-  // },
 ];
 
 // Admin sidebar items
