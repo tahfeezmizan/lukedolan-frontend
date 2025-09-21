@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { PageLoading } from "@/components/shared/page-loading";
+import ReduxProvider from "@/provider/redux-provider";
 
 const montserrat = Montserrat({
   variable: "--font-Montserrat",
@@ -62,10 +63,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable}`}>
-        <Suspense>
-          <PageLoading />
-          {children}
-        </Suspense>
+        <ReduxProvider>
+          <Suspense>
+            <PageLoading />
+            {children}
+          </Suspense>
+        </ReduxProvider>
       </body>
     </html>
   );
