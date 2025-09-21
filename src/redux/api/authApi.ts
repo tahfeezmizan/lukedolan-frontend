@@ -11,6 +11,17 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Auth"],
     }),
+
+    // login user
+    loginUser: build.mutation({
+      query: (data) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+
     // verify user
     verifyUser: build.mutation({
       query: (data) => ({
@@ -23,25 +34,16 @@ const authApi = baseApi.injectEndpoints({
     // verify email
     verifyEmail: build.mutation({
       query: (data) => {
-      console.log("Token in api endpoint:", data.token);
-      return {
-        url: "/auth/verify-email",
-        method: "POST",
-        body: { userId: data.userId },
-        headers: {
-        Authorization: `${data.token}`,
-        },
-      };
+        console.log("Token in api endpoint:", data.token);
+        return {
+          url: "/auth/verify-email",
+          method: "POST",
+          body: { userId: data.userId },
+          headers: {
+            Authorization: `${data.token}`,
+          },
+        };
       },
-      invalidatesTags: ["Auth"],
-    }),
-    // login user
-    loginUser: build.mutation({
-      query: (data) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: data,
-      }),
       invalidatesTags: ["Auth"],
     }),
 
@@ -102,15 +104,6 @@ const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    // // update user
-    // updateUser: build.mutation({
-    //   query: ({ formData, id }) => ({
-    //     url: `/users/${id}`,
-    //     method: "PUT",
-    //     body: formData,
-    //   }),
-    //   invalidatesTags: ["Auth"],
-    // }),
   }),
 });
 
