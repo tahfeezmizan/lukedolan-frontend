@@ -3,12 +3,27 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  useResendOTPMutation,
+  useVerifyUserMutation,
+} from "@/redux/api/authApi";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const authType = searchParams.get("authType");
+  const route = useRouter();
+
+  // console.log(email, authType);
+
+  const [verifyUser] = useVerifyUserMutation();
+  const [resendOTP] = useResendOTPMutation();
 
   useEffect(() => {
     if (countdown > 0) {
@@ -45,15 +60,44 @@ export default function OtpVerify() {
   const handleVerify = async () => {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 2000));
-    console.log("Verifying OTP:", otp.join(""));
+    const otpValue = otp.join("");
+    console.log("Verifying OTP:", otpValue);
     setIsLoading(false);
+
+    try {
+      const res = await verifyUser({
+        email: email,
+        oneTimeCode: otpValue,
+      });
+
+      console.log(res);
+
+      if (res?.data?.success === true) {
+        route.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setOtp(Array(6).fill(""));
     setCountdown(60);
     inputRefs.current[0]?.focus();
     console.log("Resending OTP...");
+
+    try {
+      const res = await resendOTP({
+        email: email,
+        authType: authType,
+      });
+      if (res?.data?.success === true) {
+        route.push("/");
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const isComplete = otp.every(Boolean);
@@ -71,7 +115,9 @@ export default function OtpVerify() {
         {otp.map((digit, i) => (
           <Input
             key={i}
-            ref={(el) => { inputRefs.current[i] = el; }}
+            ref={(el) => {
+              inputRefs.current[i] = el;
+            }}
             type="text"
             inputMode="numeric"
             maxLength={1}
@@ -88,7 +134,7 @@ export default function OtpVerify() {
         disabled={!isComplete || isLoading}
         className="w-full bg-green-900 hover:bg-green-700 text-white py-4 px-8 rounded-lg font-medium mb-4"
       >
-        {isLoading ? "Verifying..." : "Verify Phone Number"}
+        {isLoading ? "Verifying..." : "Verify OTP"}
       </Button>
 
       {countdown > 0 ? (

@@ -5,7 +5,7 @@ const authApi = baseApi.injectEndpoints({
     // create user
     createUser: build.mutation({
       query: (data) => ({
-        url: `/user/register`,
+        url: `/auth/signup`,
         method: "POST",
         body: data,
       }),
@@ -25,25 +25,20 @@ const authApi = baseApi.injectEndpoints({
     // verify user
     verifyUser: build.mutation({
       query: (data) => ({
-        url: "/auth/verify-otp",
+        url: "/auth/verify-account",
         method: "POST",
         body: data,
       }),
       invalidatesTags: ["Auth"],
     }),
-    // verify email
-    verifyEmail: build.mutation({
-      query: (data) => {
-        console.log("Token in api endpoint:", data.token);
-        return {
-          url: "/auth/verify-email",
-          method: "POST",
-          body: { userId: data.userId },
-          headers: {
-            Authorization: `${data.token}`,
-          },
-        };
-      },
+
+    // verify user
+    resendOTP: build.mutation({
+      query: (data) => ({
+        url: "/auth/resend-otp",
+        method: "POST",
+        body: data,
+      }),
       invalidatesTags: ["Auth"],
     }),
 
@@ -110,7 +105,7 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useCreateUserMutation,
   useVerifyUserMutation,
-  useVerifyEmailMutation,
+  useResendOTPMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
   useForgotPasswordMutation,

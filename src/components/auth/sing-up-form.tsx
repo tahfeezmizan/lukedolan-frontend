@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useCreateUserMutation } from "@/redux/api/authApi";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 type SignupFormData = {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -21,6 +22,9 @@ type SignupFormData = {
 };
 
 export function SignupForm() {
+  const [createUser, { isLoading }] = useCreateUserMutation();
+  const route = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -32,9 +36,32 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [role, setRole] = useState<"applicant" | "recruiter">("applicant");
 
-  const onSubmit = (data: SignupFormData) => {
-    const formData = { ...data, role };
-    console.log("Selected role:", formData);
+  const onSubmit = async (data: SignupFormData) => {
+    // const formData = { ...data, role };
+    // console.log("Selected role:", formData);
+
+    try {
+      const res = await createUser({
+        name: data.name,
+        email: data.email,
+        role: role,
+        password: data.password,
+        companyName: data.companyName,
+      });
+
+      if (res?.data?.success === true) {
+        route.push(
+          `/otp-verify?email=${encodeURIComponent(
+            data.email
+          )}&authType=createAccount`
+        );
+        console.log("Created");
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+
     // console.log("Form data:", data);
   };
 
@@ -74,37 +101,20 @@ export function SignupForm() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label htmlFor="firstName" className="text-lg">
-              First name
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              placeholder="John"
-              className="p-5 rounded-lg !text-lg text-black"
-              {...register("firstName", { required: "First name is required" })}
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm">{errors.firstName.message}</p>
-            )}
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="lastName" className="text-lg">
-              Last name
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              placeholder="Smith"
-              className="p-5 rounded-lg !text-lg text-black"
-              {...register("lastName", { required: "Last name is required" })}
-            />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm">{errors.lastName.message}</p>
-            )}
-          </div>
+        <div className="space-y-1">
+          <Label htmlFor="fullName" className="text-lg">
+            Full Name
+          </Label>
+          <Input
+            id="fullName"
+            type="text"
+            placeholder="John"
+            className="p-5 rounded-lg !text-lg text-black"
+            {...register("name", { required: "First name is required" })}
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
         </div>
 
         <div className="space-y-1">
@@ -226,9 +236,10 @@ export function SignupForm() {
 
         <Button
           type="submit"
+          disabled={!watch("agreeToTerms")}
           className="w-full mt-4 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-xl font-medium rounded-lg"
         >
-          Sign up
+          {isLoading ? <Loader className="animate-spin size-8" /> : "Sign up"}
         </Button>
       </form>
 
