@@ -80,3 +80,16 @@ export type CompanyData = {
   renewalDate: string;
   paymentStatus: string;
 };
+
+export interface PostJobFormData {
+  jobTitle: string;
+  jobCategory: string;
+  employmentType: string;
+  startingDate: string;
+  endDate: string;
+  minSalary: string;
+  maxSalary: string;
+  jobDescription: string;
+  jobResponsibilities: string;
+  location: string;
+}

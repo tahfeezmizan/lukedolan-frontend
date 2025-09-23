@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { RootState } from "../store";
 
 interface UserState {
-  user: any; 
+  user: any;
 }
 
 const initialState: UserState = {
@@ -24,7 +24,7 @@ export const userSlice = createSlice({
 
       // Save accessToken to localStorage (client-side only)
       if (typeof window !== "undefined") {
-        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("accessToken", action.payload.data?.accessToken);
       }
     },
     removeUser: (state) => {

@@ -1,21 +1,33 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../store";
 
-const BASEAPI = process.env.PUBLIC_BASEURL;
+const baseURL = process.env.PUBLIC_BASEURL as string;
 
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://10.10.7.62:5001/api/v1",
-    prepareHeaders: (headers: Headers) => {
-      const token = localStorage.getItem("accessToken");
+    prepareHeaders: (headers, { getState }) => {
+      // const token = (getState() as RootState).user.user?.accessToken;
+
+      const token = (getState() as RootState).user.user?.accessToken;
+
+
+      console.log("Token from baseApi:", token); // <-- check if it's there
+      
       if (token) {
-        headers.set("authorization", ` ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  endpoints: () => ({}),
   tagTypes: ["Auth", "Product"],
+  endpoints: (builder) => ({
+    getProfile: builder.query<any, void>({
+      query: () => "/profile",
+    }),
+  }),
 });
-export const {} = baseApi;
+
+export const { useGetProfileQuery } = baseApi;

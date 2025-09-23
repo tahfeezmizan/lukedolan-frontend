@@ -9,23 +9,22 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { removeUser } from "@/redux/slice/userSlice";
 
 export function DashboardSidebar({
   sidebarItems,
 }: {
   sidebarItems: SidebarItem[];
 }) {
-  const [user, setUser] = useState(true);
+  // const [user, setUser] = useState(true);
+  const dispatch = useDispatch();
   const pathname = usePathname();
-
-  console.log(user);
-
   const router = useRouter();
 
   const handleLogout = () => {
-    setUser(false);
+    dispatch(removeUser());
     router.push("/");
-    console.log("User logged out");
   };
 
   return (

@@ -14,18 +14,8 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "lucide-react";
-
-interface PostJobFormData {
-  jobTitle: string;
-  jobCategory: string;
-  employmentType: string;
-  startingDate: string;
-  endDate: string;
-  salaryMin: string;
-  salaryMax: string;
-  jobDescription: string;
-  jobResponsibilities: string;
-}
+import { PostJobFormData } from "@/types/types";
+import { useCreateJobMutation } from "@/redux/features/jobsApi";
 
 export function PostJobForm() {
   const {
@@ -37,18 +27,40 @@ export function PostJobForm() {
     defaultValues: {
       jobTitle: "",
       jobCategory: "",
+      location: "",
       employmentType: "",
       startingDate: "",
       endDate: "",
-      salaryMin: "",
-      salaryMax: "",
+      minSalary: "",
+      maxSalary: "",
       jobDescription: "",
       jobResponsibilities: "",
     },
   });
 
-  const onSubmit = (data: PostJobFormData) => {
+  const [createJob] = useCreateJobMutation();
+
+  const onSubmit = async (data: PostJobFormData) => {
     console.log("[RHF] Job Post Form Data:", data);
+
+    try {
+      const res = await createJob({
+        jobTitle: data.jobTitle,
+        jobCategory: data.jobCategory,
+        location: data.location,
+        employmentType: data.employmentType,
+        startingDate: data.startingDate,
+        endDate: data.endDate,
+        minSalary: data.minSalary,
+        maxSalary: data.maxSalary,
+        jobDescription: data.jobDescription,
+        jobResponsibilities: data.jobResponsibilities,
+      });
+
+      console.log(res);
+    } catch (error) {
+      console.log("The error", error);
+    }
   };
 
   return (
@@ -112,58 +124,77 @@ export function PostJobForm() {
           </div>
         </div>
 
-        {/* Employment Type */}
-        <div className="space-y-3">
-          <Label className="text-lg font-medium text-gray-90">
-            Employment Type
-          </Label>
-          <Controller
-            name="employmentType"
-            control={control}
-            rules={{ required: "Employment type is required" }}
-            render={({ field }) => (
-              <RadioGroup
-                value={field.value}
-                onValueChange={field.onChange}
-                className="flex items-center space-x-8"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="full-time" id="full-time" />
-                  <Label
-                    htmlFor="full-time"
-                    className="text-md font-medium text-gray-600"
-                  >
-                    Full-time
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="part-time" id="part-time" />
-                  <Label
-                    htmlFor="part-time"
-                    className="text-md font-medium text-gray-600"
-                  >
-                    Part time
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="freelance" id="freelance" />
-                  <Label
-                    htmlFor="freelance"
-                    className="text-md font-medium text-gray-600"
-                  >
-                    Freelance
-                  </Label>
-                </div>
-              </RadioGroup>
+        <div className="grid grid-cols-2 gap-4">
+          {/* Employment Type */}
+          <div className="space-y-3">
+            <Label className="text-lg font-medium text-gray-90">
+              Employment Type
+            </Label>
+            <Controller
+              name="employmentType"
+              control={control}
+              rules={{ required: "Employment type is required" }}
+              render={({ field }) => (
+                <RadioGroup
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="flex items-center space-x-8"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="full-time" id="full-time" />
+                    <Label
+                      htmlFor="full-time"
+                      className="text-md font-medium text-gray-600"
+                    >
+                      Full-time
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="part-time" id="part-time" />
+                    <Label
+                      htmlFor="part-time"
+                      className="text-md font-medium text-gray-600"
+                    >
+                      Part time
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="freelance" id="freelance" />
+                    <Label
+                      htmlFor="freelance"
+                      className="text-md font-medium text-gray-600"
+                    >
+                      Freelance
+                    </Label>
+                  </div>
+                </RadioGroup>
+              )}
+            />
+            {errors.employmentType && (
+              <p className="text-red-500 text-sm">
+                {errors.employmentType.message}
+              </p>
             )}
-          />
-          {errors.employmentType && (
-            <p className="text-red-500 text-sm">
-              {errors.employmentType.message}
-            </p>
-          )}
-        </div>
+          </div>
 
+          <div className="space-y-2">
+            <Label
+              htmlFor="location"
+              className="text-lg font-medium text-gray-90"
+            >
+              Location
+            </Label>
+            <Input
+              id="location"
+              placeholder="Hair Stylist"
+              {...register("location", { required: "location is required" })}
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
+            />
+            {errors.location && (
+              <p className="text-red-500 text-sm">{errors.location.message}</p>
+            )}
+          </div>
+        </div>
         {/* Date Range */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -221,7 +252,7 @@ export function PostJobForm() {
             <Input
               type="number"
               placeholder="Min"
-              {...register("salaryMin", {
+              {...register("minSalary", {
                 required: "Minimum salary is required",
               })}
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
@@ -229,13 +260,13 @@ export function PostJobForm() {
             <Input
               type="number"
               placeholder="Max"
-              {...register("salaryMax", {
+              {...register("maxSalary", {
                 required: "Maximum salary is required",
               })}
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
             />
           </div>
-          {(errors.salaryMin || errors.salaryMax) && (
+          {(errors.minSalary || errors.maxSalary) && (
             <p className="text-red-500 text-sm">Salary range is required</p>
           )}
         </div>
