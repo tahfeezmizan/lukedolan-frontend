@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { baseApi } from "./api/baseApi";
+import { baseApi } from "./features/baseApi";
 import userReducer from "./slice/userSlice";
 
 // Combine all reducers

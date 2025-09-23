@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
   useResendOTPMutation,
   useVerifyUserMutation,
-} from "@/redux/api/authApi";
+} from "@/redux/features/authApi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
