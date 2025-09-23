@@ -8,6 +8,7 @@ import {
   useVerifyUserMutation,
 } from "@/redux/api/authApi";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -71,9 +72,9 @@ export default function OtpVerify() {
       });
 
       console.log(res);
-
       if (res?.data?.success === true) {
-        route.push("/");
+        toast.success("OTP verification successful");
+        route.push("/select-role");
       }
     } catch (error) {
       console.log(error);

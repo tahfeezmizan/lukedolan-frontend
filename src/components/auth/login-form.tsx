@@ -1,17 +1,21 @@
 "use client";
 
-import type React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff } from "lucide-react";
+import { useLoginUserMutation } from "@/redux/api/authApi";
+import { setUser } from "@/redux/slice/userSlice";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 type LoginFormData = {
-  username: string;
+  email: string;
   password: string;
   rememberMe: boolean;
 };
@@ -22,11 +26,31 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>();
+  const route = useRouter();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
     console.log("Login form data:", data);
+
+    try {
+      const res = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res.data.success) {
+        dispatch(setUser({ data: res.data?.data?.accessToken }));
+        route.push("/");
+        toast.success("Login Successful");
+      }
+      console.log(res);
+    } catch (error) {
+      // toast.error();
+      console.log("Errors", error);
+    }
   };
 
   return (
@@ -38,20 +62,20 @@ export function LoginForm() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Username */}
+        {/* email */}
         <div className="space-y-1">
-          <Label htmlFor="username" className="text-lg">
-            User name
+          <Label htmlFor="email" className="text-lg">
+            Email
           </Label>
           <Input
-            id="username"
-            type="text"
+            id="email"
+            type="email"
             className="p-5 rounded-lg !text-xl text-black"
-            placeholder="John smith"
-            {...register("username", { required: "Username is required" })}
+            placeholder="Enter your email"
+            {...register("email", { required: "email is required" })}
           />
-          {errors.username && (
-            <p className="text-red-500 text-sm">{errors.username.message}</p>
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
         </div>
 
@@ -114,7 +138,7 @@ export function LoginForm() {
           type="submit"
           className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-xl font-medium rounded-lg"
         >
-          Login
+          {isLoading ? <Loader className="animate-spin size-8" /> : "Login"}
         </Button>
       </form>
 

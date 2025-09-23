@@ -17,8 +17,6 @@ type SignupFormData = {
   password: string;
   confirmPassword: string;
   agreeToTerms: boolean;
-  role: "applicant" | "recruiter";
-  companyName?: string;
 };
 
 export function SignupForm() {
@@ -34,7 +32,6 @@ export function SignupForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [role, setRole] = useState<"applicant" | "recruiter">("applicant");
 
   const onSubmit = async (data: SignupFormData) => {
     // const formData = { ...data, role };
@@ -44,9 +41,7 @@ export function SignupForm() {
       const res = await createUser({
         name: data.name,
         email: data.email,
-        role: role,
         password: data.password,
-        companyName: data.companyName,
       });
 
       if (res?.data?.success === true) {
@@ -73,7 +68,7 @@ export function SignupForm() {
         <h1 className="!text-3xl font-semibold tracking-tight">Sign up</h1>
       </div>
 
-      <div className="flex justify-center mb-4">
+      {/* <div className="flex justify-center mb-4">
         <div className="flex  !rounded-lg overflow-hidden">
           <Button
             type="button"
@@ -98,7 +93,7 @@ export function SignupForm() {
             Company
           </Button>
         </div>
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-1">
@@ -139,7 +134,7 @@ export function SignupForm() {
           )}
         </div>
 
-        {role === "recruiter" && (
+        {/* {role === "recruiter" && (
           <div className="space-y-1">
             <Label htmlFor="companyName" className="text-lg">
               Company Name
@@ -159,7 +154,7 @@ export function SignupForm() {
               </p>
             )}
           </div>
-        )}
+        )} */}
 
         <div className="space-y-1 relative">
           <Label htmlFor="password" className="text-lg">

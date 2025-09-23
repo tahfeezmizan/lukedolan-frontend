@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { removeUser } from "@/redux/slice/userSlice";
 import {
   Bell,
   FileText,
@@ -22,8 +23,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 // Types for user roles
 type UserRole = "guest" | "applicant" | "recruiter";
@@ -37,7 +39,8 @@ interface User {
 export function Navbar() {
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const router = useRouter();
   const pathname = usePathname();
 
   // Mock user state - replace with your actual auth logic
@@ -76,6 +79,9 @@ export function Navbar() {
 
   const handleLogout = () => {
     setUser(null);
+    dispatch(removeUser());
+    router.push("/");
+
     console.log("User logged out");
   };
 

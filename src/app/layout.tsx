@@ -4,6 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { PageLoading } from "@/components/shared/page-loading";
 import ReduxProvider from "@/provider/redux-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({
   variable: "--font-Montserrat",
@@ -68,6 +69,7 @@ export default function RootLayout({
             <PageLoading />
             {children}
           </Suspense>
+          <Toaster />
         </ReduxProvider>
       </body>
     </html>
