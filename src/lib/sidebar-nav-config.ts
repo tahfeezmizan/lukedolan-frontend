@@ -58,7 +58,7 @@ export const recruiterItems: SidebarItems = [
   {
     icon: Briefcase,
     label: "Jobs",
-    href: "/recruiter/job-post",
+    href: "/recruiter/jobs",
   },
   {
     icon: MessageCircle,

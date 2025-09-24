@@ -1,9 +1,9 @@
 import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: (builder) => ({
     // create user
-    createUser: build.mutation({
+    createUser: builder.mutation({
       query: (data) => ({
         url: `/auth/signup`,
         method: "POST",
@@ -13,7 +13,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // login user
-    loginUser: build.mutation({
+    loginUser: builder.mutation({
       query: (data) => ({
         url: "/auth/login",
         method: "POST",
@@ -23,7 +23,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // verify user
-    verifyUser: build.mutation({
+    verifyUser: builder.mutation({
       query: (data) => ({
         url: "/auth/verify-account",
         method: "POST",
@@ -33,7 +33,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // verify user
-    resendOTP: build.mutation({
+    resendOTP: builder.mutation({
       query: (data) => ({
         url: "/auth/resend-otp",
         method: "POST",
@@ -43,7 +43,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // logout user
-    logoutUser: build.mutation({
+    logoutUser: builder.mutation({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
@@ -51,7 +51,7 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
     // forgot password
-    forgotPassword: build.mutation({
+    forgotPassword: builder.mutation({
       query: (data) => {
         console.log("Forget Password", data);
 
@@ -65,7 +65,7 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     // reset password
-    resetPassword: build.mutation({
+    resetPassword: builder.mutation({
       query: ({ id, password, headers }) => ({
         url: "/auth/reset-password",
         method: "POST",
@@ -78,14 +78,14 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
     // get user
-    getUser: build.query({
+    getUser: builder.query({
       query: (id) => ({
         url: `/users/${id}`,
         method: "GET",
       }),
       providesTags: ["Auth"],
     }),
-    getLoggedInUser: build.query({
+    getLoggedInUser: builder.query({
       query: () => ({
         url: "/auth/get-me",
         method: "GET",
@@ -93,7 +93,7 @@ const authApi = baseApi.injectEndpoints({
 
       transformResponse: (response: any) => response.data,
     }),
-    getUserById: build.query({
+    getUserById: builder.query({
       query: (id) => ({
         url: `/user/${id}`,
         method: "GET",
