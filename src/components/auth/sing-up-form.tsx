@@ -16,10 +16,13 @@ type SignupFormData = {
   email: string;
   password: string;
   confirmPassword: string;
+  companyName?: string;
+  role: "applicant" | "recruiter";
   agreeToTerms: boolean;
 };
 
 export function SignupForm() {
+  const [role, setRole] = useState<"applicant" | "recruiter">("applicant");
   const [createUser, { isLoading }] = useCreateUserMutation();
   const route = useRouter();
 
@@ -34,8 +37,8 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: SignupFormData) => {
-    // const formData = { ...data, role };
-    // console.log("Selected role:", formData);
+    const formData = { ...data, role };
+    console.log("Selected role:", formData);
 
     try {
       const res = await createUser({
@@ -68,7 +71,7 @@ export function SignupForm() {
         <h1 className="!text-3xl font-semibold tracking-tight">Sign up</h1>
       </div>
 
-      {/* <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4">
         <div className="flex  !rounded-lg overflow-hidden">
           <Button
             type="button"
@@ -93,7 +96,7 @@ export function SignupForm() {
             Company
           </Button>
         </div>
-      </div> */}
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-1">
@@ -134,7 +137,7 @@ export function SignupForm() {
           )}
         </div>
 
-        {/* {role === "recruiter" && (
+        {role === "recruiter" && (
           <div className="space-y-1">
             <Label htmlFor="companyName" className="text-lg">
               Company Name
@@ -154,7 +157,7 @@ export function SignupForm() {
               </p>
             )}
           </div>
-        )} */}
+        )}
 
         <div className="space-y-1 relative">
           <Label htmlFor="password" className="text-lg">
