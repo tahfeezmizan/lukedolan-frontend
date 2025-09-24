@@ -50,18 +50,15 @@ export function PersonalDetailsForm() {
     console.log("Personal Details Form Data:", {
       ...data,
     });
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    
+ console.log([...formData.entries()]);
+
     
     try {
       const res = await updateProfile({
-         firstName: "",
-      lastName: "",
-      email: "",
-      mobile: "",
-      birthday: "",
-      gender: "",
-      address: "",
-      city: "",
-      country: "",
+   body:formData 
       })
       if (res?.data?.success) {
         console.log("Profile updated successfully:", res.data);
