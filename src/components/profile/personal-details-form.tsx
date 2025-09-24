@@ -48,6 +48,8 @@ export function PersonalDetailsForm() {
     console.log("Personal Details Form Data:", {
       ...data,
     });
+
+    
   };
 
   return (
