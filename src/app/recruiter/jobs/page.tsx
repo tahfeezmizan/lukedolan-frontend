@@ -8,7 +8,7 @@ export default function JobPostPage() {
         <h2 className="text-3xl font-bold text-gray-900">Job Posts</h2>
         <div className="">
           <Link
-            href={"/recruiter/job-post/post-job"}
+            href={"/recruiter/jobs/post-job"}
             className="bg-green-900 hover:bg-green-800 text-white px-8 py-2 text-lg font-medium rounded-lg"
           >
             Post Job
