@@ -12,7 +12,7 @@ const userApi = baseApi.injectEndpoints({
 
     UpdateMe: builder.mutation({
       query: ({ body }) => {
-        console.log("UpdateMe body:", body); // ✅ Log inside query
+        console.log("UpdateMe body:", body);
         return {
           url: "/user/update-me",
           method: "PUT",

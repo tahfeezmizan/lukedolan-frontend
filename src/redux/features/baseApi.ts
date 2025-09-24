@@ -9,13 +9,8 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://10.10.7.62:5001/api/v1",
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).user.user?.accessToken;
+      const token = (getState() as RootState).user.user;
 
-      const token = (getState() as RootState).user.user?.accessToken;
-
-
-      console.log("Token from baseApi:", token); // <-- check if it's there
-      
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

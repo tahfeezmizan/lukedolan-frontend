@@ -16,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "lucide-react";
 import { PostJobFormData } from "@/types/types";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
+import { toast } from "sonner";
 
 export function PostJobForm() {
   const {
@@ -25,16 +26,16 @@ export function PostJobForm() {
     formState: { errors },
   } = useForm<PostJobFormData>({
     defaultValues: {
-      jobTitle: "",
-      jobCategory: "",
-      location: "",
-      employmentType: "",
-      startingDate: "",
-      endDate: "",
-      minSalary: "",
-      maxSalary: "",
-      jobDescription: "",
-      jobResponsibilities: "",
+      title: "",
+      category: "",
+      jobLocation: "",
+      type: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      minSalary: 0,
+      maxSalary: 0,
+      description: "",
+      responsibilities: "",
     },
   });
 
@@ -45,21 +46,26 @@ export function PostJobForm() {
 
     try {
       const res = await createJob({
-        jobTitle: data.jobTitle,
-        jobCategory: data.jobCategory,
-        location: data.location,
-        employmentType: data.employmentType,
-        startingDate: data.startingDate,
-        endDate: data.endDate,
-        minSalary: data.minSalary,
-        maxSalary: data.maxSalary,
-        jobDescription: data.jobDescription,
-        jobResponsibilities: data.jobResponsibilities,
-      });
+        title: data.title,
+        category: data.category,
+        jobLocation: data.jobLocation,
+        type: data.type,
+        startDate: data.startDate
+          ? new Date(data.startDate).toISOString()
+          : null,
+        endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
+        minSalary: Number(data.minSalary),
+        maxSalary: Number(data.maxSalary),
+        description: data.description,
+        responsibilities: data.responsibilities,
+      }).unwrap();
 
-      console.log(res);
+      console.log("✅ Job created:", res);
+
+      toast.success("✅ Job Createed Sucessfully");
     } catch (error) {
-      console.log("The error", error);
+      toast.error("❌ Job creation failed");
+      console.error("❌ Job creation failed:", error);
     }
   };
 
@@ -70,33 +76,30 @@ export function PostJobForm() {
         {/* Job Title */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label
-              htmlFor="jobTitle"
-              className="text-lg font-medium text-gray-90"
-            >
+            <Label htmlFor="title" className="text-lg font-medium text-gray-90">
               Job Title
             </Label>
             <Input
-              id="jobTitle"
+              id="title"
               placeholder="Hair Stylist"
-              {...register("jobTitle", { required: "Job title is required" })}
+              {...register("title", { required: "Job title is required" })}
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
             />
-            {errors.jobTitle && (
-              <p className="text-red-500 text-sm">{errors.jobTitle.message}</p>
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title.message}</p>
             )}
           </div>
 
           {/* Job Category */}
           <div className="space-y-2">
             <Label
-              htmlFor="jobCategory"
+              htmlFor="category"
               className="text-lg font-medium text-gray-90"
             >
               Job Category
             </Label>
             <Controller
-              name="jobCategory"
+              name="category"
               control={control}
               rules={{ required: "Job category is required" }}
               render={({ field }) => (
@@ -116,10 +119,8 @@ export function PostJobForm() {
                 </Select>
               )}
             />
-            {errors.jobCategory && (
-              <p className="text-red-500 text-sm">
-                {errors.jobCategory.message}
-              </p>
+            {errors.category && (
+              <p className="text-red-500 text-sm">{errors.category.message}</p>
             )}
           </div>
         </div>
@@ -131,7 +132,7 @@ export function PostJobForm() {
               Employment Type
             </Label>
             <Controller
-              name="employmentType"
+              name="type"
               control={control}
               rules={{ required: "Employment type is required" }}
               render={({ field }) => (
@@ -141,27 +142,27 @@ export function PostJobForm() {
                   className="flex items-center space-x-8"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="full-time" id="full-time" />
+                    <RadioGroupItem value="Full-time" id="Full-time" />
                     <Label
-                      htmlFor="full-time"
+                      htmlFor="Full-time"
                       className="text-md font-medium text-gray-600"
                     >
                       Full-time
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="part-time" id="part-time" />
+                    <RadioGroupItem value="Remote" id="Remote" />
                     <Label
-                      htmlFor="part-time"
+                      htmlFor="Remote"
                       className="text-md font-medium text-gray-600"
                     >
-                      Part time
+                      Remote
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="freelance" id="freelance" />
+                    <RadioGroupItem value="Freelance" id="Freelance" />
                     <Label
-                      htmlFor="freelance"
+                      htmlFor="Freelance"
                       className="text-md font-medium text-gray-600"
                     >
                       Freelance
@@ -170,28 +171,30 @@ export function PostJobForm() {
                 </RadioGroup>
               )}
             />
-            {errors.employmentType && (
-              <p className="text-red-500 text-sm">
-                {errors.employmentType.message}
-              </p>
+            {errors.type && (
+              <p className="text-red-500 text-sm">{errors.type.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
             <Label
-              htmlFor="location"
+              htmlFor="jobLocation"
               className="text-lg font-medium text-gray-90"
             >
-              Location
+              jobLocation
             </Label>
             <Input
-              id="location"
+              id="jobLocation"
               placeholder="Hair Stylist"
-              {...register("location", { required: "location is required" })}
+              {...register("jobLocation", {
+                required: "jobLocation is required",
+              })}
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
             />
-            {errors.location && (
-              <p className="text-red-500 text-sm">{errors.location.message}</p>
+            {errors.jobLocation && (
+              <p className="text-red-500 text-sm">
+                {errors.jobLocation.message}
+              </p>
             )}
           </div>
         </div>
@@ -199,26 +202,24 @@ export function PostJobForm() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label
-              htmlFor="startingDate"
+              htmlFor="startDate"
               className="text-lg font-medium text-gray-90"
             >
               Starting Date
             </Label>
             <div className="relative">
               <Input
-                id="startingDate"
+                id="startDate"
                 type="date"
-                {...register("startingDate", {
+                {...register("startDate", {
                   required: "Starting date is required",
                 })}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full pl-10"
               />
               <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
-            {errors.startingDate && (
-              <p className="text-red-500 text-sm">
-                {errors.startingDate.message}
-              </p>
+            {errors.startDate && (
+              <p className="text-red-500 text-sm">{errors.startDate.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -274,45 +275,43 @@ export function PostJobForm() {
         {/* Job Description */}
         <div className="space-y-2">
           <Label
-            htmlFor="jobDescription"
+            htmlFor="description"
             className="text-lg font-medium text-gray-90"
           >
             Job Description
           </Label>
           <Textarea
-            id="jobDescription"
+            id="description"
             placeholder="Describe the role"
-            {...register("jobDescription", {
+            {...register("description", {
               required: "Job description is required",
             })}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
           />
-          {errors.jobDescription && (
-            <p className="text-red-500 text-sm">
-              {errors.jobDescription.message}
-            </p>
+          {errors.description && (
+            <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
         </div>
 
         {/* Job Responsibilities */}
         <div className="space-y-2">
           <Label
-            htmlFor="jobResponsibilities"
+            htmlFor="responsibilities"
             className="text-lg font-medium text-gray-90"
           >
             Job Responsibilities
           </Label>
           <Textarea
-            id="jobResponsibilities"
+            id="responsibilities"
             placeholder="Describe the Job responsibilities"
-            {...register("jobResponsibilities", {
+            {...register("responsibilities", {
               required: "Job responsibilities are required",
             })}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
           />
-          {errors.jobResponsibilities && (
+          {errors.responsibilities && (
             <p className="text-red-500 text-sm">
-              {errors.jobResponsibilities.message}
+              {errors.responsibilities.message}
             </p>
           )}
         </div>

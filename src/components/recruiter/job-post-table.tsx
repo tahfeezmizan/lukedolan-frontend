@@ -7,88 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
+import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
-
-const jobPosts = [
-  {
-    id: 1,
-    title: "Senior Hair Stylist",
-    location: "London",
-    salary: "£2,200/mo",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Rejected",
-  },
-  {
-    id: 3,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Approved",
-  },
-  {
-    id: 4,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Approved",
-  },
-  {
-    id: 5,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Rejected",
-  },
-  {
-    id: 6,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Approved",
-  },
-  {
-    id: 7,
-    jobId: "#J-10294",
-    title: "Senior Hair Stylist",
-    location: "07/07/2025",
-    salary: "07/07/2025",
-    posted: "07/07/2025",
-    expires: "07/07/2025",
-    applicant: "07/07/2025",
-    status: "Rejected",
-  },
-];
+import TableLoader from "../shared/table-loader";
 
 export function JobPostTable() {
+  const { data, isLoading, error } = useGetAllJobsQuery({});
+
+  // console.log(data);
+
   return (
     <div className="bg-white rounded-lg overflow-hidden">
       <div className="overflow-x-auto">
@@ -111,53 +39,79 @@ export function JobPostTable() {
                 Expires
               </th>
               <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Applicant
+                Applicant Count
               </th>
               <th className="text-left py-4 px-6 font-semibold text-gray-700">
                 Action
               </th>
             </tr>
           </thead>
-          <tbody>
-            {jobPosts.map((job) => (
-              <tr
-                key={job.id}
-                className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
-              >
-                <td className="py-4 px-6">
-                  <div>
-                    {job.jobId && (
-                      <div className="text-sm text-gray-500 mb-1">
-                        {job.jobId}
-                      </div>
-                    )}
-                    <div className="font-medium text-gray-900">{job.title}</div>
-                  </div>
-                </td>
-                <td className="py-4 px-6 text-gray-700">{job.location}</td>
-                <td className="py-4 px-6 text-gray-700">{job.salary}</td>
-                <td className="py-4 px-6 text-gray-700">{job.posted}</td>
-                <td className="py-4 px-6 text-gray-700">{job.expires}</td>
-                <td className="py-4 px-6 text-gray-700">{job.applicant}</td>
 
-                <td className="py-4 px-6">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>Edit Job</DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+          <tbody>
+            {isLoading ? (
+              // Show loader when data is loading
+              <tr>
+                <TableLoader />
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan={7} className="py-8 px-6 text-center text-red-600">
+                  Error loading jobs. Please try again.
                 </td>
               </tr>
-            ))}
+            ) : data && data.length > 0 ? (
+              // Show data when available
+              data.map((job: PostJobFormData) => (
+                <tr
+                  key={job.id}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <td className="py-4 px-6">
+                    <div className="font-medium text-gray-900">{job.title}</div>
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">{job.jobLocation}</td>
+                  <td className="py-4 px-6 text-gray-700">
+                    {job.minSalary} - {job.maxSalary}{" "}
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">
+                    {new Date(job.startDate).toLocaleDateString()}
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">
+                    {new Date(job.endDate).toLocaleDateString()}
+                  </td>
+                  <td className="py-4 px-6 text-gray-700">
+                    {job.applicationsCount}
+                  </td>
+                  <td className="py-4 px-6">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                        >
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Job</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              // Show empty state when no data is available
+              <tr>
+                <td colSpan={7} className="py-8 px-6 text-center text-gray-500">
+                  No jobs found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

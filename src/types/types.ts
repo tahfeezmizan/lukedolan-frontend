@@ -49,20 +49,6 @@ export type StatItem = {
   icon: LucideIcon;
 };
 
-export type Column<T> = {
-  key: keyof T;
-  label: string;
-};
-
-export type JobData = {
-  userId: string;
-  jobTitle: string;
-  companyName: string;
-  salary: string;
-  jobType: string;
-  applications: number;
-};
-
 export type UserData = {
   userId: string;
   name: string;
@@ -82,14 +68,29 @@ export type CompanyData = {
 };
 
 export interface PostJobFormData {
-  jobTitle: string;
-  jobCategory: string;
-  employmentType: string;
-  startingDate: string;
-  endDate: string;
-  minSalary: string;
-  maxSalary: string;
-  jobDescription: string;
-  jobResponsibilities: string;
-  location: string;
+  id?: number;
+  title: string;
+  category?: string;
+  type: "Full-time" | "Remote" | "Freelance";
+  startDate: Date;
+  endDate?: Date;
+  minSalary: number;
+  maxSalary: number;
+  description?: string;
+  responsibilities?: string;
+  jobLocation: string;
 }
+
+export type Column<T> = {
+  key: keyof T;
+  label: string;
+};
+
+export type JobData = {
+  userId: string;
+  jobTitle: string;
+  companyName: string;
+  salary: string;
+  jobType: string;
+  applications: number;
+};

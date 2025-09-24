@@ -7,6 +7,9 @@ const jobsApi = baseApi.injectEndpoints({
         url: "/job",
         method: "GET",
       }),
+      transformResponse: (response: any) => {
+        return response.data;
+      },
     }),
     createJob: builder.mutation({
       query: (data) => ({
