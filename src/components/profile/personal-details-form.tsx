@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUpdateProfileMutation } from "@/redux/features/userApi";
 import { Controller, useForm } from "react-hook-form";
 
 interface EssentialPersonalData {
@@ -43,13 +44,33 @@ export function PersonalDetailsForm() {
       country: "",
     },
   });
+  const [updateProfile, { isLoading, isError, error }] = useUpdateProfileMutation();
 
-  const onSubmit = (data: EssentialPersonalData) => {
+  const onSubmit = async(data: EssentialPersonalData) => {
     console.log("Personal Details Form Data:", {
       ...data,
     });
-
     
+    try {
+      const res = await updateProfile({
+         firstName: "",
+      lastName: "",
+      email: "",
+      mobile: "",
+      birthday: "",
+      gender: "",
+      address: "",
+      city: "",
+      country: "",
+      })
+      if (res?.data?.success) {
+        console.log("Profile updated successfully:", res.data);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+    
+
   };
 
   return (
