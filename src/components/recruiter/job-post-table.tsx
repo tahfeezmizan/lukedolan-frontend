@@ -11,6 +11,17 @@ import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
 import TableLoader from "../shared/table-loader";
+import Link from "next/link";
+
+const tableHeaders = [
+  { key: "jobTitle", label: "Job Title" },
+  { key: "location", label: "Location" },
+  { key: "salary", label: "Salary" },
+  { key: "posted", label: "Posted" },
+  { key: "expires", label: "Expires" },
+  { key: "applicantCount", label: "Applicant Count" },
+  { key: "action", label: "Action" },
+];
 
 export function JobPostTable() {
   const { data, isLoading, error } = useGetAllJobsQuery({});
@@ -23,33 +34,19 @@ export function JobPostTable() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Job Title
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Location
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Salary
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Posted
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Expires
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Applicant Count
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                Action
-              </th>
+              {tableHeaders.map((header) => (
+                <th
+                  key={header.key}
+                  className="text-left py-4 px-6 font-semibold text-gray-700"
+                >
+                  {header.label}
+                </th>
+              ))}
             </tr>
           </thead>
 
           <tbody>
             {isLoading ? (
-              // Show loader when data is loading
               <tr>
                 <TableLoader />
               </tr>
@@ -63,7 +60,7 @@ export function JobPostTable() {
               // Show data when available
               data.map((job: PostJobFormData) => (
                 <tr
-                  key={job.id}
+                  key={job._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
                 >
                   <td className="py-4 px-6">
@@ -94,8 +91,12 @@ export function JobPostTable() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Job</DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link href={"/"}>View Details</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={`/recruiter/jobs/${job._id}`}>Edit Job</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                           Delete
                         </DropdownMenuItem>

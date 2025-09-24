@@ -17,9 +17,8 @@ import { Calendar } from "lucide-react";
 import { PostJobFormData } from "@/types/types";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
 import { toast } from "sonner";
-import { useGetCategoryQuery } from "@/redux/features/categoryApi";
 
-export function PostJobForm() {
+export function JobUpdateForm() {
   const {
     register,
     handleSubmit,
@@ -41,8 +40,6 @@ export function PostJobForm() {
   });
 
   const [createJob] = useCreateJobMutation();
-  const { data: categories, isLoading, error } = useGetCategoryQuery({});
-  console.log(categories);
 
   const onSubmit = async (data: PostJobFormData) => {
     console.log("[RHF] Job Post Form Data:", data);
@@ -74,7 +71,7 @@ export function PostJobForm() {
 
   return (
     <div className="p-6 rounded-lg bg-white">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6">Post a new job</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Update Job</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
         {/* Job Title */}
         <div className="grid grid-cols-2 gap-4">
