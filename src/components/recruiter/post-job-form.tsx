@@ -18,6 +18,7 @@ import { PostJobFormData } from "@/types/types";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
 import { toast } from "sonner";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import { useRouter } from "next/navigation";
 
 export function PostJobForm() {
   const {
@@ -39,13 +40,11 @@ export function PostJobForm() {
       responsibilities: "",
     },
   });
-
+  const route = useRouter();
   const [createJob] = useCreateJobMutation();
   const { data: categories, isLoading, error } = useGetCategoryQuery({});
 
   const onSubmit = async (data: PostJobFormData) => {
-    console.log("[RHF] Job Post Form Data:", data);
-
     try {
       const res = await createJob({
         title: data.title,
@@ -62,9 +61,10 @@ export function PostJobForm() {
         responsibilities: data.responsibilities,
       }).unwrap();
 
-      console.log("✅ Job created:", res);
-
-      toast.success("✅ Job Createed Sucessfully");
+      if (res.success) {
+        toast.success("✅ Job Createed Sucessfully");
+        route.push("/recruiter/jobs");
+      }
     } catch (error) {
       toast.error("❌ Job creation failed");
       console.error("❌ Job creation failed:", error);

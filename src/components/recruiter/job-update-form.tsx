@@ -19,7 +19,7 @@ import {
 } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { Calendar } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,6 +46,8 @@ export function JobUpdateForm() {
     },
   });
   const { id } = useParams();
+  const route = useRouter();
+
   const { data: categories } = useGetCategoryQuery({});
   const { data: jobs } = useGetAllJobsQuery({});
   const [updateJob] = useUpdateJobMutation();
@@ -90,7 +92,10 @@ export function JobUpdateForm() {
         data: updateData,
       }).unwrap();
 
-      toast.success("✅ Job Update Sucessfully");
+      if (res.success) {
+        toast.success("✅ Job Update Sucessfully");
+        route.push("/recruiter/jobs");
+      }
     } catch (error) {
       toast.error("❌ Job creation failed");
       // console.error("❌ Job creation failed:", error);
