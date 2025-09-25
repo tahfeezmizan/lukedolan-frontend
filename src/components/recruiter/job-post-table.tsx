@@ -7,11 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
+import {
+  useDeleteJobMutation,
+  useGetAllJobsQuery,
+} from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
 import TableLoader from "../shared/table-loader";
 import Link from "next/link";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const tableHeaders = [
   { key: "jobTitle", label: "Job Title" },
@@ -24,13 +29,44 @@ const tableHeaders = [
 ];
 
 export function JobPostTable() {
-  const { data, isLoading, error } = useGetAllJobsQuery({});
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [deleteJob] = useDeleteJobMutation();
 
-  // console.log(data);
+  const { data, isLoading, error } = useGetAllJobsQuery({
+    page,
+    limit,
+  });
+
+  const handleDelete = (id: string | number | undefined) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#009966",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteJob(id).unwrap();
+          Swal.fire("Deleted!", "Job has been deleted.", "success");
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "Failed to delete job. Please try again.",
+            "error"
+          );
+        }
+      }
+    });
+  };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden">
-      <div className="overflow-x-auto">
+    <div className="rounded-lg overflow-hidden">
+      <div className="bg-white overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
@@ -58,7 +94,7 @@ export function JobPostTable() {
               </tr>
             ) : data && data.length > 0 ? (
               // Show data when available
-              data.map((job: PostJobFormData) => (
+              data?.map((job: PostJobFormData) => (
                 <tr
                   key={job._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
@@ -95,10 +131,17 @@ export function JobPostTable() {
                           <Link href={"/"}>View Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`/recruiter/jobs/${job._id}`}>Edit Job</Link>
+                          <Link href={`/recruiter/jobs/${job._id}`}>
+                            Edit Job
+                          </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Delete
+                        <DropdownMenuItem>
+                          <Button
+                            className="bg-transparent !p-0 text-red-600 hover:bg-transparent "
+                            onClick={() => handleDelete(job._id)}
+                          >
+                            Delete
+                          </Button>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

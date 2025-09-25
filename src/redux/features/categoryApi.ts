@@ -16,9 +16,6 @@ const categoryApi = baseApi.injectEndpoints({
         url: "/category",
         method: "GET",
       }),
-      transformResponse: (response: any) => {
-        return response.data;
-      },
     }),
     // Update category endpoint
     updateCategory: builder.mutation({
