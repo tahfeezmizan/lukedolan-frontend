@@ -25,8 +25,7 @@ const tableHeaders = [
 
 export function JobPostTable() {
   const { data, isLoading, error } = useGetAllJobsQuery({});
-
-  // console.log(data);
+  console.log(data)
 
   return (
     <div className="bg-white rounded-lg overflow-hidden">

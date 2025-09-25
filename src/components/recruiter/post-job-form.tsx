@@ -42,7 +42,6 @@ export function PostJobForm() {
 
   const [createJob] = useCreateJobMutation();
   const { data: categories, isLoading, error } = useGetCategoryQuery({});
-  console.log(categories);
 
   const onSubmit = async (data: PostJobFormData) => {
     console.log("[RHF] Job Post Form Data:", data);
@@ -111,13 +110,11 @@ export function PostJobForm() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beauty-wellness">
-                      Beauty & Wellness
-                    </SelectItem>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
+                    {categories?.map((category: any) => (
+                      <SelectItem key={category._id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               )}
