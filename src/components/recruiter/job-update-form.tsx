@@ -1,10 +1,9 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -12,17 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "lucide-react";
-import { PostJobFormData } from "@/types/types";
+import { Textarea } from "@/components/ui/textarea";
+import { useGetCategoryQuery } from "@/redux/features/categoryApi";
 import {
-  useCreateJobMutation,
   useGetAllJobsQuery,
+  useUpdateJobMutation,
 } from "@/redux/features/jobsApi";
-import { toast } from "sonner";
+import { PostJobFormData } from "@/types/types";
+import { Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function JobUpdateForm() {
   const {
@@ -45,23 +45,22 @@ export function JobUpdateForm() {
       responsibilities: "",
     },
   });
-  const { data: categories } = useGetCategoryQuery({});
-  console.log(categories);
-
-  const { data: jobs, isLoading, error } = useGetAllJobsQuery({});
   const { id } = useParams();
+  const { data: categories } = useGetCategoryQuery({});
+  const { data: jobs } = useGetAllJobsQuery({});
+  const [updateJob] = useUpdateJobMutation();
 
   const job = jobs?.find((job: any) => job._id === id);
 
-  // populate form values when job is fetched
   useEffect(() => {
     if (job) {
       reset({
         title: job.title || "",
-        category: job.category || "",
+        // ✅ Fixed: Extract _id from category object to match SelectItem value
+        category: job.category?._id || job.category || "",
         jobLocation: job.jobLocation || "",
         type: job.type || undefined,
-        startDate: job.startDate ? job.startDate.split("T")[0] : undefined, // keep only YYYY-MM-DD
+        startDate: job.startDate ? job.startDate.split("T")[0] : undefined,
         endDate: job.endDate ? job.endDate.split("T")[0] : undefined,
         minSalary: job.minSalary || 0,
         maxSalary: job.maxSalary || 0,
@@ -72,7 +71,30 @@ export function JobUpdateForm() {
   }, [job, reset]);
 
   const onSubmit = async (data: PostJobFormData) => {
-    console.log("[RHF] Job Post Form Data:", data);
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      jobLocation: data.jobLocation,
+      type: data.type,
+      startDate: data.startDate ? new Date(data.startDate).toISOString() : null,
+      endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
+      minSalary: Number(data.minSalary),
+      maxSalary: Number(data.maxSalary),
+      description: data.description,
+      responsibilities: data.responsibilities,
+    };
+
+    try {
+      const res = await updateJob({
+        id: id,
+        data: updateData,
+      }).unwrap();
+
+      toast.success("✅ Job Update Sucessfully");
+    } catch (error) {
+      toast.error("❌ Job creation failed");
+      // console.error("❌ Job creation failed:", error);
+    }
   };
 
   return (
@@ -327,7 +349,7 @@ export function JobUpdateForm() {
           type="submit"
           className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-lg"
         >
-          Job post
+          Update Job Post
         </Button>
       </form>
     </div>
