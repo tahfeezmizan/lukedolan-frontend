@@ -7,12 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
+import {
+  useDeleteJobMutation,
+  useGetAllJobsQuery,
+} from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
 import TableLoader from "../shared/table-loader";
 import Link from "next/link";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const tableHeaders = [
   { key: "jobTitle", label: "Job Title" },
@@ -27,11 +31,38 @@ const tableHeaders = [
 export function JobPostTable() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [deleteJob] = useDeleteJobMutation();
 
   const { data, isLoading, error } = useGetAllJobsQuery({
     page,
     limit,
   });
+
+  const handleDelete = (id: string | number | undefined) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#009966",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteJob(id).unwrap();
+          Swal.fire("Deleted!", "Job has been deleted.", "success");
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "Failed to delete job. Please try again.",
+            "error"
+          );
+        }
+      }
+    });
+  };
 
   return (
     <div className="rounded-lg overflow-hidden">
@@ -104,8 +135,13 @@ export function JobPostTable() {
                             Edit Job
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Delete
+                        <DropdownMenuItem>
+                          <Button
+                            className="bg-transparent !p-0 text-red-600 hover:bg-transparent "
+                            onClick={() => handleDelete(job._id)}
+                          >
+                            Delete
+                          </Button>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
