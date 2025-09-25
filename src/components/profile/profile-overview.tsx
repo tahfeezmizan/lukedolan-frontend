@@ -1,6 +1,7 @@
 "use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { getImageUrl } from "@/lib/utils";
 import { useGetUserQuery } from "@/redux/features/authApi";
 import { Building } from "lucide-react";
 
@@ -26,10 +27,7 @@ export function ProfileOverview() {
           <div className="flex flex-col md:flex-row gap-6 mb-8">
             <Avatar className="h-20 w-20">
               <AvatarImage
-                src={
-                  `http://10.10.7.62:5001/${profileData?.image}
-                  `
-                }
+                src={getImageUrl(profileData?.image)}
                 alt={profileData?.name || "User"}
               />
               <AvatarFallback className="text-lg">
