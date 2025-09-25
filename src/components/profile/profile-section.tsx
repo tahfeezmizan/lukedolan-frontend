@@ -1,28 +1,54 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useUpdateProfileMutation } from "@/redux/features/userApi";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function ProfileSection() {
-  const [status, setStatus] = useState<"open" | "not">("open");
-  const [preview, setPreview] = useState<string | null>(null);
+ const [status, setStatus] = useState<"open" | "not">("open");
+ const [preview, setPreview] = useState<string | null>(null);
+ const [file, setFile] = useState<File | null>(null);
 
-  // Handle file upload and show preview
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
+ const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
-      // console the file and preview url
-      console.log("Selected File:", file);
-      console.log("Preview URL:", imageUrl);
-    }
-  };
+ // Handle file upload and show preview
+ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const selectedFile = e.target.files?.[0];
+   if (selectedFile) {
+     const imageUrl = URL.createObjectURL(selectedFile);
+     setPreview(imageUrl);
+     setFile(selectedFile);
+
+     console.log("Selected File:", selectedFile);
+     console.log("Preview URL:", imageUrl);
+   }
+ };
+
+ // Submit to API
+ const handleSubmit = async () => {
+   if (!file) {
+     alert("Please select a file first!");
+     return;
+   }
+
+   const formData = new FormData();
+   formData.append("image", file); // backend key অনুযায়ী নাম দিন
+   formData.append("status", status);
+
+   try {
+     const res = await updateProfile({ body: formData }).unwrap();
+     console.log("Profile updated successfully:", res);
+   } catch (err) {
+     console.error("Update profile failed:", err);
+   }
+ };
+
 
   return (
     <div className="flex flex-col items-center space-y-8">
+
+      <button onClick={handleSubmit}>Update Profile</button>
       {/* Availability Switch */}
       <div className="flex items-center rounded-full bg-gray-100 p-1 w-[300px] justify-between">
         <button

@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -13,13 +13,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-
+ 
 type LoginFormData = {
   email: string;
   password: string;
   rememberMe: boolean;
 };
-
+ 
 export function LoginForm() {
   const {
     register,
@@ -29,18 +29,18 @@ export function LoginForm() {
   const route = useRouter();
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
-
+ 
   const [showPassword, setShowPassword] = useState(false);
-
+ 
   const onSubmit = async (data: LoginFormData) => {
     console.log("Login form data:", data);
-
+ 
     try {
       const res = await loginUser({
         email: data.email,
         password: data.password,
       });
-
+ 
       if (res.data.success) {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
         route.push("/");
@@ -52,7 +52,7 @@ export function LoginForm() {
       console.log("Errors", error);
     }
   };
-
+ 
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -60,7 +60,7 @@ export function LoginForm() {
           Login to your account.
         </h1>
       </div>
-
+ 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* email */}
         <div className="space-y-1">
@@ -78,7 +78,7 @@ export function LoginForm() {
             <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
         </div>
-
+ 
         {/* Password */}
         <div className="space-y-1">
           <Label htmlFor="password" className="text-lg">
@@ -116,7 +116,7 @@ export function LoginForm() {
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
         </div>
-
+ 
         {/* Remember me + Forgot password */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -132,7 +132,7 @@ export function LoginForm() {
             Forgot password ?
           </Button>
         </div>
-
+ 
         {/* Submit */}
         <Button
           type="submit"
@@ -141,7 +141,7 @@ export function LoginForm() {
           {isLoading ? <Loader className="animate-spin size-8" /> : "Login"}
         </Button>
       </form>
-
+ 
       {/* Signup + Social Login */}
       <div className="space-y-4">
         <div className="text-center">
@@ -154,7 +154,7 @@ export function LoginForm() {
             </Button>
           </Link>
         </div>
-
+ 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -163,7 +163,7 @@ export function LoginForm() {
             <span className="bg-background px-2 text-muted-foreground">OR</span>
           </div>
         </div>
-
+ 
         <Button
           variant="outline"
           className="w-full bg-transparent text-base"
@@ -193,3 +193,4 @@ export function LoginForm() {
     </div>
   );
 }
+ 

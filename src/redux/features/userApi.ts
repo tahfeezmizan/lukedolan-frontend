@@ -10,6 +10,13 @@ const userApi = baseApi.injectEndpoints({
       }),
     }),
 
+    getUser: builder.query({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+    }),
+
     UpdateMe: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateMe body:", body);
@@ -33,4 +40,4 @@ const userApi = baseApi.injectEndpoints({
     }),
   }),
 });
-export const { useUpdateMeMutation,  useGetAllUserQuery, useUpdateProfileMutation } = userApi;
+export const { useUpdateMeMutation,  useGetAllUserQuery, useUpdateProfileMutation, useGetUserQuery } = userApi;
