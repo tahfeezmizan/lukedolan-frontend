@@ -27,8 +27,8 @@ export function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>();
   const route = useRouter();
-  const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,6 +45,8 @@ export function LoginForm() {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
         route.push("/");
         toast.success("Login Successful");
+      } else {
+        toast.error(res.error.data.message);
       }
       console.log(res);
     } catch (error) {

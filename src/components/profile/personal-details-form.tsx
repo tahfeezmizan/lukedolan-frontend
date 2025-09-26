@@ -10,16 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUpdateProfileMutation } from "@/redux/features/userApi";
 import { Controller, useForm } from "react-hook-form";
 
 interface EssentialPersonalData {
   firstName: string;
   lastName: string;
-  email: string;
   mobile: string;
-  birthday: string;
+  dateOfBirth: string;
   gender: string;
-  address: string;
+  streetAddress: string;
   city: string;
   country: string;
 }
@@ -34,20 +34,40 @@ export function PersonalDetailsForm() {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
       mobile: "",
-      birthday: "",
+      dateOfBirth: "",
       gender: "",
-      address: "",
+      streetAddress: "",
       city: "",
       country: "",
     },
   });
+  const [updateProfile, { isLoading, isError, error }] = useUpdateProfileMutation();
 
-  const onSubmit = (data: EssentialPersonalData) => {
+  const onSubmit = async(data: EssentialPersonalData) => {
     console.log("Personal Details Form Data:", {
       ...data,
     });
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    
+ console.log([...formData.entries()]);
+
+    
+    try {
+      const res = await updateProfile({
+        body: formData 
+        
+      })
+      console.log(res)
+      if (res?.data?.success) {
+        console.log("Profile updated successfully:", res.data);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+    
+
   };
 
   return (
@@ -99,65 +119,23 @@ export function PersonalDetailsForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div>
             <Label
-              htmlFor="email"
-              className="text-lg font-medium text-gray-900"
-            >
-              Email Address *
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="john.doe@example.com"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
-          </div>
-          <div>
-            <Label
-              htmlFor="mobile"
-              className="text-lg font-medium text-gray-900"
-            >
-              Mobile Number *
-            </Label>
-            <Input
-              id="mobile"
-              placeholder="+0000 0000 0000"
-              {...register("mobile", { required: "Mobile number is required" })}
-              className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-            />
-            {errors.mobile && (
-              <p className="text-red-500 text-sm">{errors.mobile.message}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div>
-            <Label
-              htmlFor="birthday"
+              htmlFor="dateOfBirth"
               className="text-lg font-medium text-gray-900"
             >
               Date of Birth *
             </Label>
             <Input
-              id="birthday"
+              id="dateOfBirth"
               type="date"
-              {...register("birthday", {
+              {...register("dateOfBirth", {
                 required: "Date of birth is required",
               })}
               className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
             />
-            {errors.birthday && (
-              <p className="text-red-500 text-sm">{errors.birthday.message}</p>
+            {errors.dateOfBirth && (
+              <p className="text-red-500 text-sm">
+                {errors.dateOfBirth.message}
+              </p>
             )}
           </div>
           <div>
@@ -177,9 +155,9 @@ export function PersonalDetailsForm() {
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -189,27 +167,50 @@ export function PersonalDetailsForm() {
             )}
           </div>
         </div>
+        <div>
+          <Label
+            htmlFor="lastName"
+            className="text-lg font-medium text-gray-900"
+          >
+            Mobile Number *
+          </Label>
+          <Input
+            id="mobile"
+            placeholder="Mobile Number"
+            {...register("mobile", { required: "Mobile number is required" })}
+            className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+          />
+          {errors.mobile && (
+            <p className="text-red-500 text-sm">{errors.mobile.message}</p>
+          )}
+        </div>
       </div>
 
-      {/* Address Section */}
+      {/* streetAddress Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Address</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Address
+        </h3>
         <div className="space-y-4">
           <div>
             <Label
-              htmlFor="address"
+              htmlFor="streetAddress"
               className="text-lg font-medium text-gray-900"
             >
-              Street Address *
+              Street streetAddress *
             </Label>
             <Input
-              id="address"
+              id="streetAddress"
               placeholder="123 Main Street"
-              {...register("address", { required: "Address is required" })}
+              {...register("streetAddress", {
+                required: "StreetAddress is required",
+              })}
               className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
             />
-            {errors.address && (
-              <p className="text-red-500 text-sm">{errors.address.message}</p>
+            {errors.streetAddress && (
+              <p className="text-red-500 text-sm">
+                {errors.streetAddress.message}
+              </p>
             )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
