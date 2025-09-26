@@ -1,15 +1,17 @@
-"use client"
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
-import { useGetUserQuery } from "@/redux/features/authApi";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { Building } from "lucide-react";
 
 export function ProfileOverview() {
   // RTK Query call
-  const { data: userData, isLoading } = useGetUserQuery();
-  const profileData = userData?.data
-  console.log(profileData?.data,userData)
+  const { data: userData, isLoading } = useGetMeQuery({});
+  const profileData = userData?.data;
+
+  console.log("Profile data", profileData);
+
   // Loading or no data fallback
   if (isLoading || !profileData) {
     return <div>Loading...</div>;

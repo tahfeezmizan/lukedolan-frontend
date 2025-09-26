@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import { FileText, X, Upload } from "lucide-react";
 import { toast } from "sonner";
 import {
+  useGetMeQuery,
   useUpdateProfileMutation,
-  useGetUserQuery,
 } from "@/redux/features/userApi";
 
 interface Props {
@@ -19,7 +19,7 @@ export function ResumeUpload({ currentResume }: Props) {
   const [dragOver, setDragOver] = useState(false);
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { refetch: refetchUser } = useGetUserQuery({});
+  const { refetch: refetchUser } = useGetMeQuery({});
 
   useEffect(() => {
     if (currentResume) {

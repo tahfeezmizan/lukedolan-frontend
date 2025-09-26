@@ -1,3 +1,5 @@
+"use client";
+
 import { Briefcase, DollarSign, Users } from "lucide-react";
 import { StatsCard } from "../shared/stats-card";
 
