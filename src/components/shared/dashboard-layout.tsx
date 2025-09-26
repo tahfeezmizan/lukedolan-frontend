@@ -20,9 +20,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const role = data?.role;
 
-  console.log(role);
-
-  // Decide which sidebar to show
   let sidebarItems: SidebarItems;
 
   switch (role) {
