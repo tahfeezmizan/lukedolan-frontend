@@ -27,12 +27,12 @@ export default function ProfilePage() {
           onValueChange={handleTabChange}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-5 bg-white mb-8">
-            <TabsTrigger value="profile">Over View</TabsTrigger>
-            <TabsTrigger value="personal-details">Personal Details</TabsTrigger>
-            <TabsTrigger value="resume">Resume / CV</TabsTrigger>
-            <TabsTrigger value="education">Education</TabsTrigger>
-            <TabsTrigger value="work-experience">Work Experience</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 bg-white mb-8 ">
+            <TabsTrigger value="profile" className="cursor-pointer">Over View</TabsTrigger>
+            <TabsTrigger value="personal-details" className="cursor-pointer">Personal Details</TabsTrigger>
+            <TabsTrigger value="resume" className="cursor-pointer">Resume / CV</TabsTrigger>
+            <TabsTrigger value="education" className="cursor-pointer">Education</TabsTrigger>
+            <TabsTrigger value="work-experience" className="cursor-pointer">Work Experience</TabsTrigger>
           </TabsList>
 
           <TabsContent

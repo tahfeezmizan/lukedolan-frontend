@@ -10,6 +10,13 @@ const userApi = baseApi.injectEndpoints({
       }),
     }),
 
+    getUser: builder.query({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+    }),
+
     UpdateMe: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateMe body:", body);
@@ -21,15 +28,16 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
-    sendVerifiedReqest: builder.mutation({
-      query: (body) => {
+    UpdateProfile: builder.mutation({
+      query: ({ body }) => {
+        console.log("UpdateProfile body:", body);
         return {
-          url: "/user/sent-verify",
-          method: "PUT",
+          url: "/user/profile",
+          method: "PATCH",
           body,
         };
       },
     }),
   }),
 });
-export const { useUpdateMeMutation, useSendVerifiedReqestMutation, useGetAllUserQuery } = userApi;
+export const { useUpdateMeMutation,  useGetAllUserQuery, useUpdateProfileMutation, useGetUserQuery } = userApi;

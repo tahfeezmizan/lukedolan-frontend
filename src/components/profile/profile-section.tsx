@@ -1,57 +1,100 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
+import { useGetUserQuery } from "@/redux/features/authApi";
+import { useUpdateProfileMutation } from "@/redux/features/userApi";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
 
 export default function ProfileSection() {
-  const [status, setStatus] = useState<"open" | "not">("open");
+  const { data: userData, isLoading } = useGetUserQuery();
+  const [openToWork, setOpenToWork] = useState<boolean>(false); 
   const [preview, setPreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  // Handle file upload and show preview
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
-      // console the file and preview url
-      console.log("Selected File:", file);
-      console.log("Preview URL:", imageUrl);
+  //  যখন userData আসবে তখন state update করো
+  useEffect(() => {
+    if (userData?.data?.profile) {
+      setOpenToWork(userData.data.profile.openToWork ?? false);
+      setPreview(getImageUrl(userData.data.image));
+    }
+  }, [userData]);
+
+  //  Update status instantly to backend
+  const handleStatusChange = async (newValue: boolean) => {
+    setOpenToWork(newValue);
+
+    try {
+      const res = await updateProfile({
+        body: { openToWork: newValue },
+      }).unwrap();
+
+      toast.success("Status updated successfully");
+      console.log("Updated in DB:", res);
+    } catch (err) {
+      toast.error("Failed to update status");
+      console.error("Update status failed:", err);
     }
   };
+
+  //  Handle file upload and instantly send to backend
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setPreview(imageUrl);
+      setFile(selectedFile);
+
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      try {
+        const res = await updateProfile({ body: formData }).unwrap();
+        toast.success("Profile picture updated");
+        console.log("Image uploaded:", res);
+      } catch (err) {
+        toast.error("Image upload failed");
+        console.error("Image upload failed:", err);
+      }
+    }
+  };
+
+  if (isLoading) {
+    return <p className="text-gray-600">Loading profile...</p>;
+  }
 
   return (
     <div className="flex flex-col items-center space-y-8">
       {/* Availability Switch */}
       <div className="flex items-center rounded-full bg-gray-100 p-1 w-[300px] justify-between">
         <button
-          onClick={() => {
-            setStatus("open");
-            console.log("Status:", "open");
-          }}
+          onClick={() => handleStatusChange(true)}
+          disabled={isUpdating}
           className={cn(
             "flex-1 py-2 text-sm font-medium rounded-full transition",
-            status === "open"
+            openToWork
               ? "bg-green-700 text-white"
               : "text-gray-600 hover:bg-gray-200"
           )}
         >
-          Open to work
+          {isUpdating && openToWork ? "Updating..." : "Open to work"}
         </button>
+
         <button
-          onClick={() => {
-            setStatus("not");
-            console.log("Status:", "not");
-          }}
+          onClick={() => handleStatusChange(false)}
+          disabled={isUpdating}
           className={cn(
             "flex-1 py-2 text-sm font-medium rounded-full transition",
-            status === "not"
+            !openToWork
               ? "bg-green-700 text-white"
               : "text-gray-600 hover:bg-gray-200"
           )}
         >
-          Not available
+          {isUpdating && !openToWork ? "Updating..." : "Not available"}
         </button>
       </div>
 
@@ -60,8 +103,8 @@ export default function ProfileSection() {
         <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
           {preview ? (
             <Image
-              width={24}
-              height={24}
+              width={96}
+              height={96}
               src={preview}
               alt="Profile Preview"
               className="w-full h-full object-cover"
@@ -88,7 +131,7 @@ export default function ProfileSection() {
           htmlFor="file-upload"
           className="px-4 py-1 border border-green-700 rounded text-green-800 text-sm cursor-pointer hover:bg-green-50"
         >
-          Choose File
+          {isUpdating ? "Uploading..." : "Choose File"}
         </label>
       </div>
     </div>
