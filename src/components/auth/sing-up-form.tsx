@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type SignupFormData = {
   name: string;
@@ -22,9 +23,9 @@ type SignupFormData = {
 };
 
 export function SignupForm() {
+  const route = useRouter();
   const [role, setRole] = useState<"applicant" | "recruiter">("applicant");
   const [createUser, { isLoading }] = useCreateUserMutation();
-  const route = useRouter();
 
   const {
     register,
@@ -37,14 +38,13 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: SignupFormData) => {
-    const formData = { ...data, role };
-    console.log("Selected role:", formData);
-
     try {
       const res = await createUser({
         name: data.name,
         email: data.email,
         password: data.password,
+        role: role,
+        companyName: data.companyName,
       });
 
       if (res?.data?.success === true) {
@@ -53,14 +53,15 @@ export function SignupForm() {
             data.email
           )}&authType=createAccount`
         );
-        console.log("Created");
+        // console.log("Created");
+        toast.success("User Create sucessfully ");
+      } else {
+        toast.error(res?.error?.data?.message || "An error occurred");
       }
-      console.log(res);
     } catch (error) {
-      console.log(error);
+      toast.error(error?.data?.message || "Something went wrong");
+      console.log("error", error);
     }
-
-    // console.log("Form data:", data);
   };
 
   return (
