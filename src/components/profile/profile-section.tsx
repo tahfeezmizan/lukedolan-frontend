@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, getImageUrl } from "@/lib/utils";
-import { useGetUserQuery } from "@/redux/features/authApi";
+import { useGetUserQuery } from "@/redux/features/userApi";
 import { useUpdateProfileMutation } from "@/redux/features/userApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";

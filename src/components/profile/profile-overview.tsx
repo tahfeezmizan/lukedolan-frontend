@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
-import { useGetUserQuery } from "@/redux/features/authApi";
+import { useGetUserQuery } from "@/redux/features/userApi";
 import { Building, MapPin, Calendar, Briefcase } from "lucide-react";
 
 // Type definitions based on your data structure
