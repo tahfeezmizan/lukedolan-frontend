@@ -36,7 +36,7 @@ export const jobInfo: JobInfo = {
   ],
 };
 
-export default function JobDescription() {
+export default function JobDetail({data}: {data: any}) {
   return (
     <aside className="w-full  bg-white p-8 rounded-lg">
       <div className="space-y-8">
