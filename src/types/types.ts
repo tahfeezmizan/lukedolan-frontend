@@ -25,11 +25,12 @@ export interface TalentProps {
 
 export interface AppliedJob {
   id: number;
-  jobTitle: string;
+  title: string;
   company: string;
   location: string;
-  appliedDate: string; // could also use Date if you plan to parse
-  expires: string; // same here
+  author: string;
+  createdAt: string; 
+  expires: string; 
   action: string;
 }
 
