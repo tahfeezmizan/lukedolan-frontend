@@ -72,7 +72,7 @@ export default function ChatLayout({
     <div className="p-4">
       <div className="grid grid-cols-6 min-h-screen">
         <div className="col-span-2 h-screen ">
-          <ChatList messages={messages} />
+          <ChatList />
         </div>
 
         <div className="col-span-4 h-screen">{children}</div>

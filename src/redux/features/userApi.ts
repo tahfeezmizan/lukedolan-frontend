@@ -10,6 +10,13 @@ const userApi = baseApi.injectEndpoints({
       }),
     }),
 
+    getUser: builder.query({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+    }),
+
     UpdateMe: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateMe body:", body);
@@ -21,15 +28,54 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
-    sendVerifiedReqest: builder.mutation({
-      query: (body) => {
+    UpdateProfile: builder.mutation({
+      query: ({ body }) => {
+        console.log("UpdateProfile body:", body);
         return {
-          url: "/user/sent-verify",
+          url: "/user/profile",
+          method: "PATCH",
+          body,
+        };
+      },
+    }),
+     AddWorkExperience: builder.mutation({
+      query: ({ body }) => {
+        console.log("AddWorkExperience body:", body);
+        return {
+          url: "/user/profile/work-experience",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+DeleteWorkExperience: builder.mutation({
+  query: ({ index }) => ({
+    url: `/user/profile/work-experience/${index}`,
+    method: "DELETE",
+  }),
+}),
+
+      // Update specific work experience by index
+    UpdateWorkExperience: builder.mutation({
+      query: ({ index, body }) => {
+        console.log("UpdateWorkExperience index:", index, "body:", body);
+        return {
+          url: `/user/profile/work-experience/${index}`,
           method: "PUT",
           body,
         };
       },
     }),
+    // Delete specific education by index
+    DeleteEducation: builder.mutation({
+      query: ({ index }) => {
+        console.log("DeleteEducation index:", index);
+        return {
+          url: `/user/profile/education/${index}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
-export const { useUpdateMeMutation, useSendVerifiedReqestMutation, useGetAllUserQuery } = userApi;
+export const { useUpdateMeMutation,  useGetAllUserQuery, useUpdateProfileMutation, useGetUserQuery, useDeleteWorkExperienceMutation, useDeleteEducationMutation, useAddWorkExperienceMutation, useUpdateWorkExperienceMutation } = userApi;

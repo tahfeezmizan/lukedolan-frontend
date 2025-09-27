@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Save } from "lucide-react";
+import { Plus, Save, Trash2, Edit } from "lucide-react";
+import { toast } from "sonner";
+import {
+  useUpdateProfileMutation,
+  useGetUserQuery,
+} from "@/redux/features/userApi";
 
 interface WorkExperienceData {
   jobTitle: string;
@@ -30,6 +35,56 @@ export function WorkExperienceForm() {
   const [workExperiences, setWorkExperiences] = useState<WorkExperienceData[]>(
     []
   );
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const {
+    data: userData,
+    refetch,
+    isLoading: isUserLoading,
+  } = useGetUserQuery({});
+
+  useEffect(() => {
+    console.log("Full user data received:", userData);
+
+    if (userData?.data) {
+      if (userData?.data?.profile?.workExperience) {
+        console.log(
+          "Work Experience data found:",
+          userData.data.profile.workExperience
+        );
+
+        if (Array.isArray(userData?.data?.profile?.workExperience)) {
+          // Convert any numeric values to strings for form compatibility
+          const formattedWorkExperiences =
+            userData?.data?.profile?.workExperience.map((exp: any) => ({
+              jobTitle: exp.jobTitle?.toString() || "",
+              companyName: exp.companyName?.toString() || "",
+              location: exp.location?.toString() || "",
+              employmentType: exp.employmentType?.toString() || "",
+              startDate: exp.startDate?.toString() || "",
+              endDate: exp.endDate?.toString() || "",
+              experience: exp.experience?.toString() || "",
+            }));
+
+          console.log(
+            "Formatted work experiences for state:",
+            formattedWorkExperiences
+          );
+          setWorkExperiences(formattedWorkExperiences);
+        }
+      } else {
+        console.log("No work experience data found in userData.data");
+      }
+    } else {
+      console.log("No userData or userData.data available");
+    }
+  }, [userData]);
+
+  // Debug effect to track work experiences state
+  useEffect(() => {
+    console.log("Current work experiences state:", workExperiences);
+  }, [workExperiences]);
 
   const handleInputChange = (
     field: keyof WorkExperienceData,
@@ -41,11 +96,390 @@ export function WorkExperienceForm() {
     }));
   };
 
-  const handleAddExperience = () => {
-    setWorkExperiences((prev) => [...prev, formData]);
-    console.log("Added Work Experience:", formData);
+  // Check if current form is valid
+  const isFormValid = () => {
+    // Basic field validation
+    const allFieldsFilled =
+      formData.jobTitle.trim() !== "" &&
+      formData.companyName.trim() !== "" &&
+      formData.location.trim() !== "" &&
+      formData.employmentType.trim() !== "" &&
+      formData.startDate.trim() !== "" &&
+      formData.endDate.trim() !== "" &&
+      formData.experience.trim() !== "";
 
-    // reset form after adding
+    // Date validation
+    if (!allFieldsFilled) return false;
+
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+
+    // Check if dates are valid
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return false;
+    }
+
+    // Check if end date is after start date
+    if (endDate <= startDate) {
+      return false;
+    }
+
+    return true;
+  };
+
+  // Check if save button should be enabled (has at least one work experience)
+  const isSaveEnabled = () => {
+    return workExperiences.length > 0;
+  };
+
+  const handleAddExperience = async () => {
+    // Enhanced validation with specific error messages
+    if (formData.jobTitle.trim() === "") {
+      toast.error("Please enter a job title");
+      return;
+    }
+    if (formData.companyName.trim() === "") {
+      toast.error("Please enter a company name");
+      return;
+    }
+    if (formData.location.trim() === "") {
+      toast.error("Please enter a location");
+      return;
+    }
+    if (formData.employmentType.trim() === "") {
+      toast.error("Please enter an employment type");
+      return;
+    }
+    if (formData.startDate.trim() === "") {
+      toast.error("Please select a start date");
+      return;
+    }
+    if (formData.endDate.trim() === "") {
+      toast.error("Please select an end date");
+      return;
+    }
+    if (formData.experience.trim() === "") {
+      toast.error("Please enter your experience duration");
+      return;
+    }
+
+    // Date validation
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+
+    if (isNaN(startDate.getTime())) {
+      toast.error("Please enter a valid start date");
+      return;
+    }
+    if (isNaN(endDate.getTime())) {
+      toast.error("Please enter a valid end date");
+      return;
+    }
+    if (endDate <= startDate) {
+      toast.error("End date must be after start date");
+      return;
+    }
+
+    try {
+      let updatedWorkExperiences;
+
+      if (editingIndex !== null) {
+        // Update existing work experience
+        updatedWorkExperiences = [...workExperiences];
+        updatedWorkExperiences[editingIndex] = { ...formData };
+        setWorkExperiences(updatedWorkExperiences);
+        setEditingIndex(null);
+      } else {
+        // Add new work experience
+        updatedWorkExperiences = [...workExperiences, { ...formData }];
+        setWorkExperiences(updatedWorkExperiences);
+      }
+
+      // Reset form after adding/updating
+      setFormData({
+        jobTitle: "",
+        companyName: "",
+        location: "",
+        employmentType: "",
+        startDate: "",
+        endDate: "",
+        experience: "",
+      });
+
+      // Prepare data for API call
+      const workExperiencesForAPI = updatedWorkExperiences.map((exp) => ({
+        jobTitle: exp.jobTitle,
+        companyName: exp.companyName,
+        location: exp.location,
+        employmentType: exp.employmentType,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        experience: exp.experience,
+      }));
+
+      console.log("Sending work experiences to API:", workExperiencesForAPI);
+
+      // Call API to save to database
+      const response = await updateProfile({
+        body: { workExperience: workExperiencesForAPI },
+      }).unwrap();
+
+      console.log("Add/Update API response:", response);
+
+      if (editingIndex !== null) {
+        toast.success("Work experience updated and saved to database!");
+      } else {
+        toast.success("Work experience added and saved to database!");
+      }
+
+      // Refetch to ensure data consistency
+      await refetch();
+    } catch (error: any) {
+      console.error("Add/Update API error:", error);
+
+      // Revert local state if API call failed
+      setWorkExperiences(workExperiences);
+
+      let errorMessage = "Failed to save work experience to database";
+      if (error?.data?.message) {
+        errorMessage = error.data.message;
+      }
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleEditExperience = (index: number) => {
+    if (index >= 0 && index < workExperiences.length) {
+      const experienceToEdit = workExperiences[index];
+      setFormData({ ...experienceToEdit });
+      setEditingIndex(index);
+
+      // Scroll to top of form for better UX
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleDeleteExperience = async (index: number) => {
+    console.log("handleDeleteExperience called with index:", index);
+    console.log("Current workExperiences length:", workExperiences.length);
+
+    if (index < 0 || index >= workExperiences.length) {
+      console.error("Invalid index for deletion:", index);
+      toast.error("Invalid experience selected for deletion");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this work experience?"
+    );
+
+    if (confirmed) {
+      try {
+        console.log("Proceeding with deletion...");
+
+        // Create new array without the item at index
+        const newWorkExperiences = [...workExperiences];
+        newWorkExperiences.splice(index, 1);
+
+        console.log("New workExperiences after deletion:", newWorkExperiences);
+
+        // Update local state first for immediate UI feedback
+        setWorkExperiences(newWorkExperiences);
+
+        // Prepare data for API call
+        const workExperiencesForAPI = newWorkExperiences.map((exp) => ({
+          jobTitle: exp.jobTitle,
+          companyName: exp.companyName,
+          location: exp.location,
+          employmentType: exp.employmentType,
+          startDate: exp.startDate,
+          endDate: exp.endDate,
+          experience: exp.experience,
+        }));
+
+        console.log(
+          "Sending updated work experiences to API:",
+          workExperiencesForAPI
+        );
+
+        // Call API to update database
+        const response = await updateProfile({
+          body: { workExperience: workExperiencesForAPI },
+        }).unwrap();
+
+        console.log("Delete API response:", response);
+        toast.success("Work experience deleted and saved to database!");
+
+        // Handle editing state
+        if (editingIndex === index) {
+          console.log("Was editing the deleted item, clearing form");
+          setEditingIndex(null);
+          setFormData({
+            jobTitle: "",
+            companyName: "",
+            location: "",
+            employmentType: "",
+            startDate: "",
+            endDate: "",
+            experience: "",
+          });
+        } else if (editingIndex !== null && editingIndex > index) {
+          console.log(
+            "Adjusting editing index from",
+            editingIndex,
+            "to",
+            editingIndex - 1
+          );
+          setEditingIndex(editingIndex - 1);
+        }
+
+        // Refetch to ensure data consistency
+        await refetch();
+      } catch (error: any) {
+        console.error("Delete API error:", error);
+
+        // Revert local state if API call failed
+        setWorkExperiences(workExperiences);
+
+        let errorMessage = "Failed to delete work experience from database";
+        if (error?.data?.message) {
+          errorMessage = error.data.message;
+        }
+        toast.error(errorMessage);
+      }
+    }
+  };
+
+  const handleSave = async () => {
+    if (!isSaveEnabled()) {
+      toast.error("Please add at least one work experience before saving");
+      return;
+    }
+
+    try {
+      console.log("Saving work experiences to database:", workExperiences);
+
+      // Let's debug by trying different approaches
+      // First, let's see what education sends when it works
+      console.log("=== DEBUGGING WORK EXPERIENCE API CALL ===");
+
+      // Method 1: Exactly like education form (simple object mapping)
+      const workExperiencesForAPI = workExperiences.map((exp) => ({
+        jobTitle: exp.jobTitle,
+        companyName: exp.companyName,
+        location: exp.location,
+        employmentType: exp.employmentType,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        experience: exp.experience,
+      }));
+
+      console.log(
+        "Method 1 - Formatted work experiences for API:",
+        workExperiencesForAPI
+      );
+      console.log("Method 1 - Request body:", {
+        workExperience: workExperiencesForAPI,
+      });
+
+      // Try to send the request
+      const response = await updateProfile({
+        body: { workExperience: workExperiencesForAPI },
+      }).unwrap();
+
+      toast.success("Work experience information saved successfully!");
+      console.log(
+        "Work experience saved to database - API response:",
+        response
+      );
+
+      // Force refetch to ensure we have the latest data
+      const refreshedData = await refetch();
+      console.log("Refreshed data after save:", refreshedData);
+    } catch (error: any) {
+      console.error("=== DETAILED ERROR ANALYSIS ===");
+      console.error("Full error object:", error);
+      console.error("Error status:", error?.status);
+      console.error("Error data:", error?.data);
+      console.error("Error message:", error?.data?.message);
+      console.error("Error messages array:", error?.data?.errorMessages);
+      console.error("Error stack:", error?.data?.stack);
+
+      // Try alternative approach if the first method fails
+      if (error?.data?.message === "Cast Error") {
+        console.log("=== TRYING ALTERNATIVE METHODS ===");
+
+        try {
+          // Method 2: Try with snake_case fields (common in some APIs)
+          const altWorkExperience = workExperiences.map((exp) => ({
+            job_title: exp.jobTitle,
+            company_name: exp.companyName,
+            location: exp.location,
+            employment_type: exp.employmentType,
+            start_date: exp.startDate,
+            end_date: exp.endDate,
+            experience: exp.experience,
+          }));
+
+          console.log("Method 2 - Snake case attempt:", {
+            workExperience: altWorkExperience,
+          });
+
+          const altResponse = await updateProfile({
+            body: { workExperience: altWorkExperience },
+          }).unwrap();
+
+          toast.success("Work experience saved with alternative format!");
+          await refetch();
+          return;
+        } catch (altError) {
+          console.error("Method 2 also failed:", altError);
+        }
+
+        try {
+          // Method 3: Try with work_experience key instead of workExperience
+          const workExp = workExperiences.map((exp) => ({
+            jobTitle: exp.jobTitle,
+            companyName: exp.companyName,
+            location: exp.location,
+            employmentType: exp.employmentType,
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+            experience: exp.experience,
+          }));
+
+          console.log("Method 3 - Different key attempt:", {
+            work_experience: workExp,
+          });
+
+          const altResponse2 = await updateProfile({
+            body: { work_experience: workExp },
+          }).unwrap();
+
+          toast.success("Work experience saved with work_experience key!");
+          await refetch();
+          return;
+        } catch (altError2) {
+          console.error("Method 3 also failed:", altError2);
+        }
+      }
+
+      let errorMessage = "Failed to save work experience information";
+      if (error?.data?.message) {
+        errorMessage = `${error.data.message}`;
+        if (error?.data?.errorMessages) {
+          errorMessage += `: ${error.data.errorMessages
+            .map((e: { path: string; message: string }) => `${e.path} - ${e.message}`)
+            .join(", ")}`;
+        }
+      }
+
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingIndex(null);
     setFormData({
       jobTitle: "",
       companyName: "",
@@ -55,10 +489,6 @@ export function WorkExperienceForm() {
       endDate: "",
       experience: "",
     });
-  };
-
-  const handleSave = () => {
-    console.log("All Work Experiences:", workExperiences);
   };
 
   return (
@@ -71,42 +501,62 @@ export function WorkExperienceForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="jobTitle">Job Title</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="jobTitle"
+            >
+              Job Title
+            </Label>
             <Input
               id="jobTitle"
               value={formData.jobTitle}
               onChange={(e) => handleInputChange("jobTitle", e.target.value)}
               placeholder="Senior Barber"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="companyName">Company Name</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="companyName"
+            >
+              Company Name
+            </Label>
             <Input
               id="companyName"
               value={formData.companyName}
               onChange={(e) => handleInputChange("companyName", e.target.value)}
               placeholder="Luxe Beauty Lounge"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="location">Location</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="location"
+            >
+              Location
+            </Label>
             <Input
               id="location"
               value={formData.location}
               onChange={(e) => handleInputChange("location", e.target.value)}
               placeholder="London"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="employmentType">Employment Type</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="employmentType"
+            >
+              Employment Type
+            </Label>
             <Input
               id="employmentType"
               value={formData.employmentType}
@@ -114,42 +564,58 @@ export function WorkExperienceForm() {
                 handleInputChange("employmentType", e.target.value)
               }
               placeholder="Full Time"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="startDate">Start Date</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="startDate"
+            >
+              Start Date
+            </Label>
             <Input
               id="startDate"
+              type="date"
               value={formData.startDate}
               onChange={(e) => handleInputChange("startDate", e.target.value)}
-              placeholder="12/02/2025"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="endDate">End Date</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="endDate"
+            >
+              End Date
+            </Label>
             <Input
               id="endDate"
+              type="date"
               value={formData.endDate}
+              min={formData.startDate || undefined}
               onChange={(e) => handleInputChange("endDate", e.target.value)}
-              placeholder="30/12/2025"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-90" htmlFor="experience">Experience</Label>
+            <Label
+              className="text-lg font-medium text-gray-900"
+              htmlFor="experience"
+            >
+              Experience
+            </Label>
             <Input
               id="experience"
               value={formData.experience}
               onChange={(e) => handleInputChange("experience", e.target.value)}
               placeholder="2 Years"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-200"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
         </div>
@@ -160,21 +626,144 @@ export function WorkExperienceForm() {
         <Button
           onClick={handleAddExperience}
           type="button"
-          className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
+          disabled={!isFormValid() || isLoading}
+          className={`px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2 ${
+            isFormValid() && !isLoading
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           <Plus className="h-4 w-4" />
-          Add Work Experience
+          {isLoading
+            ? "Saving..."
+            : editingIndex !== null
+            ? "Update Experience"
+            : "Add Work Experience"}
         </Button>
+
+        {editingIndex !== null && (
+          <Button
+            onClick={handleCancelEdit}
+            type="button"
+            className="bg-gray-500 hover:bg-gray-600 text-white px-8 py-4 text-lg font-medium rounded-lg"
+          >
+            Cancel Edit
+          </Button>
+        )}
 
         <Button
           onClick={handleSave}
           type="button"
-          className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2"
+          disabled={!isSaveEnabled() || isLoading}
+          className={`px-8 py-4 text-lg font-medium rounded-lg flex items-center gap-2 ${
+            isSaveEnabled() && !isLoading
+              ? "bg-green-900 hover:bg-green-800 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           <Save className="h-4 w-4" />
-          Save
+          {isLoading ? "Saving..." : "Save All Experience"}
         </Button>
       </div>
+
+      {/* Added Work Experience List */}
+      {(workExperiences.length > 0 || isUserLoading) && (
+        <div className="mt-8">
+          <h4 className="text-2xl font-semibold text-gray-900 mb-4">
+            {isUserLoading
+              ? "Loading work experience data..."
+              : `Added Work Experience (${workExperiences.length})`}
+          </h4>
+
+          {isUserLoading ? (
+            <div className="flex justify-center py-8">
+              <div className="animate-spin h-8 w-8 border-2 border-green-600 border-t-transparent rounded-full"></div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {workExperiences.map((experience, index) => (
+                <div
+                  key={`experience-${index}`}
+                  className={`border rounded-lg p-6 bg-white shadow-sm ${
+                    editingIndex === index
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-200"
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h5 className="text-lg font-semibold text-gray-900">
+                        {experience.jobTitle}
+                      </h5>
+                      <p className="text-gray-600 mb-2">
+                        {experience.companyName}
+                      </p>
+                      <p className="text-gray-700 font-medium mb-1">
+                        {experience.location}
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                        <span>
+                          <strong>Type:</strong> {experience.employmentType}
+                        </span>
+                        <span>
+                          <strong>Start:</strong>{" "}
+                          {new Date(experience.startDate).toLocaleDateString()}
+                        </span>
+                        <span>
+                          <strong>End:</strong>{" "}
+                          {new Date(experience.endDate).toLocaleDateString()}
+                        </span>
+                        <span>
+                          <strong>Experience:</strong> {experience.experience}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 ml-4">
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log("Edit button clicked for index:", index);
+                          handleEditExperience(index);
+                        }}
+                        size="sm"
+                        variant="outline"
+                        className="p-2"
+                        type="button"
+                        disabled={isLoading}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log(
+                            "Delete button clicked for index:",
+                            index
+                          );
+                          console.log(
+                            "Current workExperiences:",
+                            workExperiences
+                          );
+                          handleDeleteExperience(index);
+                        }}
+                        size="sm"
+                        variant="outline"
+                        className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                        type="button"
+                        disabled={isLoading}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
