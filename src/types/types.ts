@@ -108,3 +108,12 @@ export type JobData = {
   jobType: string;
   applications: number;
 };
+
+export type JobApplyFormInputs = {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  experience: number;
+  resume: FileList;
+};
