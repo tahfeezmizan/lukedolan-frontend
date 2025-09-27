@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 
 export default function ProfileSection() {
-  const { data: userData, isLoading } = useGetUserQuery();
+  const { data: userData, isLoading } = useGetUserQuery(undefined);
   const [openToWork, setOpenToWork] = useState<boolean>(false); 
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);

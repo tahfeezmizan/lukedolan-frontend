@@ -84,7 +84,7 @@ interface ApiResponse {
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
-  const { data: userData, isLoading } = useGetUserQuery() as {
+  const { data: userData, isLoading } = useGetUserQuery(undefined) as {
     data?: ApiResponse;
     isLoading: boolean;
   };
