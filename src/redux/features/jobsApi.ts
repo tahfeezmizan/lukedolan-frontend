@@ -29,6 +29,7 @@ const jobsApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    
   }),
 });
 

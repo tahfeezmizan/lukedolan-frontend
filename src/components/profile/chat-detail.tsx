@@ -37,6 +37,8 @@ export default function ChatDetail() {
   const chatId = id as string;
   const { data: userData } = useGetUserQuery(undefined);
   const myId = userData?.data?._id;
+   
+  console.log(myId)
 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);

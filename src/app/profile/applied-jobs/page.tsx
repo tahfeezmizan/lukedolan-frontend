@@ -1,72 +1,15 @@
+"use client"
 import Table from "@/components/shared/table";
+import { useGetAppliedJobsQuery } from "@/redux/features/applicationApi";
 
-const appliedJobs = [
-  {
-    id: 1,
-    jobTitle: "Senior Hair Stylist",
-    company: "Glamour Hair Studio",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 2,
-    jobTitle: "Senior Hair Stylist",
-    company: "Luxe Beauty Salon",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 3,
-    jobTitle: "Senior Hair Stylist",
-    company: "Luxe Beauty Salon",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 4,
-    jobTitle: "Senior Hair Stylist",
-    company: "Luxe Beauty Salon",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 5,
-    jobTitle: "Senior Hair Stylist",
-    company: "Sparkle Nail Bar",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 6,
-    jobTitle: "Senior Hair Stylist",
-    company: "Sparkle Nail Bar",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-  {
-    id: 7,
-    jobTitle: "Senior Hair Stylist",
-    company: "Shine Hair & Co.",
-    location: "London",
-    appliedDate: "07/07/2025",
-    expires: "07/07/2025",
-    action: "Company Details",
-  },
-];
 
-export default function page() {
+
+export default  function page() {
+
+  const { data: appliedJobsData } =  useGetAppliedJobsQuery();
+
+  console.log(appliedJobsData)
+
   return (
     <div className="space-y-7">
       <h2 className="text-2xl font-bold mb-4">Applied Jobs</h2>
@@ -94,7 +37,7 @@ export default function page() {
             </th>
           </tr>
         </thead>
-        <Table appliedJobs={appliedJobs} />
+        <Table appliedJobs={appliedJobsData || []} />
       </table>
     </div>
   );

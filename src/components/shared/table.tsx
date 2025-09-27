@@ -13,13 +13,13 @@ export default function Table({ appliedJobs }: { appliedJobs: AppliedJob[] }) {
         >
           <td className="py-4 px-6">
             <div>
-              <div className="font-medium text-gray-900">{jobs.jobTitle}</div>
+              <div className="font-medium text-gray-900">{jobs.title}</div>
             </div>
           </td>
+          <td className="py-4 px-6 text-gray-700">{jobs?.author?.companyName}</td>
           <td className="py-4 px-6 text-gray-700">{jobs.location}</td>
-          <td className="py-4 px-6 text-gray-700">{jobs.appliedDate}</td>
-          <td className="py-4 px-6 text-gray-700">{jobs.expires}</td>
-          <td className="py-4 px-6 text-gray-700">{jobs.expires}</td>
+          <td className="py-4 px-6 text-gray-700">{jobs.createdAt.toString()}</td>
+        
 
           <td className="py-4 px-6">
             <Button className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold">
