@@ -469,7 +469,7 @@ export function WorkExperienceForm() {
         errorMessage = `${error.data.message}`;
         if (error?.data?.errorMessages) {
           errorMessage += `: ${error.data.errorMessages
-            .map((e) => `${e.path} - ${e.message}`)
+            .map((e: { path: string; message: string }) => `${e.path} - ${e.message}`)
             .join(", ")}`;
         }
       }

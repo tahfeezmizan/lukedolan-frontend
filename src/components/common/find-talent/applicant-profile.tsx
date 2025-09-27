@@ -1,5 +1,6 @@
 "use client";
 
+import CreateChatModal from "@/components/profile/createChatModal";
 import { Button } from "@/components/ui/button";
 import {
   Briefcase,
@@ -40,6 +41,32 @@ export default function ApplicantProfile() {
                 <span className="bg-green-900/70 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
                   Open to work
                 </span>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                Contact
+              </h4>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <Mail className="w-4 h-4" />
+                  Email
+                </Button>
+                {/* <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Message
+                </Button> */}
+                <CreateChatModal myId="68d48db814b7a462b44b51ef" />
               </div>
             </div>
 
@@ -99,31 +126,6 @@ export default function ApplicantProfile() {
                   Account payable management
                 </li>
               </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                Contact
-              </h4>
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4" />
-                  Email
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Message
-                </Button>
-              </div>
             </div>
           </div>
 
