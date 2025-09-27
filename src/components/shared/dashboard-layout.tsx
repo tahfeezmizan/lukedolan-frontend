@@ -46,13 +46,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main Content Area */}
       <main className="col-span-5 overflow-y-auto">
-<<<<<<< HEAD
-        <TopNavbar title={dashboardTitle} />
+        <TopNavbar  />
         <div className="p-4  ">{children}</div>
-=======
-        <TopNavbar />
-        <div className="p-8 bg-[#EBF1FA] h-full">{children}</div>
->>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
       </main>
     </div>
   );

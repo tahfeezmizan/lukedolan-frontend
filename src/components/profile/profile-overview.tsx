@@ -2,10 +2,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
-<<<<<<< HEAD
-import { useGetUserQuery } from "@/redux/features/userApi";
-import { Building, MapPin, Calendar, Briefcase } from "lucide-react";
-=======
 import { useGetMeQuery } from "@/redux/features/userApi";
 import {
   ApiResponse,
@@ -14,21 +10,12 @@ import {
   WorkExperience,
 } from "@/types/profileTypes";
 import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
->>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
 
 // Type definitions based on your data structure
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
-<<<<<<< HEAD
-  const { data: userData, isLoading } = useGetUserQuery(undefined) as {
-    data?: ApiResponse;
-    isLoading: boolean;
-  };
-
-=======
   const { data: userData, isLoading } = useGetMeQuery({}) 
->>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
   const profileData: UserData | undefined = userData?.data;
 
   console.log("Profile Data:", profileData);

@@ -12,11 +12,12 @@ import {
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "@/redux/features/chatAPI";
-import { useGetUserQuery } from "@/redux/features/userApi";
+
 import { PageLoading } from "../shared/page-loading";
 import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
 import { useInfiniteScroll } from "../shared/use-infinite-scroll";
 import { getImageUrl } from "@/lib/utils";
+import { useGetMeQuery } from "@/redux/features/userApi";
 
 interface Message {
   _id: string;
@@ -35,10 +36,10 @@ export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
-  const { data: userData } = useGetUserQuery(undefined);
-  const myId = userData?.data?._id;
+  const { data: userData } = useGetMeQuery();
+  const myId = userData?._id;
    
-  console.log(myId)
+  console.log(userData, "from ");
 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
