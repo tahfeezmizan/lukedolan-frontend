@@ -1,99 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import SVGImage from "@/assets/rocket.png";
+import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
+import { PostJobFormData } from "@/types/types";
+import Image from "next/image";
 import JobCard from "./job-card";
 import { SidebarFilter } from "./sidebar-filter";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import Image from "next/image";
-import SVGImage from "@/assets/rocket.png";
-import companyLogo from "@/assets/company-logo (1).png";
-import companyLogo2 from "@/assets/company-logo (2).png";
-import companyLogo3 from "@/assets/company-logo (3).png";
-import companyLogo4 from "@/assets/company-logo (4).png";
-import companyLogo5 from "@/assets/company-logo (5).png";
 
 export default function JobsSection() {
-  const allJobs = [
-    {
-      id: 1,
-      companyLogo: companyLogo,
-      experienceLevel: "Experienced",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "London, UK"
-    },
-    {
-      id: 2,
-      companyLogo: companyLogo2,
-      experienceLevel: "Experienced",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "string"
-    },
-    {
-      id: 3,
-      companyLogo: companyLogo3,
-      experienceLevel: "Experienced",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "string"
-    },
-    {
-      id: 4,
-      companyLogo: companyLogo4,
-      experienceLevel: "Beginner",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "string"
-    },
-    {
-      id: 5,
-      companyLogo: companyLogo5,
-      experienceLevel: "Experienced",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "string"
-    },
-    {
-      id: 6,
-      companyLogo: companyLogo,
-      experienceLevel: "Freshers",
-      daysLeft: "30 days to go",
-      companyName: "Hair & Care Saloon",
-      jobTitle: "Senior Hair Stylist",
-      salary: "40,000 – 50,000",
-      location: "string"
-    },
-  ];
+  const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 4;
-  const totalPages = Math.ceil(allJobs.length / jobsPerPage);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const jobsPerPage = 4;
+  // const totalPages = Math.ceil(jobs.length / jobsPerPage);
 
-  const startIndex = (currentPage - 1) * jobsPerPage;
-  const endIndex = startIndex + jobsPerPage;
-  const currentJobs = allJobs.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * jobsPerPage;
+  // const endIndex = startIndex + jobsPerPage;
+  // const currentJobs = jobs.slice(startIndex, endIndex);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 overflow-hidden">
-      <div className="text-center mb-10 space-y-2">
+      <div className="text-center mb-10 space-y-2 pt-5 lg:pt-10">
         <h2 className="text-3xl lg:text-4xl font-bold text-center">
           Find Your <span className="text-green-600">Styler</span>
         </h2>
@@ -111,11 +38,11 @@ export default function JobsSection() {
         </div>
 
         <div className="col-span-1 md:col-span-2 space-y-6">
-          {currentJobs.map((job, index) => (
-            <JobCard key={startIndex + index} {...job} />
+          {jobs?.slice(0, 6)?.map((job: PostJobFormData) => (
+            <JobCard job={job} key={job._id} />
           ))}
 
-          {totalPages > 1 && (
+          {/* {totalPages > 1 && (
             <div className="flex justify-between mt-8">
               <Pagination className="!justify-end">
                 <PaginationContent>
@@ -169,7 +96,7 @@ export default function JobsSection() {
                 </PaginationContent>
               </Pagination>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </section>

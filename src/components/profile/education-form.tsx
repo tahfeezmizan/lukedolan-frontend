@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Plus, Save, Trash2, Edit } from "lucide-react";
 import { toast } from "sonner";
 import {
+  useGetMeQuery,
   useUpdateProfileMutation,
-  useGetUserQuery,
 } from "@/redux/features/userApi";
 
 interface EducationData {
@@ -36,7 +36,7 @@ export function EducationForm() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { data: userData, refetch, isLoading: isUserLoading, } = useGetUserQuery({});
+  const { data: userData, refetch, isLoading: isUserLoading, } = useGetMeQuery({});
 
        
 

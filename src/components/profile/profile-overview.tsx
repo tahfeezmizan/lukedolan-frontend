@@ -2,93 +2,33 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import { useGetUserQuery } from "@/redux/features/userApi";
 import { Building, MapPin, Calendar, Briefcase } from "lucide-react";
+=======
+import { useGetMeQuery } from "@/redux/features/userApi";
+import {
+  ApiResponse,
+  Education,
+  UserData,
+  WorkExperience,
+} from "@/types/profileTypes";
+import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
+>>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
 
 // Type definitions based on your data structure
-interface WorkExperience {
-  jobTitle: string;
-  companyName: string;
-  location: string;
-  employmentType: string;
-  startDate: string; // ISO date string
-  endDate: string; // ISO date string
-  experience: string;
-}
-
-interface Education {
-  degreeTitle: string;
-  instituteName: string;
-  major: string;
-  scale: string;
-  duration: string;
-  yearOfPassing: string;
-  cgpa: string;
-}
-
-interface Profile {
-  age: string | null;
-  bio: string | null;
-  citizenship: string | null;
-  city: string;
-  country: string;
-  createdAt: string;
-  dateOfBirth: string;
-  education: Education[];
-  firstName: string;
-  gender: string;
-  landLine: string | null;
-  languages: string[];
-  lastName: string;
-  maritalStatus: string | null;
-  mobile: string;
-  openToWork: boolean;
-  preferredWorkType: string | null;
-  previousEmployment: string | null;
-  province: string | null;
-  resume: string;
-  salaryExpectation: string | null;
-  skills: string[];
-  streetAddress: string;
-  updatedAt: string;
-  userId: string;
-  workExperience: WorkExperience[];
-  zipCode: string | null;
-  _id: string;
-  __v: number;
-}
-
-interface UserData {
-  companyName: string;
-  createdAt: string;
-  email: string;
-  image: string;
-  name: string;
-  profile: Profile;
-  role: string;
-  roleProfile: string;
-  status: string;
-  subscribe: boolean;
-  updatedAt: string;
-  verified: boolean;
-  __v: number;
-  _id: string;
-}
-
-interface ApiResponse {
-  statusCode: number;
-  success: boolean;
-  message: string;
-  data: UserData;
-}
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
+<<<<<<< HEAD
   const { data: userData, isLoading } = useGetUserQuery(undefined) as {
     data?: ApiResponse;
     isLoading: boolean;
   };
 
+=======
+  const { data: userData, isLoading } = useGetMeQuery({}) 
+>>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
   const profileData: UserData | undefined = userData?.data;
 
   console.log("Profile Data:", profileData);

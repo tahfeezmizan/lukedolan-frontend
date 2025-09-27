@@ -1,22 +1,29 @@
 "use client";
 
 import { cn, getImageUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import { useGetUserQuery } from "@/redux/features/userApi";
 import { useUpdateProfileMutation } from "@/redux/features/userApi";
+=======
+import { useGetMeQuery, useUpdateProfileMutation } from "@/redux/features/userApi";
+>>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-
 export default function ProfileSection() {
+<<<<<<< HEAD
   const { data: userData, isLoading } = useGetUserQuery(undefined);
   const [openToWork, setOpenToWork] = useState<boolean>(false); 
+=======
+  const { data: userData, isLoading } = useGetMeQuery({});
+  const [openToWork, setOpenToWork] = useState<boolean>(false);
+>>>>>>> a977ab7f934010157b70e37d035ac6cd49e6ae6b
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
-  //  যখন userData আসবে তখন state update করো
   useEffect(() => {
     if (userData?.data?.profile) {
       setOpenToWork(userData.data.profile.openToWork ?? false);

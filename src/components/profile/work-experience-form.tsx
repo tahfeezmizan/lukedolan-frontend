@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Plus, Save, Trash2, Edit } from "lucide-react";
 import { toast } from "sonner";
 import {
+  useGetMeQuery,
   useUpdateProfileMutation,
-  useGetUserQuery,
 } from "@/redux/features/userApi";
 
 interface WorkExperienceData {
@@ -42,7 +42,7 @@ export function WorkExperienceForm() {
     data: userData,
     refetch,
     isLoading: isUserLoading,
-  } = useGetUserQuery({});
+  } = useGetMeQuery({});
 
   useEffect(() => {
     console.log("Full user data received:", userData);
@@ -469,7 +469,10 @@ export function WorkExperienceForm() {
         errorMessage = `${error.data.message}`;
         if (error?.data?.errorMessages) {
           errorMessage += `: ${error.data.errorMessages
-            .map((e: { path: string; message: string }) => `${e.path} - ${e.message}`)
+            .map(
+              (e: { path: string; message: string }) =>
+                `${e.path} - ${e.message}`
+            )
             .join(", ")}`;
         }
       }

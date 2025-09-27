@@ -10,11 +10,15 @@ const userApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getUser: builder.query({
+    getMe: builder.query({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
+      providesTags: ["Auth"],
+      transformResponse: (response: any) => {
+        return response?.data;
+      },
     }),
 
     UpdateMe: builder.mutation({
@@ -38,7 +42,7 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-     AddWorkExperience: builder.mutation({
+    AddWorkExperience: builder.mutation({
       query: ({ body }) => {
         console.log("AddWorkExperience body:", body);
         return {
@@ -48,14 +52,14 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-DeleteWorkExperience: builder.mutation({
-  query: ({ index }) => ({
-    url: `/user/profile/work-experience/${index}`,
-    method: "DELETE",
-  }),
-}),
+    DeleteWorkExperience: builder.mutation({
+      query: ({ index }) => ({
+        url: `/user/profile/work-experience/${index}`,
+        method: "DELETE",
+      }),
+    }),
 
-      // Update specific work experience by index
+    // Update specific work experience by index
     UpdateWorkExperience: builder.mutation({
       query: ({ index, body }) => {
         console.log("UpdateWorkExperience index:", index, "body:", body);
@@ -78,4 +82,13 @@ DeleteWorkExperience: builder.mutation({
     }),
   }),
 });
-export const { useUpdateMeMutation,  useGetAllUserQuery, useUpdateProfileMutation, useGetUserQuery, useDeleteWorkExperienceMutation, useDeleteEducationMutation, useAddWorkExperienceMutation, useUpdateWorkExperienceMutation } = userApi;
+export const {
+  useUpdateMeMutation,
+  useGetMeQuery,
+  useGetAllUserQuery,
+  useUpdateProfileMutation,
+  useDeleteWorkExperienceMutation,
+  useDeleteEducationMutation,
+  useAddWorkExperienceMutation,
+  useUpdateWorkExperienceMutation,
+} = userApi;
