@@ -50,55 +50,6 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Auth"],
     }),
-    // forgot password
-    forgotPassword: builder.mutation({
-      query: (data) => {
-        console.log("Forget Password", data);
-
-        return {
-          url: "/auth/forgot-password",
-          method: "POST",
-          body: data,
-        };
-      },
-      invalidatesTags: ["Auth"],
-    }),
-
-    // reset password
-    resetPassword: builder.mutation({
-      query: ({ id, password, headers }) => ({
-        url: "/auth/reset-password",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-        },
-        body: { id, password },
-      }),
-      invalidatesTags: ["Auth"],
-    }),
-    // get user
-    getUser: builder.query({
-      query: (id) => ({
-        url: `/users/${id}`,
-        method: "GET",
-      }),
-      providesTags: ["Auth"],
-    }),
-    getLoggedInUser: builder.query({
-      query: () => ({
-        url: "/auth/get-me",
-        method: "GET",
-      }),
-
-      transformResponse: (response: any) => response.data,
-    }),
-    getUserById: builder.query({
-      query: (id) => ({
-        url: `/user/${id}`,
-        method: "GET",
-      }),
-    }),
   }),
 });
 
@@ -108,9 +59,4 @@ export const {
   useResendOTPMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
-  useForgotPasswordMutation,
-  useResetPasswordMutation,
-  useGetUserQuery,
-  useGetLoggedInUserQuery,
-  useGetUserByIdQuery,
 } = authApi;

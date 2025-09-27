@@ -1,10 +1,9 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -12,10 +11,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import {
+  useGetAllJobsQuery,
+  useUpdateJobMutation,
+} from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
-import { useCreateJobMutation } from "@/redux/features/jobsApi";
+import { Calendar } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export function JobUpdateForm() {
@@ -24,6 +30,7 @@ export function JobUpdateForm() {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<PostJobFormData>({
     defaultValues: {
       title: "",
@@ -38,34 +45,60 @@ export function JobUpdateForm() {
       responsibilities: "",
     },
   });
+  const { id } = useParams();
+  const route = useRouter();
 
-  const [createJob] = useCreateJobMutation();
+  const { data: categories } = useGetCategoryQuery({});
+  const { data: jobs } = useGetAllJobsQuery({});
+  const [updateJob] = useUpdateJobMutation();
+
+  const job = jobs?.find((job: any) => job._id === id);
+
+  useEffect(() => {
+    if (job) {
+      reset({
+        title: job.title || "",
+        // ✅ Fixed: Extract _id from category object to match SelectItem value
+        category: job.category?._id || job.category || "",
+        jobLocation: job.jobLocation || "",
+        type: job.type || undefined,
+        startDate: job.startDate ? job.startDate.split("T")[0] : undefined,
+        endDate: job.endDate ? job.endDate.split("T")[0] : undefined,
+        minSalary: job.minSalary || 0,
+        maxSalary: job.maxSalary || 0,
+        description: job.description || "",
+        responsibilities: job.responsibilities || "",
+      });
+    }
+  }, [job, reset]);
 
   const onSubmit = async (data: PostJobFormData) => {
-    console.log("[RHF] Job Post Form Data:", data);
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      jobLocation: data.jobLocation,
+      type: data.type,
+      startDate: data.startDate ? new Date(data.startDate).toISOString() : null,
+      endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
+      minSalary: Number(data.minSalary),
+      maxSalary: Number(data.maxSalary),
+      description: data.description,
+      responsibilities: data.responsibilities,
+    };
 
     try {
-      const res = await createJob({
-        title: data.title,
-        category: data.category,
-        jobLocation: data.jobLocation,
-        type: data.type,
-        startDate: data.startDate
-          ? new Date(data.startDate).toISOString()
-          : null,
-        endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
-        minSalary: Number(data.minSalary),
-        maxSalary: Number(data.maxSalary),
-        description: data.description,
-        responsibilities: data.responsibilities,
+      const res = await updateJob({
+        id: id,
+        data: updateData,
       }).unwrap();
 
-      console.log("✅ Job created:", res);
-
-      toast.success("✅ Job Createed Sucessfully");
+      if (res.success) {
+        toast.success("✅ Job Update Sucessfully");
+        route.push("/recruiter/jobs");
+      }
     } catch (error) {
       toast.error("❌ Job creation failed");
-      console.error("❌ Job creation failed:", error);
+      // console.error("❌ Job creation failed:", error);
     }
   };
 
@@ -108,13 +141,11 @@ export function JobUpdateForm() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beauty-wellness">
-                      Beauty & Wellness
-                    </SelectItem>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
+                    {categories?.map((category: any) => (
+                      <SelectItem key={category._id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               )}
@@ -176,16 +207,17 @@ export function JobUpdateForm() {
             )}
           </div>
 
+          {/* Job Location */}
           <div className="space-y-2">
             <Label
               htmlFor="jobLocation"
               className="text-lg font-medium text-gray-90"
             >
-              jobLocation
+              Job Location
             </Label>
             <Input
               id="jobLocation"
-              placeholder="Hair Stylist"
+              placeholder="Job location"
               {...register("jobLocation", {
                 required: "jobLocation is required",
               })}
@@ -198,6 +230,7 @@ export function JobUpdateForm() {
             )}
           </div>
         </div>
+
         {/* Date Range */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -227,7 +260,7 @@ export function JobUpdateForm() {
               htmlFor="endDate"
               className="text-lg font-medium text-gray-90"
             >
-              End date
+              End Date
             </Label>
             <div className="relative">
               <Input
@@ -321,7 +354,7 @@ export function JobUpdateForm() {
           type="submit"
           className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-lg"
         >
-          Job post
+          Update Job Post
         </Button>
       </form>
     </div>

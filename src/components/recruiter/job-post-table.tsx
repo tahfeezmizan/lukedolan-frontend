@@ -12,6 +12,7 @@ import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
 import TableLoader from "../shared/table-loader";
 import Link from "next/link";
+import { useState } from "react";
 
 const tableHeaders = [
   { key: "jobTitle", label: "Job Title" },
@@ -24,13 +25,17 @@ const tableHeaders = [
 ];
 
 export function JobPostTable() {
-  const { data, isLoading, error } = useGetAllJobsQuery({});
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
-  // console.log(data);
+  const { data, isLoading, error } = useGetAllJobsQuery({
+    page,
+    limit,
+  });
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden">
-      <div className="overflow-x-auto">
+    <div className="rounded-lg overflow-hidden">
+      <div className="bg-white overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
@@ -58,7 +63,7 @@ export function JobPostTable() {
               </tr>
             ) : data && data.length > 0 ? (
               // Show data when available
-              data.map((job: PostJobFormData) => (
+              data?.map((job: PostJobFormData) => (
                 <tr
                   key={job._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
@@ -95,7 +100,9 @@ export function JobPostTable() {
                           <Link href={"/"}>View Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`/recruiter/jobs/${job._id}`}>Edit Job</Link>
+                          <Link href={`/recruiter/jobs/${job._id}`}>
+                            Edit Job
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                           Delete
