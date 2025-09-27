@@ -1,193 +1,242 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Pin,
-  Star,
-  MoreHorizontal,
-  Paperclip,
-  Smile,
-  Send,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
-import chatImg from "@/assets/telent-person.png";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+import io, { Socket } from "socket.io-client";
+import placeholderImg from "@/assets/telent-person.png";
+import {
+  useGetMessagesQuery,
+  useSendMessageMutation,
+} from "@/redux/features/chatAPI";
+import { useGetUserQuery } from "@/redux/features/userApi";
 
-// Chat Messages Data
-const messages = [
-  {
-    id: 1,
-    sender: "Nova Hair Studio",
-    avatar: chatImg,
-    content:
-      "Hi Sophia, we loved your profile. Are you available this weekend for a bridal hairstyling session?",
-    timestamp: "12 mins ago",
-    isUser: false,
-  },
-  {
-    id: 2,
-    sender: "Nova Hair Studio",
-    avatar: chatImg,
-    content: "We want to invite you for a quick interview",
-    timestamp: "12 mins ago",
-    isUser: false,
-  },
-  {
-    id: 3,
-    sender: "Sophia",
-    avatar: chatImg,
-    content:
-      "Yes, I'm available Saturday afternoon. Could you share the exact timing and location?",
-    timestamp: "12 mins ago",
-    isUser: true,
-  },
-];
+interface Message {
+  _id: string;
+  sender: string;
+  text: string;
+  createdAt: string;
+}
+
+interface ChatDetailProps {
+  myId: string;
+}
 
 export default function ChatDetail() {
-  const [message, setMessage] = useState("");
+  const params = useParams();
+  const { id } = params;
+  const chatId = id as string;
+  const { data: userData } = useGetUserQuery();
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      console.log("Sending message:", message);
-      setMessage("");
+  const myId = userData?.data?.profile?._id;
+  console.log(myId, "myId");
+
+  // console.log("Profile Data:", profileData?.profile?._id);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  // Only get participant info and initial setup, don't rely on paginated messages
+  const { data, isLoading, isError } = useGetMessagesQuery(chatId, {
+    skip: !chatId,
+  });
+
+  useEffect(() => {
+    if (data?.data?.messages) {
+      console.log(data.data, "data😂😂😂😂");
+      setMessages(data.data.messages);
+    }
+  }, []);
+  // Send message mutation
+  const [sendMessageAPI] = useSendMessageMutation();
+
+  // Local state - this is the source of truth for messages (like your working example)
+  const [messageText, setMessageText] = useState("");
+
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Socket connection (simplified like your working example)
+  const socket: Socket = useMemo(() => io("http://10.10.7.62:5001"), []);
+
+  useEffect(() => {
+    if (!chatId || !socket) return;
+
+    // Connection status
+    socket.on("connect", () => {
+      console.log("Socket connected");
+      setIsSocketConnected(true);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+      setIsSocketConnected(false);
+    });
+
+    // Listen for new messages (exactly like your working example)
+    const receiveMessageHandler = (newMessage: Message) => {
+      console.log("Received message:", newMessage);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
+    // !important: This event name must match the one used in the server
+    socket.on(`getMessage::${chatId}`, receiveMessageHandler);
+
+    return () => {
+      socket.off(`getMessage::${chatId}`, receiveMessageHandler);
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, [chatId, socket]);
+
+  // Send message (exactly like your working example)
+  const handleSendMessage = async () => {
+    if (!messageText.trim()) return;
+
+    const messageTextToSend = messageText.trim();
+
+    try {
+      // Clear input immediately
+      setMessageText("");
+
+      // Save to database first
+      const messageData = {
+        chatId,
+        text: messageTextToSend,
+        type: "TEXT",
+      };
+
+      console.log("Sending message to API:", messageData);
+      await sendMessageAPI(messageData).unwrap();
+
+      // Send via socket (like your working example)
+      const socketData = {
+        chatId,
+        senderId: myId,
+        text: messageTextToSend,
+      };
+
+      console.log("Sending via socket:", socketData);
+      socket.emit("sendMessage", socketData);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      // Restore message text on error
+      setMessageText(messageTextToSend);
+      alert("Failed to send message. Please try again.");
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-2 text-gray-500">Loading chat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500">Failed to load chat</p>
+          <Button
+            onClick={() => window.location.reload()}
+            variant="outline"
+            className="mt-2"
+          >
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const participant = data?.data?.participant || {};
+  console.log(messages, "messages");
+
   return (
-    <div className="flex-1 flex flex-col bg-white">
-      <div className="bg-white border-b border-gray-200 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Image
-              src={messages[0].avatar || "/placeholder.svg"}
-              alt={messages[0].sender}
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-            <div>
-              <h2 className="font-semibold text-gray-900">
-                {messages[0].sender}
-              </h2>
-              <p className="text-sm text-gray-600">{messages[0].sender}</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm">
-              <Pin className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Star className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </div>
+    <div className="flex-1 flex flex-col bg-white h-full">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <Image
+            src={participant.image || placeholderImg}
+            alt={participant.name || "User"}
+            width={40}
+            height={40}
+            className="rounded-full mr-3"
+          />
+          <h2 className="font-semibold">{participant.name || "Chat"}</h2>
+        </div>
+
+        {/* Connection status */}
+        <div className="flex items-center space-x-2">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              isSocketConnected ? "bg-green-500" : "bg-red-500"
+            }`}
+          />
+          <span className="text-xs text-gray-500">
+            {isSocketConnected ? "Online" : "Offline"}
+          </span>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Chat Beginning */}
-        <div className="text-center">
-          <Image
-            src={messages[0].avatar || "/placeholder.svg"}
-            alt={messages[0].sender}
-            width={80}
-            height={80}
-            className="rounded-full mx-auto mb-4"
-          />
-          <h3 className="text-xl font-semibold text-gray-900 mb-1">
-            {messages[0].sender}
-          </h3>
-          <p className="text-gray-600 mb-4">
-            Recruiter at <span className="text-blue-600">Nomad</span>
-          </p>
-          <p className="text-gray-500 text-sm">
-            This is the very beginning of your direct message with{" "}
-            <strong>{messages[0].sender}</strong>
-          </p>
-        </div>
-
-        {/* Date Separator */}
-        <div className="flex items-center justify-center">
-          <div className="bg-gray-100 px-3 py-1 rounded-full">
-            <span className="text-xs text-gray-600">Today</span>
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-gray-500">
+            <p>No messages yet. Start the conversation!</p>
           </div>
-        </div>
-
-        {/* Messages */}
-        <div className="space-y-4">
-          {messages.map((msg) => (
+        ) : (
+          messages.map((message) => (
             <div
-              key={msg.id}
-              className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+              key={message._id}
+              className={`flex ${
+                message.sender == myId ? "justify-end" : "justify-start"
+              }`}
             >
               <div
-                className={`flex items-start space-x-3 max-w-2xl ${
-                  msg.isUser ? "flex-row-reverse space-x-reverse" : ""
+                className={`max-w-xs px-4 py-2 rounded-lg ${
+                  message.sender == myId
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-black"
                 }`}
               >
-                <Image
-                  src={msg.avatar || "/placeholder.svg"}
-                  alt={msg.sender}
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-                <div className={`space-y-1 ${msg.isUser ? "text-right" : ""}`}>
-                  {!msg.isUser && (
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium text-sm text-gray-900">
-                        {msg.sender}
-                      </span>
-                    </div>
-                  )}
-                  <div
-                    className={`inline-block p-3 rounded-lg ${
-                      msg.isUser
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-100 text-gray-900"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.content}</p>
-                  </div>
-                  <p className="text-xs text-gray-500">{msg.timestamp}</p>
-                </div>
+                <p className="text-sm">{message.text}</p>
+                <p className="text-xs mt-1 opacity-70">
+                  {new Date(message.createdAt).toLocaleTimeString()}
+                </p>
               </div>
             </div>
-          ))}
-        </div>
+          ))
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
-      <div className="bg-white border-t border-gray-200 p-4">
-        <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm">
-            <Paperclip className="h-4 w-4" />
-          </Button>
-          <div className="flex-1 relative">
-            <Input
-              placeholder="Reply message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-              className="pr-10"
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
-            >
-              <Smile className="h-4 w-4" />
-            </Button>
-          </div>
-          <Button
-            onClick={handleSendMessage}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
+      {/* Input */}
+      <div className="bg-white border-t border-gray-200 p-4 flex space-x-2">
+        <Input
+          placeholder="Type a message..."
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          onKeyPress={handleKeyPress}
+          className="flex-1"
+        />
+        <Button onClick={handleSendMessage} disabled={!messageText.trim()}>
+          <Send className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
