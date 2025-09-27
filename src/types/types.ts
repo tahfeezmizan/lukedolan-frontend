@@ -79,7 +79,20 @@ export interface PostJobFormData {
   description?: string;
   responsibilities?: string;
   jobLocation: string;
-  applicationsCount: string
+  applicationsCount: string;
+  experianceLabel: "Experienced" | "Beginner" | "Freshers";
+  user: {
+    email: string;
+    image: string | null;
+    name: string;
+    profile: {
+      _id: string;
+      companyName: string;
+      companyLogo: string | null;
+    };
+    role: string;
+    roleProfile: string;
+  };
 }
 
 export type Column<T> = {

@@ -38,18 +38,25 @@ export function PostJobForm() {
       maxSalary: 0,
       description: "",
       responsibilities: "",
+      experianceLabel: undefined,
     },
   });
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
   const route = useRouter();
   const [createJob] = useCreateJobMutation();
   const { data: categories, isLoading, error } = useGetCategoryQuery({});
 
   const onSubmit = async (data: PostJobFormData) => {
+    console.log(data);
     try {
       const res = await createJob({
         title: data.title,
         category: data.category,
         jobLocation: data.jobLocation,
+        experianceLabel: data.experianceLabel,
         type: data.type,
         startDate: data.startDate
           ? new Date(data.startDate).toISOString()
@@ -60,6 +67,8 @@ export function PostJobForm() {
         description: data.description,
         responsibilities: data.responsibilities,
       }).unwrap();
+
+      console.log(res);
 
       if (res.success) {
         toast.success("✅ Job Createed Sucessfully");
@@ -181,7 +190,7 @@ export function PostJobForm() {
               htmlFor="jobLocation"
               className="text-lg font-medium text-gray-90"
             >
-              jobLocation
+              Job Location
             </Label>
             <Input
               id="jobLocation"
@@ -269,6 +278,37 @@ export function PostJobForm() {
           </div>
           {(errors.minSalary || errors.maxSalary) && (
             <p className="text-red-500 text-sm">Salary range is required</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label
+            htmlFor="experianceLabel"
+            className="text-lg font-medium text-gray-90"
+          >
+            Expricene Level
+          </Label>
+          <Controller
+            name="experianceLabel"
+            control={control}
+            rules={{ required: "Expricene Level is required" }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full">
+                  <SelectValue placeholder="Select Expricene Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Experienced">Experienced</SelectItem>
+                  <SelectItem value="Beginner">Beginner</SelectItem>
+                  <SelectItem value="Freshers">Freshers</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.experianceLabel && (
+            <p className="text-red-500 text-sm">
+              {errors.experianceLabel.message}
+            </p>
           )}
         </div>
 

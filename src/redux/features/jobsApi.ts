@@ -7,9 +7,21 @@ const jobsApi = baseApi.injectEndpoints({
         url: "/job",
         method: "GET",
       }),
-         providesTags: ["Jobs"],
+      providesTags: ["Jobs"],
       transformResponse: (response: any) => {
         return response?.data?.data;
+      },
+    }),
+
+    // Get single job
+    getSingleJob: builder.query({
+      query: ({ id }) => ({
+        url: `/job/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Jobs"],
+      transformResponse: (response: any) => {
+        return response?.data;
       },
     }),
 
@@ -21,7 +33,6 @@ const jobsApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // Update category endpoint
     updateJob: builder.mutation({
       query: ({ id, data }) => ({
         url: `/job/${id}`,
@@ -38,7 +49,7 @@ const jobsApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-           invalidatesTags: ["Jobs"],
+      invalidatesTags: ["Jobs"],
     }),
   }),
 });
@@ -46,6 +57,7 @@ const jobsApi = baseApi.injectEndpoints({
 export const {
   useCreateJobMutation,
   useGetAllJobsQuery,
+  useGetSingleJobQuery,
   useUpdateJobMutation,
   useDeleteJobMutation,
 } = jobsApi;

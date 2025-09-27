@@ -16,9 +16,11 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { data } = useGetMeQuery(undefined);
-  console.log("getMe data:", data);
-
+  
   const role = data?.role;
+  
+  console.log("getMe data:", data?.role);
+
 
   let sidebarItems: SidebarItems;
 
@@ -29,7 +31,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     case "recruiter":
       sidebarItems = recruiterItems;
       break;
-    case "profile":
+    case "applicant":
       sidebarItems = applicantItems;
       break;
     default:

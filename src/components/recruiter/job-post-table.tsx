@@ -38,6 +38,8 @@ export function JobPostTable() {
     limit,
   });
 
+  console.log(data);
+
   const handleDelete = (id: string | number | undefined) => {
     console.log(id);
     Swal.fire({
@@ -135,13 +137,8 @@ export function JobPostTable() {
                             Edit Job
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Button
-                            className="bg-transparent !p-0 text-red-600 hover:bg-transparent "
-                            onClick={() => handleDelete(job._id)}
-                          >
-                            Delete
-                          </Button>
+                        <DropdownMenuItem onClick={() => handleDelete(job._id)} className="text-red-700">
+                          Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

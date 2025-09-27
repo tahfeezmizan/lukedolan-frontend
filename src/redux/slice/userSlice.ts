@@ -18,9 +18,12 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload.data;
-      console.log(action.payload.data);
-      // console.log(state.user);
+      console.log("Action Payload", action);
+      // console.log("Redux",state.user);
       const accessToken = action.payload.data.accessToken;
+      const role = action.payload.data.token;
+
+      console.log("redux slices", role);
 
       // Save accessToken to localStorage (client-side only)
       if (typeof window !== "undefined") {
