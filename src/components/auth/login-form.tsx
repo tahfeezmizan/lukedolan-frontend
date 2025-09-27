@@ -46,9 +46,9 @@ export function LoginForm() {
         route.push("/");
         toast.success("Login Successful");
       } else {
-        toast.error(res.error.data.message);
+        console.log(res.error);
+        // toast.error(res.error.data.message);
       }
-      console.log(res);
     } catch (error) {
       // toast.error();
       console.log("Errors", error);

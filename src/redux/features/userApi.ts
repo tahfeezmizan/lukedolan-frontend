@@ -15,6 +15,7 @@ const userApi = baseApi.injectEndpoints({
         url: "/user/me",
         method: "GET",
       }),
+      providesTags: ["Auth"],
       transformResponse: (response: any) => {
         return response?.data;
       },

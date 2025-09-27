@@ -10,10 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { removeUser } from "@/redux/slice/userSlice";
+import { useGetMeQuery } from "@/redux/features/userApi";
+import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {
   Bell,
   FileText,
+  LayoutDashboard,
   LogOut,
   Menu,
   MessageCircle,
@@ -37,6 +39,10 @@ interface User {
 }
 
 export function Navbar() {
+  const { data: user } = useGetMeQuery(undefined);
+  const activeRole = user?.role;
+  console.log("getMe data:", activeRole);
+
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dispatch = useDispatch();
@@ -44,7 +50,6 @@ export function Navbar() {
   const pathname = usePathname();
 
   // Mock user state - replace with your actual auth logic
-  const [user, setUser] = useState<User | null>({ role: "recruiter" });
 
   // Navigation links based on user role
   const getNavigationLinks = (userRole: UserRole) => {
@@ -75,7 +80,7 @@ export function Navbar() {
     }
   };
 
-  const navigationLinks = getNavigationLinks(user?.role || "guest");
+  const navigationLinks = getNavigationLinks(activeRole || "guest");
 
   const handleLogout = () => {
     setUser(null);
@@ -148,7 +153,7 @@ export function Navbar() {
             {/* Desktop Right Section - Based on User Role */}
             <div className="hidden lg:flex items-center space-x-4">
               {user &&
-              (user.role === "applicant" || user.role === "recruiter") ? (
+              (activeRole === "applicant" || activeRole === "recruiter") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -176,9 +181,9 @@ export function Navbar() {
                     <DropdownMenuTrigger asChild>
                       <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
                         <div className="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center">
-                          {user.avatar ? (
+                          {user?.image ? (
                             <Image
-                              src={user.avatar}
+                              src={user?.image}
                               alt="Profile"
                               width={40}
                               height={40}
@@ -191,30 +196,46 @@ export function Navbar() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/profile"
-                          className="flex items-center space-x-2"
-                        >
-                          <User className="h-4 w-4" />
-                          <span>Profile</span>
-                        </Link>
-                      </DropdownMenuItem>
-
-                      {user.role === "recruiter" && (
+                      {/* applicant dropdonw menu */}
+                      {activeRole === "applicant" && (
                         <>
                           <DropdownMenuItem asChild>
                             <Link
-                              href="/create-job"
+                              href="/profile"
+                              className="flex items-center space-x-2"
+                            >
+                              <User className="h-4 w-4" />
+                              <span>Profile</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
+                      {/* recruiter dropdown menu */}
+                      {activeRole === "recruiter" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/recruiter"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/recruiter/jobs/post-job"
                               className="flex items-center space-x-2"
                             >
                               <Plus className="h-4 w-4" />
                               <span>Create Job</span>
                             </Link>
                           </DropdownMenuItem>
+
                           <DropdownMenuItem asChild>
                             <Link
-                              href="/job-list"
+                              href="/recruiter/jobs"
                               className="flex items-center space-x-2"
                             >
                               <FileText className="h-4 w-4" />
@@ -261,7 +282,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center">
               {user &&
-              (user.role === "applicant" || user.role === "recruiter") ? (
+              (activeRole === "applicant" || activeRole === "recruiter") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -271,7 +292,9 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
+                    <Link href={'/recruiter/messages'}>
                     <MessageCircle className="h-6 w-6" />
+                    </Link>
                   </Button>
 
                   {/* Notification Icon */}
@@ -281,7 +304,9 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
-                    <Bell className="h-6 w-6" />
+                    <Link href={'/'}>
+                      <Bell className="h-6 w-6" />
+                    </Link>
                   </Button>
 
                   {/* Profile Dropdown */}
@@ -289,9 +314,9 @@ export function Navbar() {
                     <DropdownMenuTrigger asChild>
                       <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
                         <div className="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center">
-                          {user.avatar ? (
+                          {user?.image ? (
                             <Image
-                              src={user.avatar}
+                              src={user?.image}
                               alt="Profile"
                               width={30}
                               height={30}
@@ -304,21 +329,34 @@ export function Navbar() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/profile"
-                          className="flex items-center space-x-2"
-                        >
-                          <User className="h-4 w-4" />
-                          <span>Profile</span>
-                        </Link>
-                      </DropdownMenuItem>
-
-                      {user.role === "recruiter" && (
+                      {activeRole === "applicant" && (
                         <>
                           <DropdownMenuItem asChild>
                             <Link
-                              href="/create-job"
+                              href="/profile"
+                              className="flex items-center space-x-2"
+                            >
+                              <User className="h-4 w-4" />
+                              <span>Profile</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
+                      {activeRole === "recruiter" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/recruiter"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/recruiter/jobs/post-job"
                               className="flex items-center space-x-2"
                             >
                               <Plus className="h-4 w-4" />
@@ -327,7 +365,7 @@ export function Navbar() {
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link
-                              href="/job-list"
+                              href="/recruiter/jobs"
                               className="flex items-center space-x-2"
                             >
                               <FileText className="h-4 w-4" />
@@ -392,7 +430,7 @@ export function Navbar() {
                 {/* Mobile Right Section */}
                 <div className="px-3 pt-4 border-t border-gray-200">
                   {user &&
-                  (user.role === "applicant" || user.role === "recruiter") ? (
+                  (activeRole === "applicant" || activeRole === "recruiter") ? (
                     ""
                   ) : (
                     // Mobile - Guest Users

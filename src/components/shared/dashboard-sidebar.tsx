@@ -24,7 +24,7 @@ export function DashboardSidebar({
 
   const { data: userData } = useGetMeQuery({});
 
-  console.log("User data", userData);
+  // console.log("User data", userData);
 
   const handleLogout = () => {
     dispatch(removeUser());

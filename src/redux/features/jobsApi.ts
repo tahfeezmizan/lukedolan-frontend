@@ -7,7 +7,7 @@ const jobsApi = baseApi.injectEndpoints({
         url: "/job",
         method: "GET",
       }),
-         providesTags: ["Jobs"],
+      providesTags: ["Jobs"],
       transformResponse: (response: any) => {
         return response?.data?.data;
       },
@@ -38,7 +38,7 @@ const jobsApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-           invalidatesTags: ["Jobs"],
+      invalidatesTags: ["Jobs"],
     }),
   }),
 });

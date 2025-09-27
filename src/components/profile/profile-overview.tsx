@@ -10,7 +10,7 @@ export function ProfileOverview() {
   const { data: userData, isLoading } = useGetMeQuery({});
   const profileData = userData?.data;
 
-  console.log("Profile data", profileData);
+  // console.log("Profile data", profileData);
 
   // Loading or no data fallback
   if (isLoading || !profileData) {
