@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
-import { PageLoading } from "@/components/shared/page-loading";
 import ReduxProvider from "@/provider/redux-provider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -66,7 +65,7 @@ export default function RootLayout({
       <body className={`${montserrat.variable}`}>
         <ReduxProvider>
           <Suspense>
-            <PageLoading />
+            
             {children}
           </Suspense>
           <Toaster />

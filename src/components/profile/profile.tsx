@@ -19,8 +19,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="bg-[#EBF1FA] ">
-      <div className="p-4 overflow-hidden ">
+    <div className="bg-[#EBF1FA]  ">
+      <div className="p-4  overflow-hidden ">
         {/* Tabs */}
         <Tabs
           value={activeTab}

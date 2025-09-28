@@ -4,10 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import {
-  ApiResponse,
   Education,
   UserData,
-  WorkExperience,
+  WorkExperience
 } from "@/types/profileTypes";
 import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
 
@@ -15,8 +14,8 @@ import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
-  const { data: userData, isLoading } = useGetMeQuery({}) 
-  const profileData: UserData | undefined = userData?.data;
+  const { data: userData, isLoading } = useGetMeQuery('') 
+  const profileData: UserData | undefined = userData;
 
   console.log("Profile Data:", profileData);
 

@@ -42,22 +42,22 @@ export function WorkExperienceForm() {
     data: userData,
     refetch,
     isLoading: isUserLoading,
-  } = useGetMeQuery({});
+  } = useGetMeQuery('');
 
   useEffect(() => {
     console.log("Full user data received:", userData);
 
-    if (userData?.data) {
-      if (userData?.data?.profile?.workExperience) {
+    if (userData) {
+      if (userData?.profile?.workExperience) {
         console.log(
           "Work Experience data found:",
-          userData.data.profile.workExperience
+          userData?.profile.workExperience
         );
 
-        if (Array.isArray(userData?.data?.profile?.workExperience)) {
+        if (Array.isArray(userData?.profile?.workExperience)) {
           // Convert any numeric values to strings for form compatibility
           const formattedWorkExperiences =
-            userData?.data?.profile?.workExperience.map((exp: any) => ({
+            userData?.profile?.workExperience.map((exp: any) => ({
               jobTitle: exp.jobTitle?.toString() || "",
               companyName: exp.companyName?.toString() || "",
               location: exp.location?.toString() || "",

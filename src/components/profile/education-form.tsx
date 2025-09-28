@@ -36,17 +36,17 @@ export function EducationForm() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { data: userData, refetch, isLoading: isUserLoading, } = useGetMeQuery({});
+  const { data: userData, refetch, isLoading: isUserLoading, } = useGetMeQuery('');
 
        
 
   useEffect(() => {
     console.log("Full user data received:", userData); 
-    if (userData?.data) {
-      if (userData?.data?.profile?.education) {
+    if (userData) {
+      if (userData?.profile?.education) {
 
-        if (Array.isArray(userData?.data?.profile?.education)) {
-          const formattedEducations = userData?.data?.profile?.education.map(
+        if (Array.isArray(userData?.profile?.education)) {
+          const formattedEducations = userData?.profile?.education.map(
             (edu: any) => ({
               degreeTitle: edu.degreeTitle?.toString() || "",
               major: edu.major?.toString() || "",
