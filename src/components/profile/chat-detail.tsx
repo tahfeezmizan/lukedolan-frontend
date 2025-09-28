@@ -25,7 +25,6 @@ interface Message {
   createdAt: string;
   chatId: string;
 }
- 
 export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
@@ -33,7 +32,6 @@ export default function ChatDetail() {
  
   const { data: userData } = useGetMeQuery('');
   const myId = userData?._id;
- 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,13 +42,11 @@ export default function ChatDetail() {
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
   const [messageText, setMessageText] = useState("");
   const [isSocketConnected, setIsSocketConnected] = useState(false);
- 
   // RTK Query for messages with dynamic page
   const { data, isLoading, isError, error } = useGetMessagesQuery(
     { chatId, page: currentPage, limit: 10 },
     { skip: !chatId }
   );
- 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
@@ -98,7 +94,6 @@ export default function ChatDetail() {
   // Socket connection
   const socket: Socket = useMemo(() => io("http://10.10.7.62:5001"), []);
   const [sendMessageAPI] = useSendMessageMutation();
- 
   // Dynamic height management for responsive design
   useEffect(() => {
     const updateContainerHeight = () => {
@@ -218,7 +213,6 @@ export default function ChatDetail() {
       }
     }
   }, [isInitialLoad, allMessages.length, currentPage, containerRef]);
- 
   // Socket events
   useEffect(() => {
     if (!chatId || !socket) return;
@@ -260,7 +254,6 @@ export default function ChatDetail() {
       socket.disconnect();
     };
   }, [chatId, socket, containerRef]);
- 
   const handleSendMessage = async () => {
     if (!messageText.trim()) return;
  
@@ -394,9 +387,9 @@ export default function ChatDetail() {
             <p>No messages yet. Start the conversation!</p>
           </div>
         ) : (
-          allMessages.map((message,index) => {
+          allMessages.map((message, index) => {
             const isMyMessage = message.sender.toString() === myId?.toString();
- 
+
             return (
               <div
                 key={index}
@@ -441,7 +434,6 @@ export default function ChatDetail() {
           onChange={(e) => setMessageText(e.target.value)}
           onKeyPress={handleKeyPress}
           className="flex-1"
-         
         />
         <Button
           onClick={handleSendMessage}

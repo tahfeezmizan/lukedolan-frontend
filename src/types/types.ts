@@ -130,3 +130,9 @@ export type JobApplyFormInputs = {
   experience: number;
   resume: FileList;
 };
+
+export interface ApiError {
+  data?: {
+    message: string;
+  };
+}
