@@ -24,6 +24,7 @@ interface Message {
   sender: string;
   text: string;
   createdAt: string;
+  chatId:string
 }
 
 interface ScrollState {
@@ -409,7 +410,7 @@ export default function ChatDetail() {
             console.log("isMyMessage:", isMyMessage, message.sender, myId);
             return (
               <div
-                key={message._id}
+                key={message.chatId}
                 className={`flex mb-4  ${
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}
