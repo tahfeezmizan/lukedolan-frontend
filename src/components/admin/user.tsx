@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Column, UserData, StatItem } from "@/types/types";
@@ -48,6 +49,11 @@ export default function User() {
         ];
     }, [staticData]);
 
+    const usersWithSerial = users.map((user: any, index: number) => ({
+        ...user,
+        _id: (page - 1) * limit + index + 1, // serial no. instead of MongoDB _id
+    }));
+
     return (
         <div>
             <StatsCard stats={stats} />
@@ -56,7 +62,7 @@ export default function User() {
                 <p className="text-gray-500">Loading users...</p>
             ) : (
                 <AdminTable
-                    data={users}
+                    data={usersWithSerial}
                     columns={columns}
                     pagination={{
                         page: meta?.page || 1,

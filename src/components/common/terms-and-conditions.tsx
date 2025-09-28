@@ -193,7 +193,7 @@ export default function TermsAndConditions() {
         );
     }
 
-    const content = data.content; // ✅ direct access
+    const content = data.content;
 
     return (
         <div className="bg-[#EBF1FA]">
