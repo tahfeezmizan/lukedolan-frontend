@@ -1,75 +1,72 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 
-export default function TermsConditionsPage() {
-  const [terms, setTerms] = useState("");
-  const [showSuccess, setShowSuccess] = useState(true);
-  const [lastUpdated] = useState("January 15, 2024");
+import dynamic from "next/dynamic";
+import { toast } from "sonner";
+import { TermsData, useCreateTermsMutation, useGetTermsQuery } from "@/redux/features/termsApi";
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-  const handleSave = () => {
-    // Handle save logic here
-    setShowSuccess(true);
-    console.log("Terms & Conditions saved:", terms);
-  };
+export default function TermsEditor() {
+    const editor = useRef<any>(null);
+    const [terms, setTerms] = useState<string>("");
+    const [lastUpdated, setLastUpdated] = useState<string>("");
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-6 rounded-lg">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Manage Terms & Conditions
-        </h1>
-        <p className="text-gray-600 leading-relaxed">
-          Use this section to write or update the Terms and Conditions for your
-          app. These terms will be displayed to users within the app and must be
-          accepted during registration or major updates.
-        </p>
-      </div>
+    // Fetch terms from API
+    const { data } = useGetTermsQuery();
+    const [createTerms, { isLoading: isSaving }] = useCreateTermsMutation();
 
-      {/* Success Alert */}
-      {showSuccess && (
-        <Alert className="mb-8 border-green-200 bg-green-50">
-          <CheckCircle className="h-5 w-5 text-green-600" />
-          <AlertDescription className="text-green-800 font-medium">
-            Your Terms & Conditions have been successfully updated and will now
-            appear in the app.
-          </AlertDescription>
-        </Alert>
-      )}
+    useEffect(() => {
+        if (data) {
+            setTerms(data.content || "");
+            setLastUpdated(data.updatedAt ? new Date(data.updatedAt).toLocaleDateString() : "");
+        }
+    }, [data]);
 
-      {/* Editor Section */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
-          Terms & Conditions Editor
-        </h2>
+    const handleSave = async () => {
+        try {
+            const payload: TermsData = {
+                content: terms,
+                type: "terms-and-condition",
+            };
+            const res = await createTerms(payload).unwrap();
+            setLastUpdated(res.updatedAt ? new Date(res.updatedAt).toLocaleDateString() : new Date().toLocaleDateString());
+            toast.success("Terms & Conditions saved successfully!");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save Terms & Conditions.");
+        }
+    };
 
-        <Textarea
-          placeholder="Write or paste your Terms & Conditions here..."
-          value={terms}
-          onChange={(e) => setTerms(e.target.value)}
-          className="min-h-[400px] resize-none border-gray-300 focus:border-green-500 focus:ring-green-500"
-        />
+    return (
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Terms & Conditions Editor</h2>
 
-        {/* Footer Info */}
-        <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
-            Last Updated On: <span className="font-medium">{lastUpdated}</span>
-          </p>
+            <JoditEditor
+                ref={editor}
+                value={terms}
+                onChange={(newContent) => setTerms(newContent)}
+                config={{
+                    readonly: false,
+                    height: 400,
+                    toolbarButtonSize: "middle",
+                }}
+            />
 
-          <Button
-            onClick={handleSave}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
-          >
-            <FileText className="w-4 h-4 mr-2" />
-            Save Terms & Conditions
-          </Button>
+            {/* Footer Info */}
+            <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
+                <p className="text-sm text-gray-500">
+                    Last Updated On: <span className="font-medium">{lastUpdated}</span>
+                </p>
+
+                <Button onClick={handleSave} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2" disabled={isSaving}>
+                    <FileText className="w-4 h-4 mr-2" />
+                    Save Terms & Conditions
+                </Button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
