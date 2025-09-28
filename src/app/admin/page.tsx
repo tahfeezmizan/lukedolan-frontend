@@ -32,7 +32,7 @@ export default function DashboardPage() {
     return (
         <div>
             <div className="mb-8">
-                <h2 className="text-2xl font-semibold">Good morning, Maria</h2>
+                <h2 className="text-2xl font-semibold">Wellcome back</h2>
                 <p>Here is your job listings statistic report from this month.</p>
             </div>
 
