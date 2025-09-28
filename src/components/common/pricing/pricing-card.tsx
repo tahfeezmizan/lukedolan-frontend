@@ -145,10 +145,11 @@ interface PricingCardProps {
     duration: string;
     features: string[];
     onDeleted?: (id: string) => void;
+    paymentLink?: string;
     onEdited?: () => void; // optional for edit callback
 }
 
-export function PricingCard({ _id, title, price, duration, features, onDeleted }: PricingCardProps) {
+export function PricingCard({ _id, title, price, duration, features, paymentLink, onDeleted }: PricingCardProps) {
     const pathName = usePathname();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editData, setEditData] = useState({
@@ -260,7 +261,7 @@ export function PricingCard({ _id, title, price, duration, features, onDeleted }
                         </Button>
                     </div>
                 ) : (
-                    <Link href="/">
+                    <Link href={paymentLink ?? "/"}>
                         <Button className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300">Get Started</Button>
                     </Link>
                 )}
