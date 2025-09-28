@@ -62,7 +62,33 @@ const jobsApi = baseApi.injectEndpoints({
                 return response?.data;
             },
         }),
+        getFilterdJobs: builder.query({
+            query: (filters?: { searchTerm?: string; jobLocation?: string; category?: string; type?: string; minSalary?: number; maxSalary?: number; page?: number; limit?: number }) => {
+                const params = new URLSearchParams();
+
+                if (filters?.searchTerm) params.append("searchTerm", filters.searchTerm);
+                if (filters?.jobLocation) params.append("jobLocation", filters.jobLocation);
+                if (filters?.category) params.append("category", filters.category);
+                if (filters?.type) params.append("type", filters.type);
+                if (filters?.minSalary !== undefined) params.append("minSalary", filters.minSalary.toString());
+                if (filters?.maxSalary !== undefined) params.append("maxSalary", filters.maxSalary.toString());
+                if (filters?.page) params.append("page", filters.page.toString());
+                if (filters?.limit) params.append("limit", filters.limit.toString());
+
+                return {
+                    url: `/job${params.toString() ? `?${params.toString()}` : ""}`,
+                    method: "GET",
+                };
+            },
+            providesTags: ["Jobs"],
+            transformResponse: (response: any) => {
+                // Return the entire response including meta data
+                return response?.data;
+            },
+        }),
     }),
 });
 
-export const { useCreateJobMutation, useGetAllJobsQuery, useGetSingleJobQuery, useUpdateJobMutation, useDeleteJobMutation, useGetAllJobswithStaticsQuery } = jobsApi;
+// get filtered apis
+
+export const { useCreateJobMutation, useGetAllJobsQuery, useGetSingleJobQuery, useUpdateJobMutation, useDeleteJobMutation, useGetFilterdJobsQuery, useGetAllJobswithStaticsQuery } = jobsApi;
