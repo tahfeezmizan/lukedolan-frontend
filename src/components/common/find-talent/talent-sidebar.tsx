@@ -22,7 +22,6 @@ interface FilterData {
     partTime: boolean;
     contract: boolean;
   };
-  salaryRange: [number, number];
 }
 
 export function TalentSidebar() {
@@ -34,7 +33,6 @@ export function TalentSidebar() {
       partTime: false,
       contract: false,
     },
-    salaryRange: [0, 100000],
   });
 
   const handleInputChange = <K extends keyof FilterData>(
@@ -61,20 +59,20 @@ export function TalentSidebar() {
   };
 
   // Keep inputs in sync with slider
-  const handleSalaryInputChange = (value: string, index: number) => {
-    const num = Number(value);
-    if (!isNaN(num)) {
-      const newRange = [...filterData.salaryRange] as [number, number];
-      newRange[index] = num;
-      // Ensure lower <= upper
-      if (newRange[0] <= newRange[1]) {
-        setFilterData((prev) => ({
-          ...prev,
-          salaryRange: newRange,
-        }));
-      }
-    }
-  };
+  // const handleSalaryInputChange = (value: string, index: number) => {
+  //   const num = Number(value);
+  //   if (!isNaN(num)) {
+  //     const newRange = [...filterData.salaryRange] as [number, number];
+  //     newRange[index] = num;
+  //     // Ensure lower <= upper
+  //     if (newRange[0] <= newRange[1]) {
+  //       setFilterData((prev) => ({
+  //         ...prev,
+  //         salaryRange: newRange,
+  //       }));
+  //     }
+  //   }
+  // };
 
   // Log filter state every second
   useEffect(() => {
@@ -176,7 +174,7 @@ export function TalentSidebar() {
       {/* <hr className="border-t border-gray-200" /> */}
 
       {/* Salary Range Section */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <h3 className="text-lg font-medium text-black">Salary Range</h3>
         <Slider
           value={filterData.salaryRange}
@@ -202,7 +200,7 @@ export function TalentSidebar() {
             className="w-1/2"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
