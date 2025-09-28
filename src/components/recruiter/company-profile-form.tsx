@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon } from "lucide-react";
-import { useState } from "react";
 
 interface CompanyFormData {
   companyName: string;
@@ -25,32 +25,34 @@ interface CompanyFormData {
 }
 
 export function CompanyProfileForm() {
-  const [formData, setFormData] = useState<CompanyFormData>({
-    companyName: "",
-    description: "",
-    email: "",
-    phone: "",
-    website: "",
-    location: "",
-    linkedin: "",
-    twitter: "",
-    facebook: "",
-    instagram: "",
-    logo: null,
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CompanyFormData>({
+    defaultValues: {
+      companyName: "",
+      description: "",
+      email: "",
+      phone: "",
+      website: "",
+      location: "",
+      linkedin: "",
+      twitter: "",
+      facebook: "",
+      instagram: "",
+      logo: null,
+    },
   });
-
-  const handleInputChange = (field: keyof CompanyFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData((prev) => ({ ...prev, logo: file }));
+    setValue("logo", file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Company Profile Data:", formData);
+  const onSubmit = (data: CompanyFormData) => {
+    console.log("Company Profile Data:", data);
   };
 
   return (
@@ -62,7 +64,7 @@ export function CompanyProfileForm() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Logo Upload */}
         <div className="space-y-2">
           <Label className="text-lg font-medium text-gray-90">
@@ -104,8 +106,7 @@ export function CompanyProfileForm() {
           <Input
             id="companyName"
             placeholder="Hair Stylist"
-            value={formData.companyName}
-            onChange={(e) => handleInputChange("companyName", e.target.value)}
+            {...register("companyName")}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
           />
         </div>
@@ -121,8 +122,7 @@ export function CompanyProfileForm() {
           <Textarea
             id="description"
             placeholder="Company descriptions"
-            value={formData.description}
-            onChange={(e) => handleInputChange("description", e.target.value)}
+            {...register("description")}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px]"
           />
         </div>
@@ -144,8 +144,7 @@ export function CompanyProfileForm() {
                 id="email"
                 type="email"
                 placeholder="example@gmail.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
+                {...register("email")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -159,8 +158,7 @@ export function CompanyProfileForm() {
               <Input
                 id="phone"
                 placeholder="0000 0000 0000"
-                value={formData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
+                {...register("phone")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -174,8 +172,7 @@ export function CompanyProfileForm() {
               <Input
                 id="website"
                 placeholder="https://example.com"
-                value={formData.website}
-                onChange={(e) => handleInputChange("website", e.target.value)}
+                {...register("website")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -189,8 +186,7 @@ export function CompanyProfileForm() {
               <Input
                 id="location"
                 placeholder="London"
-                value={formData.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
+                {...register("location")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -211,8 +207,7 @@ export function CompanyProfileForm() {
               <Input
                 id="linkedin"
                 placeholder="https://example.com"
-                value={formData.linkedin}
-                onChange={(e) => handleInputChange("linkedin", e.target.value)}
+                {...register("linkedin")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -225,9 +220,8 @@ export function CompanyProfileForm() {
               </Label>
               <Input
                 id="twitter"
-                placeholder="0000 0000 0000"
-                value={formData.twitter}
-                onChange={(e) => handleInputChange("twitter", e.target.value)}
+                placeholder="https://example.com"
+                {...register("twitter")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -241,8 +235,7 @@ export function CompanyProfileForm() {
               <Input
                 id="facebook"
                 placeholder="https://example.com"
-                value={formData.facebook}
-                onChange={(e) => handleInputChange("facebook", e.target.value)}
+                {...register("facebook")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -255,9 +248,8 @@ export function CompanyProfileForm() {
               </Label>
               <Input
                 id="instagram"
-                placeholder=""
-                value={formData.instagram}
-                onChange={(e) => handleInputChange("instagram", e.target.value)}
+                placeholder="https://example.com"
+                {...register("instagram")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>

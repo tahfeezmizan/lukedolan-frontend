@@ -1,13 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // getAllUser
     getAllUser: builder.query({
-      query: () => ({
-        url: "/user",
+      query: ({ page = 1, limit = 10 }) => ({
+        url: `/user?page=${page}&limit=${limit}`,
         method: "GET",
       }),
+    }),
+
+    getAllTalent: builder.query({
+      query: () => ({
+        url: "/user/applicants",
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
+      transformResponse: (response: any) => {
+        return response?.data;
+      },
     }),
 
     getMe: builder.query({
@@ -26,7 +38,18 @@ const userApi = baseApi.injectEndpoints({
         console.log("UpdateMe body:", body);
         return {
           url: "/user/update-me",
-          method: "PUT",
+          method: "PATCH",
+          body,
+        };
+      },
+    }),
+
+    UpdateCompnayProfile: builder.mutation({
+      query: ({ body }) => {
+        console.log("UpdateMe body:", body);
+        return {
+          url: "/user/profile",
+          method: "PATCH",
           body,
         };
       },
@@ -85,10 +108,12 @@ const userApi = baseApi.injectEndpoints({
 export const {
   useUpdateMeMutation,
   useGetMeQuery,
+  useGetAllTalentQuery,
   useGetAllUserQuery,
   useUpdateProfileMutation,
   useDeleteWorkExperienceMutation,
   useDeleteEducationMutation,
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
+  useUpdateCompnayProfileMutation,
 } = userApi;
