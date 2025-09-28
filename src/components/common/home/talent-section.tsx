@@ -1,5 +1,8 @@
+"use client";
+
 import person from "@/assets/telent-person.png";
 import TalentCards from "@/components/shared/talent-cards";
+import { useGetAllTalentQuery } from "@/redux/features/userApi";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -33,6 +36,9 @@ export function TalentSection() {
       image: person,
     },
   ];
+
+  const { data: talent, isLoading } = useGetAllTalentQuery("");
+  console.log("All Talent", talent);
 
   return (
     <section className="bg-[#EBF1FA] py-20">
