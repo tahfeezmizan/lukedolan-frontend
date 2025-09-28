@@ -14,8 +14,8 @@ import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
-  const { data: userData, isLoading } = useGetMeQuery({}) 
-  const profileData: UserData | undefined = userData?.data;
+  const { data: userData, isLoading } = useGetMeQuery('') 
+  const profileData: UserData | undefined = userData;
 
   console.log("Profile Data:", profileData);
 

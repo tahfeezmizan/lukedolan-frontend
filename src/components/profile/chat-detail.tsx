@@ -12,17 +12,18 @@ import {
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "@/redux/features/chatAPI";
-import { useGetMeQuery } from "@/redux/features/userApi";
 import { PageLoading } from "../shared/page-loading";
 import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
 import { useInfiniteScroll } from "../shared/use-infinite-scroll";
 import { getImageUrl } from "@/lib/utils";
+import { useGetMeQuery } from "@/redux/features/userApi";
 
 interface Message {
   _id: string;
   sender: string;
   text: string;
   createdAt: string;
+  chatId: string;
 }
 
 interface ScrollState {
@@ -36,7 +37,9 @@ export default function ChatDetail() {
   const { id } = params;
   const chatId = id as string;
   const { data: userData } = useGetMeQuery(undefined);
-  const myId = userData?.data?._id;
+  const myId = userData?._id;
+
+  console.log(userData, "from ");
 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
@@ -406,7 +409,7 @@ export default function ChatDetail() {
             console.log("isMyMessage:", isMyMessage, message.sender, myId);
             return (
               <div
-                key={message._id}
+                key={message.chatId}
                 className={`flex mb-4  ${
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}

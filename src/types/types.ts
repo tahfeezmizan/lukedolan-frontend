@@ -22,16 +22,29 @@ export interface TalentProps {
   price: string;
   image: string | StaticImageData; // if you're using Next.js `Image` import
 }
-
 export interface AppliedJob {
-  id: number;
-  jobTitle: string;
-  company: string;
+  _id: string;
+  applicant: string;
+   author: {
+    companyName: string;
+    
+  };
+  companyName: string;
+  createdAt: Date;
+  updatedAt: string;
+  email: string;
+  experience: number;
+  job: {
+    _id: string;
+    title: string;
+  };
   location: string;
-  appliedDate: string; // could also use Date if you plan to parse
-  expires: string; // same here
-  action: string;
+  name: string;
+  phone: string;
+  resume: string;
+  title: string;
 }
+
 
 export type ApplicantJob = {
   id: number;
