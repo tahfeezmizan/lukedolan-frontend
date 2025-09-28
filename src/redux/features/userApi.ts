@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // getAllUser
     getAllUser: builder.query({
-      query: () => ({
-        url: "/user",
+      query: ({ page = 1, limit = 10 }) => ({
+        url: `/user?page=${page}&limit=${limit}`,
         method: "GET",
       }),
     }),
