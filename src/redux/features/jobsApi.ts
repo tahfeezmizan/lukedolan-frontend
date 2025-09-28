@@ -34,6 +34,7 @@ const jobsApi = baseApi.injectEndpoints({
             }),
         }),
 
+
         updateJob: builder.mutation({
             query: ({ id, data }) => ({
                 url: `/job/${id}`,
@@ -87,6 +88,7 @@ const jobsApi = baseApi.injectEndpoints({
             },
         }),
     }),
+  }),
 });
 
 export const { useCreateJobMutation, useGetAllJobsQuery, useGetSingleJobQuery, useUpdateJobMutation, useDeleteJobMutation, useGetAllJobswithStaticsQuery, useGetFilterdJobsQuery } = jobsApi;
