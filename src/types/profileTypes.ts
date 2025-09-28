@@ -41,6 +41,8 @@ export interface Profile {
   resume: string;
   salaryExpectation: string | null;
   skills: string[];
+  expartes: string[];
+
   streetAddress: string;
   updatedAt: string;
   userId: string;
