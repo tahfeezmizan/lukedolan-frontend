@@ -19,7 +19,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const role = data?.role;
 
-  console.log("getMe data:", data?.role);
+  // console.log("getMe data:", data);
 
   let sidebarItems: SidebarItems;
 

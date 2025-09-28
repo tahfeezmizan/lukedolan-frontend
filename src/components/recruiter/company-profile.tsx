@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { useState } from "react";
 
 export default function CompanyProfile() {
@@ -15,10 +14,14 @@ export default function CompanyProfile() {
 
   setResponsibilities;
 
-  const handleSave = () => {
-    // Handle save functionality
-    console.log("Saving company profile...");
-  };
+  // const handleSave = () => {
+  //   // Handle save functionality
+  //   console.log("Saving company profile...");
+  // };
+
+  const { data } = useGetMeQuery("");
+  console.log("Active",data?.profile)
+  const profileData = data?.profile;
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-8">
@@ -70,12 +73,12 @@ export default function CompanyProfile() {
       </div> */}
 
       {/* Save Button */}
-      <Button
+      {/* <Button
         onClick={handleSave}
         className="w-full bg-green-900 hover:bg-green-800 rounded-lg text-white py-3 text-base font-medium"
       >
         Save Change
-      </Button>
+      </Button> */}
     </div>
   );
 }

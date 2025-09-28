@@ -9,19 +9,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon } from "lucide-react";
+import { useUpdateProfileMutation } from "@/redux/features/userApi";
 
 interface CompanyFormData {
   companyName: string;
-  description: string;
-  email: string;
+  companyDescription: string;
+  companyEmail: string;
   phone: string;
-  website: string;
+  companyWebsite: string;
   location: string;
-  linkedin: string;
-  twitter: string;
-  facebook: string;
-  instagram: string;
-  logo: File | null;
+  linkedinProfile: string;
+  twitterProfile: string;
+  facebookProfile: string;
+  instagramProfile: string;
+  companyLogo: File | null;
 }
 
 export function CompanyProfileForm() {
@@ -33,26 +34,55 @@ export function CompanyProfileForm() {
   } = useForm<CompanyFormData>({
     defaultValues: {
       companyName: "",
-      description: "",
-      email: "",
+      companyDescription: "",
+      companyEmail: "",
       phone: "",
-      website: "",
+      companyWebsite: "",
       location: "",
-      linkedin: "",
-      twitter: "",
-      facebook: "",
-      instagram: "",
-      logo: null,
+      linkedinProfile: "",
+      twitterProfile: "",
+      facebookProfile: "",
+      instagramProfile: "",
+      companyLogo: null,
     },
   });
 
+  const [updateProfile] = useUpdateProfileMutation();
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setValue("logo", file);
+    console.log(file);
+    setValue("companyLogo", file);
   };
 
-  const onSubmit = (data: CompanyFormData) => {
-    console.log("Company Profile Data:", data);
+  const onSubmit = async (data: CompanyFormData) => {
+    try {
+      const formData = new FormData();
+
+      // Append all fields to FormData
+      formData.append("companyName", data.companyName);
+      formData.append("companyDescription", data.companyDescription);
+      formData.append("email", data.companyEmail);
+      formData.append("phone", data.phone);
+      formData.append("companyWebsite", data.companyWebsite);
+      formData.append("location", data.location);
+      formData.append("linkedinProfile", data.linkedinProfile);
+      formData.append("twitterProfile", data.twitterProfile);
+      formData.append("facebookProfile", data.facebookProfile);
+      formData.append("instagramProfile", data.instagramProfile);
+      console.log(data.companyLogo)
+      if (data.companyLogo) {
+        formData.append("companyLogo", data.companyLogo);
+      }
+
+      const res = await updateProfile({body:formData});
+      console.log(res);
+
+      
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -65,7 +95,7 @@ export function CompanyProfileForm() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Logo Upload */}
+        {/* companyLogo Upload */}
         <div className="space-y-2">
           <Label className="text-lg font-medium text-gray-90">
             Company Logo
@@ -74,14 +104,14 @@ export function CompanyProfileForm() {
             <div className="text-center">
               <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="mt-4">
-                <label htmlFor="logo-upload" className="cursor-pointer">
+                <label htmlFor="companyLogo" className="cursor-pointer">
                   <span className="text-blue-600 hover:text-blue-500">
                     Click to replace
                   </span>
                   <span className="text-gray-600"> or drag and drop</span>
                 </label>
                 <input
-                  id="logo-upload"
+                  id="companyLogo"
                   type="file"
                   className="hidden"
                   accept=".svg,.png,.jpg,.jpeg,.gif"
@@ -111,18 +141,18 @@ export function CompanyProfileForm() {
           />
         </div>
 
-        {/* Company Description */}
+        {/* Company companyDescription */}
         <div className="space-y-2">
           <Label
-            htmlFor="description"
+            htmlFor="companyDescription"
             className="text-lg font-medium text-gray-90"
           >
             Company Descriptions
           </Label>
           <Textarea
-            id="description"
-            placeholder="Company descriptions"
-            {...register("description")}
+            id="companyDescription"
+            placeholder="Company companyDescriptions"
+            {...register("companyDescription")}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px]"
           />
         </div>
@@ -135,16 +165,16 @@ export function CompanyProfileForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label
-                htmlFor="email"
+                htmlFor="companyEmail"
                 className="text-lg font-medium text-gray-90"
               >
                 Email Address
               </Label>
               <Input
-                id="email"
-                type="email"
+                id="companyEmail"
+                type="companyEmail"
                 placeholder="example@gmail.com"
-                {...register("email")}
+                {...register("companyEmail")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -164,15 +194,15 @@ export function CompanyProfileForm() {
             </div>
             <div className="space-y-2">
               <Label
-                htmlFor="website"
+                htmlFor="companyWebsite"
                 className="text-lg font-medium text-gray-90"
               >
                 Website
               </Label>
               <Input
-                id="website"
+                id="companyWebsite"
                 placeholder="https://example.com"
-                {...register("website")}
+                {...register("companyWebsite")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
@@ -199,57 +229,57 @@ export function CompanyProfileForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label
-                htmlFor="linkedin"
+                htmlFor="linkedinProfile"
                 className="text-lg font-medium text-gray-90"
               >
-                LinkedIn
+                Linkedin
               </Label>
               <Input
-                id="linkedin"
+                id="linkedinProfile"
                 placeholder="https://example.com"
-                {...register("linkedin")}
+                {...register("linkedinProfile")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
               <Label
-                htmlFor="twitter"
+                htmlFor="twitterProfile"
                 className="text-lg font-medium text-gray-90"
               >
                 Twitter
               </Label>
               <Input
-                id="twitter"
+                id="twitterProfile"
                 placeholder="https://example.com"
-                {...register("twitter")}
+                {...register("twitterProfile")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
               <Label
-                htmlFor="facebook"
+                htmlFor="facebookProfile"
                 className="text-lg font-medium text-gray-90"
               >
                 Facebook
               </Label>
               <Input
-                id="facebook"
+                id="facebookProfile"
                 placeholder="https://example.com"
-                {...register("facebook")}
+                {...register("facebookProfile")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
             <div className="space-y-2">
               <Label
-                htmlFor="instagram"
+                htmlFor="instagramProfile"
                 className="text-lg font-medium text-gray-90"
               >
                 Instagram
               </Label>
               <Input
-                id="instagram"
+                id="instagramProfile"
                 placeholder="https://example.com"
-                {...register("instagram")}
+                {...register("instagramProfile")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
               />
             </div>
