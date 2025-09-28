@@ -6,7 +6,7 @@ import { useGetAppliedJobsQuery } from "@/redux/features/applicationApi";
 
 export default  function page() {
 
-  const { data: appliedJobsData } =  useGetAppliedJobsQuery();
+  const { data: appliedJobsData } =  useGetAppliedJobsQuery('');
 
   console.log(appliedJobsData)
 
