@@ -16,9 +16,9 @@ const applicationApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Application"],
-      //   transformResponse: (response: any) => {
-      //     return response?.data?.data;
-      //   },
+      transformResponse: (response: any) => {
+        return response?.data?.data;
+      },
     }),
   }),
 });

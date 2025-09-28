@@ -437,7 +437,7 @@ export default function ChatDetail() {
         />
         <Button
           onClick={handleSendMessage}
-          disabled={!messageText.trim() || !isSocketConnected}
+          disabled={!messageText.trim() }
         >
           <Send className="h-4 w-4" />
         </Button>

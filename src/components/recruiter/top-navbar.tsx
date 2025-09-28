@@ -10,6 +10,8 @@ import { CircleUserRound } from "lucide-react";
 export function TopNavbar() {
   const { data, isLoading } = useGetMeQuery(undefined);
 
+  console.log("Active user", data)
+
   if (isLoading) {
     return <PageLoading />;
   }
