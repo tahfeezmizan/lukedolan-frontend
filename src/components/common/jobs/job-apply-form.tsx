@@ -1,9 +1,12 @@
 "use client";
 
 import { useApplyJobMutation } from "@/redux/features/application";
+import { ApiResponse } from "@/types/profileTypes";
 import { JobApplyFormInputs } from "@/types/types";
+import { ApiError } from "next/dist/server/api-utils";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function JobApplyForm() {
   const params = useParams();
@@ -19,30 +22,40 @@ export default function JobApplyForm() {
     watch,
   } = useForm<JobApplyFormInputs>();
 
-  const onSubmit = (data: JobApplyFormInputs) => {
+  const onSubmit = async (data: JobApplyFormInputs) => {
     const resumeFile = data.resume?.[0] || null;
-    const experience = data.experience.toString();
-    console.log("experience years", typeof experience);
 
     try {
-      const res = applyJob({
-        job: slug,
-        name: data.name,
-        title: jobTitle,
-        location: data.location,
-        email: data.email,
-        phone: data.phone,
-        resume: resumeFile,
-        experience: experience,
-      });
+      const formData = new FormData();
+      formData.append("job", slug);
+      formData.append("name", data.name);
+      formData.append("title", jobTitle);
+      formData.append("location", data.location);
+      formData.append("email", data.email);
+      formData.append("phone", data.phone);
+      formData.append("experience", data.experience.toString());
+
+      if (resumeFile) {
+        formData.append("resume", resumeFile);
+      }
+
+      const res = (await applyJob(formData)) as {
+        data?: ApiResponse;
+        error?: ApiError;
+      };
+
+      if (res.data?.success) {
+        toast.success("Job application successfully");
+      } else {
+        toast.error(res.error?.data?.message || "Something went wrong");
+      }
 
       console.log(res);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("An unexpected error occurred");
     }
-    console.log("Form Data:", { ...data, resume: resumeFile });
   };
-
   // Watch selected file for display
   const resumeFile = watch("resume")?.[0];
 
