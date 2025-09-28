@@ -260,7 +260,7 @@ export function ProfileOverview() {
             profileData.profile.expartes.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Skills
+                  Expertises
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profileData.profile.expartes.map(
