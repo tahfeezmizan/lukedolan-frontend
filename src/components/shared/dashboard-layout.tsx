@@ -16,11 +16,10 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { data } = useGetMeQuery(undefined);
-  
-  const role = data?.role;
-  
-  console.log("getMe data:", data?.role);
 
+  const role = data?.role;
+
+  console.log("getMe data:", data?.role);
 
   let sidebarItems: SidebarItems;
 
@@ -47,7 +46,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main Content Area */}
       <main className="col-span-5 overflow-y-auto">
         <TopNavbar />
-        <div className="p-8 bg-[#EBF1FA] h-full">{children}</div>
+        <div className="p-4 bg-[#EBF1FA]">{children}</div>
       </main>
     </div>
   );

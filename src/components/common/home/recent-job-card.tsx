@@ -10,18 +10,10 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
   const {
     _id,
     title,
-    applicationsCount,
-    endDate,
-    jobLocation,
-    maxSalary,
-    minSalary,
     startDate,
-    type,
     experianceLabel,
     user: { profile: { companyName } = {} } = {},
   } = job;
-
-  console.log(endDate);
 
   return (
     <div key={_id} className="rounded-lg overflow-hidden bg-white  p-5">
@@ -38,7 +30,7 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
           <h3 className="font-bold">{experianceLabel || "Experienced"}</h3>
           {/* daysLeft */}
           <p className="text-gray-500">
-            <TimeAgo date={endDate} />
+            <TimeAgo date={startDate} />
           </p>
         </div>
       </div>

@@ -20,8 +20,9 @@ export default function JobApplyForm() {
   } = useForm<JobApplyFormInputs>();
 
   const onSubmit = (data: JobApplyFormInputs) => {
-    // Convert FileList to single file if needed
     const resumeFile = data.resume?.[0] || null;
+    const experience = data.experience.toString();
+    console.log("experience years", typeof experience);
 
     try {
       const res = applyJob({
@@ -32,14 +33,13 @@ export default function JobApplyForm() {
         email: data.email,
         phone: data.phone,
         resume: resumeFile,
-        experience: data.experience,
+        experience: experience,
       });
 
       console.log(res);
     } catch (error) {
       console.log(error);
     }
-
     console.log("Form Data:", { ...data, resume: resumeFile });
   };
 
@@ -65,7 +65,7 @@ export default function JobApplyForm() {
             <input
               type="text"
               id="name"
-              placeholder="Sonny"
+              placeholder="Enter your name"
               {...register("name", { required: "Name is required" })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
@@ -13,10 +12,11 @@ import {
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "@/redux/features/chatAPI";
-import { useGetUserQuery } from "@/redux/features/userApi";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { PageLoading } from "../shared/page-loading";
 import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
 import { useInfiniteScroll } from "../shared/use-infinite-scroll";
+import { getImageUrl } from "@/lib/utils";
 
 interface Message {
   _id: string;
@@ -35,7 +35,7 @@ export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
-  const { data: userData } = useGetUserQuery(undefined);
+  const { data: userData } = useGetMeQuery(undefined);
   const myId = userData?.data?._id;
 
   // State management
@@ -49,10 +49,10 @@ export default function ChatDetail() {
 
   // RTK Query for messages with dynamic page
   const { data, isLoading, isError, error } = useGetMessagesQuery(
-    { chatId, page: currentPage, limit: 20 },
+    { chatId, page: currentPage, limit: 10 },
     { skip: !chatId }
   );
-
+  console.log("data:", data);
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
@@ -66,18 +66,18 @@ export default function ChatDetail() {
     if (!isLoadingMore && hasMore && !isInitialLoad) {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTimeRef.current;
-      
+
       // Debounce: prevent requests within 500ms of each other
       if (timeSinceLastRequest < 500) {
         return;
       }
-      
+
       console.log("Loading more messages - Page:", currentPage + 1);
-      
+
       // Update request tracking
       requestIdRef.current += 1;
       lastRequestTimeRef.current = now;
-      
+
       setIsLoadingMore(true);
       setLoadingError(null);
       setCurrentPage((prev) => prev + 1);
@@ -112,13 +112,13 @@ export default function ChatDetail() {
       const headerHeight = 80; // Approximate header height
       const inputHeight = 80; // Approximate input area height
       const availableHeight = viewportHeight - headerHeight - inputHeight;
-      
+
       setContainerHeight(`${Math.max(availableHeight, 300)}px`);
     };
 
     updateContainerHeight();
     window.addEventListener("resize", updateContainerHeight);
-    
+
     return () => window.removeEventListener("resize", updateContainerHeight);
   }, []);
 
@@ -128,7 +128,7 @@ export default function ChatDetail() {
       // Reset request tracking for retry
       requestIdRef.current += 1;
       lastRequestTimeRef.current = Date.now();
-      
+
       setLoadingError(null);
       setIsLoadingMore(true);
       setCurrentPage((prev) => prev + 1);
@@ -138,7 +138,12 @@ export default function ChatDetail() {
   // Update messages when data changes
   useEffect(() => {
     if (data?.data) {
-      console.log("Data received - Page:", currentPage, "Messages:", data.data.messages?.length);
+      console.log(
+        "Data received - Page:",
+        currentPage,
+        "Messages:",
+        data.data.messages?.length
+      );
 
       if (currentPage === 1) {
         // Initial load
@@ -155,7 +160,7 @@ export default function ChatDetail() {
           );
           return [...uniqueNewMessages, ...prev];
         });
-        
+
         // Maintain scroll position after loading new messages
         setTimeout(() => {
           maintainScrollPosition();
@@ -169,7 +174,7 @@ export default function ChatDetail() {
       } else {
         setHasMore(false);
       }
-      
+
       setIsLoadingMore(false);
       setLoadingError(null);
     }
@@ -179,10 +184,10 @@ export default function ChatDetail() {
   useEffect(() => {
     if (isError && error) {
       console.error("Messages API error:", error);
-      
+
       // Only handle error if it's for the current request
       const currentRequestId = requestIdRef.current;
-      
+
       setTimeout(() => {
         // Check if this is still the current request
         if (requestIdRef.current === currentRequestId) {
@@ -212,7 +217,7 @@ export default function ChatDetail() {
           requestAnimationFrame(() => {
             container.scrollTo({
               top: container.scrollHeight,
-              behavior: "auto"
+              behavior: "auto",
             });
           });
         });
@@ -230,21 +235,21 @@ export default function ChatDetail() {
     const receiveMessageHandler = (newMessage: Message) => {
       setAllMessages((prev) => {
         if (prev.some((msg) => msg._id === newMessage._id)) return prev;
-        
+
         const updatedMessages = [...prev, newMessage];
-        
+
         // Optimized auto-scroll to bottom for new messages
         requestAnimationFrame(() => {
           const container = containerRef.current;
           if (container && messagesEndRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = container;
             const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-            
+
             if (isNearBottom) {
               // Smooth scroll to bottom
               container.scrollTo({
                 top: container.scrollHeight,
-                behavior: "smooth"
+                behavior: "smooth",
               });
             }
           }
@@ -286,7 +291,7 @@ export default function ChatDetail() {
         if (container) {
           container.scrollTo({
             top: container.scrollHeight,
-            behavior: "smooth"
+            behavior: "smooth",
           });
         }
       });
@@ -302,8 +307,6 @@ export default function ChatDetail() {
       handleSendMessage();
     }
   };
-
-
 
   // Reset when chat changes
   useEffect(() => {
@@ -326,10 +329,7 @@ export default function ChatDetail() {
         <div className="text-center">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <p className="text-red-500 mb-4">Failed to load chat</p>
-          <Button
-            onClick={() => window.location.reload()}
-            variant="outline"
-          >
+          <Button onClick={() => window.location.reload()} variant="outline">
             Retry
           </Button>
         </div>
@@ -340,12 +340,12 @@ export default function ChatDetail() {
   const participant = data?.data?.participant || {};
 
   return (
-    <div className="flex-1 flex flex-col bg-white h-screen">
+    <div className="flex-1 flex flex-col bg-white min-h-[calc(100vh-128px)]">
       {/* Header - fixed height */}
-      <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between flex-shrink-0">
+      <div className="bg-white border-b border-gray-200 p-3 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center">
           <Image
-            src={participant.image || placeholderImg}
+            src={getImageUrl(participant.image || placeholderImg)}
             alt={participant.name || "User"}
             width={40}
             height={40}
@@ -368,30 +368,28 @@ export default function ChatDetail() {
       {/* Messages Container - scrollable area with dynamic height */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0"
-        style={{ 
+        className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 pb-16 "
+        style={{
           scrollBehavior: "auto",
           maxHeight: containerHeight,
-          height: containerHeight
+          height: containerHeight,
         }}
       >
         {/* Intersection Observer trigger for infinite scroll */}
-        <div ref={triggerRef} className="h-1" />
+        <div ref={triggerRef} className="h-1 " />
 
         {/* Loading indicator for infinite scroll */}
-        <InfiniteScrollLoaderPresets.Chat 
-          isLoading={isLoadingMore}
-        />
+        <InfiniteScrollLoaderPresets.Chat isLoading={isLoadingMore} />
 
         {/* Error indicator for infinite scroll */}
-        <InfiniteScrollLoaderPresets.Chat 
+        <InfiniteScrollLoaderPresets.Chat
           hasError={!!loadingError}
           errorMessage={loadingError || undefined}
           onRetry={handleRetryLoadMore}
         />
 
         {/* No more messages indicator */}
-        <InfiniteScrollLoaderPresets.Chat 
+        <InfiniteScrollLoaderPresets.Chat
           showNoMoreData={!hasMore && allMessages.length > 0 && !isInitialLoad}
         />
 
@@ -402,14 +400,14 @@ export default function ChatDetail() {
           </div>
         ) : (
           allMessages.map((message) => {
-            console.log(message)
+            console.log(message);
             const isMyMessage = message.sender.toString() === myId.toString();
-            
+
             console.log("isMyMessage:", isMyMessage, message.sender, myId);
             return (
               <div
                 key={message._id}
-                className={`flex mb-4 ${
+                className={`flex mb-4  ${
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}
               >
@@ -420,10 +418,14 @@ export default function ChatDetail() {
                       : "bg-gray-100 text-gray-800 rounded-bl-md"
                   }`}
                 >
-                  <p className="text-sm break-words leading-relaxed">{message.text}</p>
-                  <p className={`text-xs mt-2 ${
-                    isMyMessage ? "text-blue-100" : "text-gray-500"
-                  }`}>
+                  <p className="text-sm break-words leading-relaxed">
+                    {message.text}
+                  </p>
+                  <p
+                    className={`text-xs mt-2 ${
+                      isMyMessage ? "text-blue-100" : "text-gray-500"
+                    }`}
+                  >
                     {new Date(message.createdAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -439,7 +441,7 @@ export default function ChatDetail() {
       </div>
 
       {/* Input - fixed height */}
-      <div className="bg-white border-t border-gray-200 p-4 flex space-x-2 flex-shrink-0">
+      <div className="bg-white fixed  bottom-1 w-[60%]  border-t border-gray-200 p-4 flex space-x-2 flex-shrink-0">
         <Input
           placeholder="Type a message..."
           value={messageText}
@@ -448,8 +450,8 @@ export default function ChatDetail() {
           className="flex-1"
           disabled={!isSocketConnected}
         />
-        <Button 
-          onClick={handleSendMessage} 
+        <Button
+          onClick={handleSendMessage}
           disabled={!messageText.trim() || !isSocketConnected}
         >
           <Send className="h-4 w-4" />
@@ -458,5 +460,3 @@ export default function ChatDetail() {
     </div>
   );
 }
-
-
