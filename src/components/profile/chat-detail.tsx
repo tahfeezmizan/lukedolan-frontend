@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
@@ -17,7 +17,7 @@ import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
 import { useInfiniteScroll } from "../shared/use-infinite-scroll";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
-
+ 
 interface Message {
   _id: string;
   sender: string;
@@ -25,15 +25,15 @@ interface Message {
   createdAt: string;
   chatId: string;
 }
-
+ 
 export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
-
+ 
   const { data: userData } = useGetMeQuery('');
   const myId = userData?._id;
-
+ 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,42 +44,42 @@ export default function ChatDetail() {
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
   const [messageText, setMessageText] = useState("");
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-
+ 
   // RTK Query for messages with dynamic page
   const { data, isLoading, isError, error } = useGetMessagesQuery(
     { chatId, page: currentPage, limit: 10 },
     { skip: !chatId }
   );
-
+ 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
   const requestIdRef = useRef(0);
   const lastRequestTimeRef = useRef(0);
-
+ 
   // Debounced load more function for infinite scroll
   const handleLoadMore = useCallback(() => {
     if (!isLoadingMore && hasMore && !isInitialLoad) {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTimeRef.current;
-
+ 
       // Debounce: prevent requests within 500ms of each other
       if (timeSinceLastRequest < 500) {
         return;
       }
-
+ 
       console.log("Loading more messages - Page:", currentPage + 1);
-
+ 
       // Update request tracking
       requestIdRef.current += 1;
       lastRequestTimeRef.current = now;
-
+ 
       setIsLoadingMore(true);
       setLoadingError(null);
       setCurrentPage((prev) => prev + 1);
     }
   }, [isLoadingMore, hasMore, isInitialLoad, currentPage]);
-
+ 
   // Optimized infinite scroll hook
   const {
     sentinelRef: triggerRef,
@@ -94,11 +94,11 @@ export default function ChatDetail() {
     rootMargin: "50px",
     debounceMs: 200,
   });
-
+ 
   // Socket connection
   const socket: Socket = useMemo(() => io("http://10.10.7.62:5001"), []);
   const [sendMessageAPI] = useSendMessageMutation();
-
+ 
   // Dynamic height management for responsive design
   useEffect(() => {
     const updateContainerHeight = () => {
@@ -106,29 +106,29 @@ export default function ChatDetail() {
       const headerHeight = 80; // Approximate header height
       const inputHeight = 80; // Approximate input area height
       const availableHeight = viewportHeight - headerHeight - inputHeight;
-
+ 
       setContainerHeight(`${Math.max(availableHeight, 300)}px`);
     };
-
+ 
     updateContainerHeight();
     window.addEventListener("resize", updateContainerHeight);
-
+ 
     return () => window.removeEventListener("resize", updateContainerHeight);
   }, []);
-
+ 
   // Optimized retry handler for failed loads with request tracking
   const handleRetryLoadMore = useCallback(() => {
     if (!isLoadingMore && hasMore) {
       // Reset request tracking for retry
       requestIdRef.current += 1;
       lastRequestTimeRef.current = Date.now();
-
+ 
       setLoadingError(null);
       setIsLoadingMore(true);
       setCurrentPage((prev) => prev + 1);
     }
   }, [isLoadingMore, hasMore]);
-
+ 
   // Update messages when data changes
   useEffect(() => {
     if (data?.data) {
@@ -138,7 +138,7 @@ export default function ChatDetail() {
         "Messages:",
         data.data.messages?.length
       );
-
+ 
       if (currentPage === 1) {
         // Initial load
         setAllMessages(data.data.messages || []);
@@ -154,13 +154,13 @@ export default function ChatDetail() {
           );
           return [...uniqueNewMessages, ...prev];
         });
-
+ 
         // Maintain scroll position after loading new messages
         setTimeout(() => {
           maintainScrollPosition();
         }, 50);
       }
-
+ 
       // Update pagination state
       const pagination = data.data.pagination;
       if (pagination) {
@@ -168,20 +168,20 @@ export default function ChatDetail() {
       } else {
         setHasMore(false);
       }
-
+ 
       setIsLoadingMore(false);
       setLoadingError(null);
     }
   }, [data, currentPage, maintainScrollPosition]);
-
+ 
   // Enhanced API error handling with request tracking
   useEffect(() => {
     if (isError && error) {
       console.error("Messages API error:", error);
-
+ 
       // Only handle error if it's for the current request
       const currentRequestId = requestIdRef.current;
-
+ 
       setTimeout(() => {
         // Check if this is still the current request
         if (requestIdRef.current === currentRequestId) {
@@ -191,7 +191,7 @@ export default function ChatDetail() {
       }, 100); // Small delay to prevent race conditions
     }
   }, [isError, error]);
-
+ 
   // Enhanced scroll to bottom for initial load and new messages
   useEffect(() => {
     if (isScrollingToBottom.current && allMessages.length > 0) {
@@ -200,7 +200,7 @@ export default function ChatDetail() {
       isScrollingToBottom.current = false;
     }
   }, [allMessages, scrollToBottom]);
-
+ 
   // Optimized initial scroll positioning
   useEffect(() => {
     if (!isInitialLoad && currentPage === 1 && allMessages.length > 0) {
@@ -218,27 +218,27 @@ export default function ChatDetail() {
       }
     }
   }, [isInitialLoad, allMessages.length, currentPage, containerRef]);
-
+ 
   // Socket events
   useEffect(() => {
     if (!chatId || !socket) return;
-
+ 
     socket.on("connect", () => setIsSocketConnected(true));
     socket.on("disconnect", () => setIsSocketConnected(false));
-
+ 
     const receiveMessageHandler = (newMessage: Message) => {
       setAllMessages((prev) => {
         if (prev.some((msg) => msg._id === newMessage._id)) return prev;
-
+ 
         const updatedMessages = [...prev, newMessage];
-
+ 
         // Optimized auto-scroll to bottom for new messages
         requestAnimationFrame(() => {
           const container = containerRef.current;
           if (container && messagesEndRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = container;
             const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-
+ 
             if (isNearBottom) {
               // Smooth scroll to bottom
               container.scrollTo({
@@ -248,38 +248,38 @@ export default function ChatDetail() {
             }
           }
         });
-
+ 
         return updatedMessages;
       });
     };
-
+ 
     socket.on(`getMessage::${chatId}`, receiveMessageHandler);
-
+ 
     return () => {
       socket.off(`getMessage::${chatId}`, receiveMessageHandler);
       socket.disconnect();
     };
   }, [chatId, socket, containerRef]);
-
+ 
   const handleSendMessage = async () => {
     if (!messageText.trim()) return;
-
+ 
     try {
       const messageTextToSend = messageText.trim();
       setMessageText("");
-
+ 
       await sendMessageAPI({
         chatId,
         text: messageTextToSend,
         type: "TEXT",
       }).unwrap();
-
+ 
       socket.emit("sendMessage", {
         chatId,
         senderId: myId,
         text: messageTextToSend,
       });
-
+ 
       // Optimized scroll to bottom after sending message
       requestAnimationFrame(() => {
         const container = containerRef.current;
@@ -295,14 +295,14 @@ export default function ChatDetail() {
       alert("Failed to send message. Please try again.");
     }
   };
-
+ 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
-
+ 
   // Reset when chat changes
   useEffect(() => {
     setCurrentPage(1);
@@ -313,11 +313,11 @@ export default function ChatDetail() {
     setLoadingError(null);
     isScrollingToBottom.current = false;
   }, [chatId]);
-
+ 
   if (isLoading && isInitialLoad) {
     return <PageLoading />;
   }
-
+ 
   if (isError && isInitialLoad) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -331,9 +331,9 @@ export default function ChatDetail() {
       </div>
     );
   }
-
+ 
   const participant = data?.data?.participant || {};
-
+ 
   return (
     <div className="flex-1 flex flex-col bg-white min-h-[calc(100vh-128px)]">
       {/* Header - fixed height */}
@@ -359,7 +359,7 @@ export default function ChatDetail() {
           </span>
         </div>
       </div>
-
+ 
       {/* Messages Container - scrollable area with dynamic height */}
       <div
         ref={containerRef}
@@ -372,22 +372,22 @@ export default function ChatDetail() {
       >
         {/* Intersection Observer trigger for infinite scroll */}
         <div ref={triggerRef} className="h-1 " />
-
+ 
         {/* Loading indicator for infinite scroll */}
         <InfiniteScrollLoaderPresets.Chat isLoading={isLoadingMore} />
-
+ 
         {/* Error indicator for infinite scroll */}
         <InfiniteScrollLoaderPresets.Chat
           hasError={!!loadingError}
           errorMessage={loadingError || undefined}
           onRetry={handleRetryLoadMore}
         />
-
+ 
         {/* No more messages indicator */}
         <InfiniteScrollLoaderPresets.Chat
           showNoMoreData={!hasMore && allMessages.length > 0 && !isInitialLoad}
         />
-
+ 
         {/* Messages */}
         {allMessages.length === 0 && !isLoading ? (
           <div className="flex items-center justify-center h-full text-gray-500">
@@ -396,7 +396,7 @@ export default function ChatDetail() {
         ) : (
           allMessages.map((message,index) => {
             const isMyMessage = message.sender.toString() === myId?.toString();
-
+ 
             return (
               <div
                 key={index}
@@ -432,7 +432,7 @@ export default function ChatDetail() {
         )}
         <div ref={messagesEndRef} />
       </div>
-
+ 
       {/* Input - fixed height */}
       <div className="bg-white fixed bottom-1 w-[60%] border-t border-gray-200 p-4 flex space-x-2 flex-shrink-0">
         <Input
@@ -441,7 +441,7 @@ export default function ChatDetail() {
           onChange={(e) => setMessageText(e.target.value)}
           onKeyPress={handleKeyPress}
           className="flex-1"
-          
+         
         />
         <Button
           onClick={handleSendMessage}
