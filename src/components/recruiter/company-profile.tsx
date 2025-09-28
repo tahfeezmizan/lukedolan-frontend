@@ -51,7 +51,7 @@ export default function CompanyProfile() {
       </div>
 
       {/* Responsibilities */}
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Responsibilities
         </h2>
@@ -67,7 +67,7 @@ export default function CompanyProfile() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Save Button */}
       <Button

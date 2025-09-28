@@ -7,6 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatDate } from "@/lib/format-date";
+import { useGetApplicationQuery } from "@/redux/features/application";
 import Link from "next/link";
 
 const jobPosts = [
@@ -58,34 +60,13 @@ const jobPosts = [
 ];
 
 export function ApplicationsList() {
-  const handleJobTypeChange = (value: string) => {
-    console.log("Selected Job Type:", value);
-  };
+  const { data: appliedUser } = useGetApplicationQuery("");
+  console.log("people apply ", appliedUser);
+
   return (
     <div className="">
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold text-gray-900">Applications</h2>
-
-          {/* Dropdown Menu for Job Types */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Job Types</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                onSelect={() => handleJobTypeChange("Full-time")}
-              >
-                Senior Hair Stylist
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => handleJobTypeChange("Part-time")}
-              >
-                Hair Stylist
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <h2 className="text-3xl font-bold text-gray-900">Applications</h2>
 
         <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
           <table className="w-full">
@@ -104,33 +85,27 @@ export function ApplicationsList() {
                   Application Date
                 </th>
                 <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                  Skills
-                </th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              {jobPosts.map((job) => (
+              {appliedUser?.map((job: any) => (
                 <tr
-                  key={job.id}
+                  key={job?.id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
                 >
                   <td className="py-4 px-6">
-                    <div className="font-medium text-gray-900">
-                      {job.fullName}
-                    </div>
+                    <div className="font-medium text-gray-900">{job?.name}</div>
                   </td>
-                  <td className="py-4 px-6 text-gray-700">{job.email}</td>
-                  <td className="py-4 px-6 text-gray-700">{job.phone}</td>
+                  <td className="py-4 px-6 text-gray-700">{job?.email}</td>
+                  <td className="py-4 px-6 text-gray-700">{job?.phone}</td>
                   <td className="py-4 px-6 text-gray-700">
-                    {job.applicationDate}
+                    {formatDate(job?.createdAt)}
                   </td>
-                  <td className="py-4 px-6 text-gray-700">{job.Skills}</td>
 
                   <td className="py-4 px-6">
-                    <Link href={`/recruiter/applications/${job.id}`}>
+                    <Link href={`/recruiter/applications`} target="_blank">
                       <Button className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold">
                         View Details
                       </Button>
