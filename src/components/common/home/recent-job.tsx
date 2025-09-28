@@ -1,78 +1,77 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
+import { PostJobFormData } from "@/types/types";
+import { ArrowRight, Slice } from "lucide-react";
 import Link from "next/link";
-import companyLogo from "@/assets/company-logo (1).png";
-import companyLogo2 from "@/assets/company-logo (2).png";
-import companyLogo3 from "@/assets/company-logo (3).png";
-import companyLogo4 from "@/assets/company-logo (4).png";
-import companyLogo5 from "@/assets/company-logo (5).png";
 import RecentJobCard from "./recent-job-card";
 
-const jobs = [
-  {
-    id: 1,
-    companyLogo: companyLogo,
-    experienceLevel: "Experienced",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "London, UK",
-  },
-  {
-    id: 2,
-    companyLogo: companyLogo2,
-    experienceLevel: "Experienced",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "string",
-  },
-  {
-    id: 3,
-    companyLogo: companyLogo3,
-    experienceLevel: "Experienced",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "string",
-  },
-  {
-    id: 4,
-    companyLogo: companyLogo4,
-    experienceLevel: "Beginner",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "string",
-  },
-  {
-    id: 5,
-    companyLogo: companyLogo5,
-    experienceLevel: "Experienced",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "string",
-  },
-  {
-    id: 6,
-    companyLogo: companyLogo,
-    experienceLevel: "Freshers",
-    daysLeft: "30 days to go",
-    companyName: "Hair & Care Saloon",
-    jobTitle: "Senior Hair Stylist",
-    salary: "40,000 – 50,000",
-    location: "string",
-  },
-];
+// const jobs = [
+//   {
+//     id: 1,
+//     companyLogo: companyLogo,
+//     experienceLevel: "Experienced",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "London, UK",
+//   },
+//   {
+//     id: 2,
+//     companyLogo: companyLogo2,
+//     experienceLevel: "Experienced",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "string",
+//   },
+//   {
+//     id: 3,
+//     companyLogo: companyLogo3,
+//     experienceLevel: "Experienced",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "string",
+//   },
+//   {
+//     id: 4,
+//     companyLogo: companyLogo4,
+//     experienceLevel: "Beginner",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "string",
+//   },
+//   {
+//     id: 5,
+//     companyLogo: companyLogo5,
+//     experienceLevel: "Experienced",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "string",
+//   },
+//   {
+//     id: 6,
+//     companyLogo: companyLogo,
+//     experienceLevel: "Freshers",
+//     daysLeft: "30 days to go",
+//     companyName: "Hair & Care Saloon",
+//     jobTitle: "Senior Hair Stylist",
+//     salary: "40,000 – 50,000",
+//     location: "string",
+//   },
+// ];
 
 export function RecentJob() {
+  const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
+
   return (
     <section className="bg-[#EBF1FA] py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -92,8 +91,8 @@ export function RecentJob() {
 
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {jobs.map((job) => (
-            <RecentJobCard job={job} key={job.id} />
+          {jobs?.slice(0, 6)?.map((job: PostJobFormData) => (
+            <RecentJobCard job={job} key={job._id} />
           ))}
         </div>
       </div>

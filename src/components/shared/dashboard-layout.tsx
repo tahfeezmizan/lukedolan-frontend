@@ -2,11 +2,11 @@
 
 import {
   adminItems,
-  recruiterItems,
   applicantItems,
+  recruiterItems,
   SidebarItems,
 } from "@/lib/sidebar-nav-config";
-import { usePathname } from "next/navigation";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { TopNavbar } from "../recruiter/top-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 
@@ -15,30 +15,27 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const pathname = usePathname();
+  const { data } = useGetMeQuery(undefined);
+  
+  const role = data?.role;
+  
+  console.log("getMe data:", data?.role);
 
-  const role = pathname.split("/")[1];
 
-  // Decide which sidebar to show
   let sidebarItems: SidebarItems;
-  let dashboardTitle = "";
 
   switch (role) {
     case "admin":
       sidebarItems = adminItems;
-      dashboardTitle = "Admin";
       break;
     case "recruiter":
       sidebarItems = recruiterItems;
-      dashboardTitle = "Recruiter";
       break;
-    case "profile":
+    case "applicant":
       sidebarItems = applicantItems;
-      dashboardTitle = "Applicant";
       break;
     default:
       sidebarItems = [];
-      dashboardTitle = "Dashboard";
   }
 
   return (
@@ -49,7 +46,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main Content Area */}
       <main className="col-span-5 overflow-y-auto">
-        <TopNavbar title={dashboardTitle} />
+        <TopNavbar  />
         <div className="p-4  ">{children}</div>
       </main>
     </div>

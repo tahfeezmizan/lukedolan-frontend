@@ -6,7 +6,7 @@ import { useGetAppliedJobsQuery } from "@/redux/features/applicationApi";
 
 export default  function page() {
 
-  const { data: appliedJobsData } =  useGetAppliedJobsQuery();
+  const { data: appliedJobsData } =  useGetAppliedJobsQuery('');
 
   console.log(appliedJobsData)
 
@@ -29,9 +29,7 @@ export default  function page() {
             <th className="text-left py-4 px-6 font-semibold text-gray-700">
               Applied Date
             </th>
-            <th className="text-left py-4 px-6 font-semibold text-gray-700">
-              Expires
-            </th>
+          
             <th className="text-left py-4 px-6 font-semibold text-gray-700">
               Action
             </th>

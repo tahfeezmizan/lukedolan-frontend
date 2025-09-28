@@ -9,6 +9,8 @@ import {
 } from "@/redux/features/authApi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/slice/userSlice";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -16,10 +18,11 @@ export default function OtpVerify() {
   const [countdown, setCountdown] = useState(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const route = useRouter();
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const authType = searchParams.get("authType");
-  const route = useRouter();
 
   // console.log(email, authType);
 
@@ -62,7 +65,6 @@ export default function OtpVerify() {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 2000));
     const otpValue = otp.join("");
-    console.log("Verifying OTP:", otpValue);
     setIsLoading(false);
 
     try {
@@ -71,10 +73,14 @@ export default function OtpVerify() {
         oneTimeCode: otpValue,
       });
 
-      console.log(res);
+      console.log("OTP Verify", res);
+
       if (res?.data?.success === true) {
+        dispatch(setUser({ data: res.data?.data?.accessToken }));
         toast.success("OTP verification successful");
-        route.push("/select-role");
+        route.push("/");
+      } else {
+        toast.error(res.error.data.message);
       }
     } catch (error) {
       console.log(error);
