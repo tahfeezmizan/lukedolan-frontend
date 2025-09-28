@@ -95,7 +95,7 @@ export function SidebarFilter() {
   // Log filter state every second
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("Filter Data:", filterData);
+      // console.log("Filter Data:", filterData);
     }, 5000);
     return () => clearInterval(interval);
   }, [filterData]);

@@ -17,13 +17,9 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
     startDate,
     type,
     user: {
-      profile: { companyName } = {}, // ✅ safe default if profile is undefined
+      profile: { companyName } = {}, 
     } = {},
   } = job;
-
-  console.log(companyName);
-
-  console.log(job);
 
   return (
     <div className="w-full bg-white hover:shadow-md transition rounded-lg">
@@ -38,7 +34,9 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
             className="w-20 h-20b object-contain border p-2 rounded mb-2"
           />
           <h3 className="text-xl font-semibold leading-loose">{title}</h3>
-          <p className="text-gray-800">Company: <span className="font-semibold">{companyName}</span></p>
+          <p className="text-gray-800">
+            Company: <span className="font-semibold">{companyName}</span>
+          </p>
           <div className="flex flex-wrap gap-4 mt-2 text-md text-black">
             <span className="flex items-center gap-1.5">
               <MapPin size={16} className="text-green-950 " /> {jobLocation}
@@ -69,7 +67,7 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
               className="bg-green-900 text-white rounded-full"
             />{" "}
             <p className="font-medium text-gray-700">
-              USD {minSalary} - {maxSalary} per year
+              USD ${minSalary} - ${maxSalary} per year
             </p>
           </div>
         </div>
