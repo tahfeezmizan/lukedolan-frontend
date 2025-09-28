@@ -23,13 +23,7 @@ interface Message {
   sender: string;
   text: string;
   createdAt: string;
-  chatId:string
-}
-
-interface ScrollState {
-  scrollTop: number;
-  scrollHeight: number;
-  clientHeight: number;
+  chatId: string;
 }
 
 export default function ChatDetail() {
@@ -37,10 +31,8 @@ export default function ChatDetail() {
   const { id } = params;
   const chatId = id as string;
 
-  const { data: userData } = useGetMeQuery();
+  const { data: userData } = useGetMeQuery('');
   const myId = userData?._id;
-      
-  console.log(userData, "from ");
 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
@@ -50,35 +42,20 @@ export default function ChatDetail() {
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
+  const [messageText, setMessageText] = useState("");
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
 
   // RTK Query for messages with dynamic page
   const { data, isLoading, isError, error } = useGetMessagesQuery(
     { chatId, page: currentPage, limit: 10 },
     { skip: !chatId }
   );
-  console.log("data:", data);
+
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
-
-  // Request management to prevent race conditions
   const requestIdRef = useRef(0);
   const lastRequestTimeRef = useRef(0);
-
-  // Debounced load more function for infinite scroll
-  const handleLoadMore = useCallback(() => {
-    if (!isLoadingMore && hasMore && !isInitialLoad) {
-      const now = Date.now();
-      const timeSinceLastRequest = now - lastRequestTimeRef.current;
-
-      // Debounce: prevent requests within 500ms of each other
-      if (timeSinceLastRequest < 500) {
-        return;
-      }
-
-      console.log("Loading more messages - Page:", currentPage + 1);
-
-
 
   // Debounced load more function for infinite scroll
   const handleLoadMore = useCallback(() => {
@@ -121,8 +98,6 @@ export default function ChatDetail() {
   // Socket connection
   const socket: Socket = useMemo(() => io("http://10.10.7.62:5001"), []);
   const [sendMessageAPI] = useSendMessageMutation();
-  const [messageText, setMessageText] = useState("");
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
 
   // Dynamic height management for responsive design
   useEffect(() => {
@@ -242,7 +217,7 @@ export default function ChatDetail() {
         });
       }
     }
-  }, [isInitialLoad, allMessages.length, currentPage]);
+  }, [isInitialLoad, allMessages.length, currentPage, containerRef]);
 
   // Socket events
   useEffect(() => {
@@ -282,8 +257,9 @@ export default function ChatDetail() {
 
     return () => {
       socket.off(`getMessage::${chatId}`, receiveMessageHandler);
+      socket.disconnect();
     };
-  }, [chatId, socket]);
+  }, [chatId, socket, containerRef]);
 
   const handleSendMessage = async () => {
     if (!messageText.trim()) return;
@@ -418,16 +394,12 @@ export default function ChatDetail() {
             <p>No messages yet. Start the conversation!</p>
           </div>
         ) : (
-          allMessages.map((message) => {
-            console.log(message);
-            const isMyMessage = message.sender.toString() === myId.toString();
+          allMessages.map((message,index) => {
+            const isMyMessage = message.sender.toString() === myId?.toString();
 
-            console.log("isMyMessage:", isMyMessage, message.sender, myId);
             return (
               <div
-
-                key={message.chatId}
-
+                key={index}
                 className={`flex mb-4  ${
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}
@@ -462,14 +434,14 @@ export default function ChatDetail() {
       </div>
 
       {/* Input - fixed height */}
-      <div className="bg-white fixed  bottom-1 w-[60%]  border-t border-gray-200 p-4 flex space-x-2 flex-shrink-0">
+      <div className="bg-white fixed bottom-1 w-[60%] border-t border-gray-200 p-4 flex space-x-2 flex-shrink-0">
         <Input
           placeholder="Type a message..."
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           onKeyPress={handleKeyPress}
           className="flex-1"
-          disabled={!isSocketConnected}
+          
         />
         <Button
           onClick={handleSendMessage}
