@@ -8,7 +8,7 @@ import { useGetAllUserQuery } from "@/redux/features/userApi";
 import { useState, useMemo } from "react";
 
 const columns: Column<UserData>[] = [
-    { key: "_id", label: "User Id" },
+    { key: "_id", label: "Serial Id" },
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "role", label: "Role" },
