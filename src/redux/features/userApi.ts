@@ -5,10 +5,24 @@ const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // getAllUser
     getAllUser: builder.query({
-      query: ({ page = 1, limit = 10 }) => ({
-        url: `/user?page=${page}&limit=${limit}`,
-        method: "GET",
-      }),
+      query: ({
+        page = 1,
+        limit = 10,
+        role,
+      }: {
+        page?: number;
+        limit?: number;
+        role?: string;
+      }) => {
+        const query = new URLSearchParams();
+        query.append("page", String(page));
+        query.append("limit", String(limit));
+        if (role) query.append("role", role);
+        return {
+          url: `/user?${query.toString()}`,
+          method: "GET",
+        };
+      },
     }),
 
     getAllTalent: builder.query({
@@ -34,7 +48,7 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     UpdateMe: builder.mutation({
-      query: (body) => {
+      query: ({ body }) => {
         console.log("UpdateMe body:", body);
         return {
           url: "/user/update-me",
@@ -44,16 +58,16 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
-    // UpdateCompnayProfile: builder.mutation({
-    //   query: ({ body }) => {
-    //     console.log("UpdateMe body:", body);
-    //     return {
-    //       url: "/user/profile",
-    //       method: "PATCH",
-    //       body,
-    //     };
-    //   },
-    // }),
+    UpdateCompnayProfile: builder.mutation({
+      query: ({ body }) => {
+        console.log("UpdateMe body:", body);
+        return {
+          url: "/user/profile",
+          method: "PATCH",
+          body,
+        };
+      },
+    }),
 
     UpdateProfile: builder.mutation({
       query: ({ body }) => {
@@ -65,9 +79,9 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-    
+
     AddWorkExperience: builder.mutation({
-      query: (body) => {
+      query: ({ body }) => {
         console.log("AddWorkExperience body:", body);
         return {
           url: "/user/profile/work-experience",
@@ -116,4 +130,5 @@ export const {
   useDeleteEducationMutation,
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
+  useUpdateCompnayProfileMutation,
 } = userApi;

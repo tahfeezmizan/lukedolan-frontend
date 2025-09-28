@@ -1,106 +1,110 @@
-import { Column, JobData } from "@/types/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { Column } from "@/types/types";
 import { Calendar, Users } from "lucide-react";
 import { StatsCard } from "../shared/stats-card";
 import AdminTable from "./table";
+import { useState, useMemo } from "react";
+import { useGetAllJobswithStaticsQuery } from "@/redux/features/jobsApi";
 
-const stats = [
-  {
-    title: "Total Job Posted",
-    value: "40,689",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
-    icon: Calendar,
-  },
-  {
-    title: "Active Jobs",
-    value: "3,689 ",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
-    icon: Users,
-  },
-  {
-    title: "Application",
-    value: "14,154",
-    change: "+8.5%",
-    changeText: "Up from yesterday",
-    icon: Calendar,
-  },
-];
-
-const jobData: JobData[] = [
-  {
-    userId: "#J-10294",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 55,
-  },
-  {
-    userId: "#J-10295",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 55,
-  },
-  {
-    userId: "#J-10296",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 44,
-  },
-  {
-    userId: "#J-10297",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 12,
-  },
-  {
-    userId: "#J-10298",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 3,
-  },
-  {
-    userId: "#J-10299",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 3,
-  },
-  {
-    userId: "#J-10300",
-    jobTitle: "Senior Hair Stylist",
-    companyName: "Style & cut Saloon",
-    salary: "£2,200/mo",
-    jobType: "Full time",
-    applications: 4,
-  },
-];
-
-const columns: Column<JobData>[] = [
-  { key: "userId", label: "Job Id" },
-  { key: "jobTitle", label: "Job Title" },
-  { key: "companyName", label: "Company Name" },
-  { key: "salary", label: "Salary" },
-  { key: "jobType", label: "Job Type" },
-  { key: "applications", label: "Applications" },
-];
+// Define the shape of each job row including extras
+interface JobRow {
+    serial: number;
+    title: string;
+    category: string;
+    type: string;
+    jobLocation: string;
+    applicationsCount: number;
+    salaryRange: string;
+}
 
 export default function Jobs() {
-  return (
-    <div>
-      <StatsCard stats={stats} />
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
-      <AdminTable data={jobData} columns={columns} />
-    </div>
-  );
+    const { data, isLoading } = useGetAllJobswithStaticsQuery({ page, limit });
+
+    const meta = data?.meta;
+    // Memoize jobs to make it stable
+    const jobs = useMemo(() => data?.data || [], [data?.data]);
+
+    console.log(data);
+
+    // Add serial + salary formatting
+    const jobsWithExtras: JobRow[] = useMemo(
+        () =>
+            jobs.map((job: any, index: number) => ({
+                serial: (page - 1) * limit + index + 1,
+                title: job.title,
+                category: job.category,
+                type: job.type,
+                jobLocation: job.jobLocation,
+                applicationsCount: job.applicationsCount,
+                salaryRange: `£${job.minSalary} - £${job.maxSalary}`,
+            })),
+        [jobs, page, limit]
+    );
+
+    // Columns definition for AdminTable
+    const columns: Column<JobRow>[] = useMemo(
+        () => [
+            { key: "serial", label: "Serial No." },
+            { key: "title", label: "Job Title" },
+            { key: "category", label: "Category" },
+            { key: "type", label: "Type" },
+            { key: "jobLocation", label: "Location" },
+            { key: "applicationsCount", label: "Applications" },
+            { key: "salaryRange", label: "Salary Range" },
+        ],
+        []
+    );
+
+    // Stats for StatsCard
+    const stats = useMemo(
+        () => [
+            {
+                title: "Total Job Posted",
+                value: meta?.total?.toLocaleString() || "0",
+                change: "+8.5%",
+                changeText: "Up from yesterday",
+                icon: Calendar,
+            },
+            {
+                title: "Active Jobs",
+                value: jobs.length.toLocaleString(),
+                change: "+8.5%",
+                changeText: "Up from yesterday",
+                icon: Users,
+            },
+            {
+                title: "Applications",
+                value: meta?.totalApplications?.toLocaleString() || "0",
+                change: "+8.5%",
+                changeText: "Up from yesterday",
+                icon: Calendar,
+            },
+        ],
+        [jobs.length, meta]
+    );
+
+    return (
+        <div>
+            <StatsCard stats={stats} />
+
+            {isLoading ? (
+                <p className="text-gray-500">Loading jobs...</p>
+            ) : (
+                <AdminTable<JobRow>
+                    data={jobsWithExtras}
+                    columns={columns}
+                    pagination={{
+                        page: meta?.page || 1,
+                        totalPages: meta?.totalPage || 1,
+                        onPageChange: setPage,
+                    }}
+                />
+            )}
+        </div>
+    );
 }

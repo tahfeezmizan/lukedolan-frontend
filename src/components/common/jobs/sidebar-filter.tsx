@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -13,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MapPin, Search } from "lucide-react";
+import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import { debounce } from "lodash";
 
-interface FilterData {
+export interface FilterData {
   search: string;
   location: string;
   category: string;
@@ -22,22 +24,52 @@ interface FilterData {
     fullTime: boolean;
     partTime: boolean;
     contract: boolean;
+    remote: boolean;
+    freeLance: boolean;
   };
   salaryRange: [number, number];
 }
 
-export function SidebarFilter() {
+interface SidebarFilterProps {
+  onFiltersChange: (filters: FilterData) => void;
+}
+
+export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
+  const { data: categories, isLoading } = useGetCategoryQuery(undefined);
+
+  
+  const categoryNames =
+    categories?.data?.data?.map((category: any) => category.name) || [];
+
   const [filterData, setFilterData] = useState<FilterData>({
     search: "",
     location: "",
-    category: "anytime",
+    category: "all-categories",
     jobType: {
       fullTime: false,
       partTime: false,
       contract: false,
+      remote: false,
+      freeLance: false,
     },
     salaryRange: [0, 100000],
   });
+
+  // Debounced filter change handler
+  const debouncedFilterChange = useCallback(
+    debounce((filters: FilterData) => {
+      onFiltersChange(filters);
+    }, 500),
+    [onFiltersChange]
+  );
+
+  
+  useEffect(() => {
+    debouncedFilterChange(filterData);
+    return () => {
+      debouncedFilterChange.cancel();
+    };
+  }, [filterData, debouncedFilterChange]);
 
   const handleInputChange = <K extends keyof FilterData>(
     field: K,
@@ -68,7 +100,7 @@ export function SidebarFilter() {
     if (!isNaN(num)) {
       const newRange = [...filterData.salaryRange] as [number, number];
       newRange[index] = num;
-      // Ensure lower <= upper
+     
       if (newRange[0] <= newRange[1]) {
         setFilterData((prev) => ({
           ...prev,
@@ -79,33 +111,29 @@ export function SidebarFilter() {
   };
 
   const handleClearAll = () => {
-    setFilterData({
+    const clearedFilters: FilterData = {
       search: "",
       location: "",
-      category: "anytime",
+      category: "all-categories",
       jobType: {
         fullTime: false,
         partTime: false,
         contract: false,
+        remote: false,
+        freeLance: false,
       },
-      salaryRange: [0, 9000],
-    });
+      salaryRange: [0, 100000] as [number, number],
+    };
+    setFilterData(clearedFilters);
+    onFiltersChange(clearedFilters);
   };
-
-  // Log filter state every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // console.log("Filter Data:", filterData);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [filterData]);
 
   return (
     <div className="w-full p-6 bg-white rounded-lg space-y-4">
       <div className="flex justify-between items-center text-xl border-b">
         <h2 className="font-semibold text-gray-800 leading-relaxed">Filter</h2>
         <button
-          className="text-red-500 hover:text-red-600 leading-relaxed"
+          className="text-red-500 hover:text-red-600 leading-relaxed cursor-pointer"
           onClick={handleClearAll}
         >
           Clear All
@@ -146,13 +174,15 @@ export function SidebarFilter() {
           onValueChange={(val) => handleInputChange("category", val)}
         >
           <SelectTrigger className="mt-1 p-4 rounded-lg !text-md text-black w-full">
-            <SelectValue placeholder="Anytime" />
+            <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="anytime">Anytime</SelectItem>
-            <SelectItem value="last-24-hours">Last 24 hours</SelectItem>
-            <SelectItem value="last-week">Last week</SelectItem>
-            <SelectItem value="last-month">Last month</SelectItem>
+            <SelectItem value="all-categories">All Categories</SelectItem>
+            {categoryNames.map((categoryName: string, index: number) => (
+              <SelectItem key={index} value={categoryName}>
+                {categoryName}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -200,6 +230,32 @@ export function SidebarFilter() {
               className="text-md font-medium leading-none"
             >
               Contract
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="contract"
+              checked={filterData.jobType.remote}
+              onCheckedChange={(val) => handleJobTypeChange("remote", !!val)}
+            />
+            <Label
+              htmlFor="remote"
+              className="text-md font-medium leading-none"
+            >
+              Remote
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="freeLance"
+              checked={filterData.jobType.freeLance}
+              onCheckedChange={(val) => handleJobTypeChange("freeLance", !!val)}
+            />
+            <Label
+              htmlFor="freeLance"
+              className="text-md font-medium leading-none"
+            >
+              Freelance
             </Label>
           </div>
         </div>

@@ -70,16 +70,13 @@ export function CompanyProfileForm() {
       formData.append("twitterProfile", data.twitterProfile);
       formData.append("facebookProfile", data.facebookProfile);
       formData.append("instagramProfile", data.instagramProfile);
-      console.log(data.companyLogo)
+      console.log(data.companyLogo);
       if (data.companyLogo) {
         formData.append("companyLogo", data.companyLogo);
       }
 
-      const res = await updateProfile({body:formData});
+      const res = await updateProfile({ body: formData });
       console.log(res);
-
-      
-      
     } catch (error) {
       console.log(error);
     }

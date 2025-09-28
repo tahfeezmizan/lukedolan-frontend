@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetMeQuery } from "@/redux/features/userApi";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function CompanyProfile() {
@@ -20,18 +21,22 @@ export default function CompanyProfile() {
   // };
 
   const { data } = useGetMeQuery("");
-  console.log("Active",data?.profile)
   const profileData = data?.profile;
 
+  console.log("Active", profileData);
   return (
     <div className="bg-white rounded-lg shadow-sm p-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Company Profile</h1>
 
       {/* Company Logo */}
       <div className="mb-8">
-        <div className="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center">
-          <span className="text-white text-2xl font-bold">m</span>
-        </div>
+        <Image
+          src={profileData?.companyLogo}
+          alt={profileData?.companyName}
+          width={80}
+          height={80}
+          className="w-20 h-20 border p-2 rounded"
+        />
       </div>
 
       {/* Company Name */}
@@ -45,12 +50,7 @@ export default function CompanyProfile() {
         <h3 className="block text-xl font-semibold text-gray-900 mb-3">
           Description
         </h3>
-        <p>
-          Stripe is looking for Social Media Marketing expert to help manage our
-          online networks. You will be responsible for monitoring our social
-          media channels, creating content, finding effective ways to engage the
-          community and incentivize others to engage on our channels.
-        </p>
+        <p>{profileData?.companyDescription}</p>
       </div>
 
       {/* Responsibilities */}

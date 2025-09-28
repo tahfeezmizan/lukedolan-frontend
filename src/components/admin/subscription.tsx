@@ -101,7 +101,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Swal from "sweetalert2";
 
 export default function Subscription() {
-    const { data: plansData, isLoading, refetch } = useGetPlansQuery();
+    const { data, isLoading, refetch } = useGetPlansQuery();
+
+    // Safely extract plans and meta
+    const planData = data?.plans ?? [];
+    const meta = data?.meta;
+
     const [createPlan] = useCreatePlanMutation();
     type DurationType = "1 month" | "3 months" | "6 months" | "1 year";
 
@@ -116,9 +121,9 @@ export default function Subscription() {
 
     // Stats (static, keep your original design)
     const stats = [
-        { title: "Expired", value: "40,689", icon: Users },
-        { title: "Active", value: "3,689", icon: CheckCircle },
-        { title: "Failed Subscriptions", value: "14,154", icon: AlertTriangle },
+        { title: "Expired", value: meta?.expiredSubscriptions?.toLocaleString() || "0", icon: Users },
+        { title: "Active", value: meta?.activeSubscriptions?.toLocaleString() || "0", icon: CheckCircle },
+        { title: "Failed Subscriptions", value: meta?.failedSubscriptions?.toLocaleString() || "0", icon: AlertTriangle },
     ];
 
     // Determine paymentType dynamically
@@ -162,7 +167,7 @@ export default function Subscription() {
         <div className="space-y-10">
             <StatsCard stats={stats} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{isLoading ? <p>Loading plans...</p> : plansData?.map((plan) => <PricingCard key={plan._id} _id={plan._id} title={plan.title} price={plan.price ?? 0} duration={plan.duration} features={plan.features ?? []} />)}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{isLoading ? <p>Loading plans...</p> : planData?.map((plan) => <PricingCard key={plan._id} _id={plan._id} title={plan.title} price={plan.price ?? 0} duration={plan.duration} features={plan.features ?? []} />)}</div>
 
             {/* Create Plan Modal */}
             <div className="mt-10 flex justify-center">

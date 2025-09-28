@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
-// Type for a Plan
+// Type for a single Plan
 export type PlanData = {
     _id: string;
     title: string;
-    description?: string;
+    description: string; // make required since backend validates it
     price: number;
-    duration: string; // "1 month" | "1 year"
-    paymentType?: string;
-    features?: string[];
-    status?: "Active" | "Inactive";
+    duration: "1 month" | "3 months" | "6 months" | "1 year";
+    paymentType: "Monthly" | "Yearly"; // required
+    features: string[];
+    status: "Active" | "Inactive";
     productId?: string;
     paymentLink?: string;
     priceId?: string;
@@ -18,16 +18,22 @@ export type PlanData = {
     updatedAt?: string;
 };
 
+// Type for API response for getPlans
+export type PlanResponse = {
+    plans: PlanData[];
+    meta: {
+        activeSubscriptions: number;
+        expiredSubscriptions: number;
+        failedSubscriptions: number;
+    };
+};
+
 export const planApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // GET all plans
-        getPlans: builder.query<PlanData[], void>({
-            query: () => ({
-                url: "/plan",
-                method: "GET",
-            }),
+        getPlans: builder.query<PlanResponse, void>({
+            query: () => ({ url: "/plan", method: "GET" }),
             transformResponse: (response: any) => response?.data ?? [],
-            providesTags: ["Plan"],
         }),
 
         // GET plan by ID
