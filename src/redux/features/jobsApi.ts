@@ -89,6 +89,4 @@ const jobsApi = baseApi.injectEndpoints({
     }),
 });
 
-// get filtered apis
-
-export const { useCreateJobMutation, useGetAllJobsQuery, useGetSingleJobQuery, useUpdateJobMutation, useDeleteJobMutation, useGetFilterdJobsQuery, useGetAllJobswithStaticsQuery } = jobsApi;
+export const { useCreateJobMutation, useGetAllJobsQuery, useGetSingleJobQuery, useUpdateJobMutation, useDeleteJobMutation, useGetAllJobswithStaticsQuery, useGetFilterdJobsQuery } = jobsApi;
