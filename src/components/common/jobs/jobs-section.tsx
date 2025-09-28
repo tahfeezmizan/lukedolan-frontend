@@ -9,7 +9,7 @@ import { SidebarFilter } from "./sidebar-filter";
 
 export default function JobsSection() {
   const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
-
+  console.log(jobs,'allJobs');
   // const [currentPage, setCurrentPage] = useState(1);
   // const jobsPerPage = 4;
   // const totalPages = Math.ceil(jobs.length / jobsPerPage);
