@@ -37,7 +37,7 @@ export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
-  const { data: userData } = useGetMeQuery();
+  const { data: userData } = useGetMeQuery('');
   const myId = userData?._id;
    
   console.log(userData, "from ");
