@@ -255,7 +255,7 @@ export function ProfileOverview() {
                 </div>
               </div>
             )}
-          {/* Skills Section (if available) */}
+          {/* Expertises Section (if available) */}
           {profileData?.profile?.expartes &&
             profileData.profile.expartes.length > 0 && (
               <div className="mb-8">
