@@ -2,8 +2,7 @@
 
 import { useApplyJobMutation } from "@/redux/features/application";
 import { ApiResponse } from "@/types/profileTypes";
-import { JobApplyFormInputs } from "@/types/types";
-import { ApiError } from "next/dist/server/api-utils";
+import { ApiError, JobApplyFormInputs } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -11,7 +10,9 @@ import { toast } from "sonner";
 export default function JobApplyForm() {
   const params = useParams();
   const { id, slug } = params;
+  
   const jobTitle = decodeURIComponent(id as string);
+  const jobSlug: string = Array.isArray(slug) ? slug[0] : slug ?? "";
 
   const [applyJob] = useApplyJobMutation();
 
@@ -27,7 +28,7 @@ export default function JobApplyForm() {
 
     try {
       const formData = new FormData();
-      formData.append("job", slug);
+      formData.append("job", jobSlug);
       formData.append("name", data.name);
       formData.append("title", jobTitle);
       formData.append("location", data.location);
@@ -56,6 +57,7 @@ export default function JobApplyForm() {
       toast.error("An unexpected error occurred");
     }
   };
+
   // Watch selected file for display
   const resumeFile = watch("resume")?.[0];
 
