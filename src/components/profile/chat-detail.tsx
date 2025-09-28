@@ -12,7 +12,6 @@ import {
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "@/redux/features/chatAPI";
-
 import { PageLoading } from "../shared/page-loading";
 import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
 import { useInfiniteScroll } from "../shared/use-infinite-scroll";
@@ -37,9 +36,10 @@ export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
+
   const { data: userData } = useGetMeQuery();
   const myId = userData?._id;
-   
+      
   console.log(userData, "from ");
 
   // State management
@@ -64,6 +64,21 @@ export default function ChatDetail() {
   // Request management to prevent race conditions
   const requestIdRef = useRef(0);
   const lastRequestTimeRef = useRef(0);
+
+  // Debounced load more function for infinite scroll
+  const handleLoadMore = useCallback(() => {
+    if (!isLoadingMore && hasMore && !isInitialLoad) {
+      const now = Date.now();
+      const timeSinceLastRequest = now - lastRequestTimeRef.current;
+
+      // Debounce: prevent requests within 500ms of each other
+      if (timeSinceLastRequest < 500) {
+        return;
+      }
+
+      console.log("Loading more messages - Page:", currentPage + 1);
+
+
 
   // Debounced load more function for infinite scroll
   const handleLoadMore = useCallback(() => {
@@ -410,7 +425,9 @@ export default function ChatDetail() {
             console.log("isMyMessage:", isMyMessage, message.sender, myId);
             return (
               <div
+
                 key={message.chatId}
+
                 className={`flex mb-4  ${
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}

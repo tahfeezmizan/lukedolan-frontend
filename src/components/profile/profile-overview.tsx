@@ -4,10 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import {
-  ApiResponse,
   Education,
   UserData,
-  WorkExperience,
+  WorkExperience
 } from "@/types/profileTypes";
 import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
 
