@@ -5,6 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateUserMutation } from "@/redux/features/authApi";
+import { ApiError } from "@/types/types";
+import { SerializedError } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -53,14 +56,26 @@ export function SignupForm() {
             data.email
           )}&authType=createAccount`
         );
-        // console.log("Created");
-        toast.success("User Create sucessfully ");
-      } else {
-        toast.error(res?.error?.data?.message || "An error occurred");
+        toast.success("User created successfully");
+      } else if (res?.error) {
+        // ✅ Type narrowing
+        const err = res.error as FetchBaseQueryError | SerializedError;
+
+        let errorMessage = "An error occurred";
+
+        if ("data" in err) {
+          errorMessage =
+            (err.data as ApiError["data"])?.message ?? errorMessage;
+        } else if ("message" in err) {
+          errorMessage = err.message ?? errorMessage;
+        }
+
+        toast.error(errorMessage);
       }
-    } catch (error) {
-      toast.error(error?.data?.message || "Something went wrong");
-      console.log("error", error);
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      toast.error(apiError?.data?.message || "Something went wrong");
+      console.log("error", apiError);
     }
   };
 

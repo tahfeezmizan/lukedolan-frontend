@@ -2,7 +2,7 @@
 
 import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
-import { ArrowRight, Slice } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import RecentJobCard from "./recent-job-card";
 
@@ -70,7 +70,7 @@ import RecentJobCard from "./recent-job-card";
 // ];
 
 export function RecentJob() {
-  const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
+  const { data: jobs } = useGetAllJobsQuery(undefined);
 
   return (
     <section className="bg-[#EBF1FA] py-20">

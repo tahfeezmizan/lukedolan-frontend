@@ -3,7 +3,11 @@ import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // getAllUser
+    /** ======================
+     *  USER MANAGEMENT
+     * =====================*/
+
+    // Get all users (with optional pagination & role filter)
     getAllUser: builder.query({
       query: ({
         page = 1,
@@ -18,6 +22,7 @@ const userApi = baseApi.injectEndpoints({
         query.append("page", String(page));
         query.append("limit", String(limit));
         if (role) query.append("role", role);
+
         return {
           url: `/user?${query.toString()}`,
           method: "GET",
@@ -25,6 +30,7 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+    // Get all talents/applicants
     getAllTalent: builder.query({
       query: () => ({
         url: "/user/applicants",
@@ -32,10 +38,11 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Auth"],
       transformResponse: (response: any) => {
-        return response?.data;
+        return response?.data?.data;
       },
     }),
 
+    // Get current logged-in user details
     getMe: builder.query({
       query: () => ({
         url: "/user/me",
@@ -47,6 +54,11 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+    /** ======================
+     *  PROFILE MANAGEMENT
+     * =====================*/
+
+    // Update logged-in user's basic info
     UpdateMe: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateMe body:", body);
@@ -58,6 +70,7 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+    // Update company profile
     UpdateCompnayProfile: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateMe body:", body);
@@ -69,6 +82,7 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+    // Update general user profile
     UpdateProfile: builder.mutation({
       query: ({ body }) => {
         console.log("UpdateProfile body:", body);
@@ -80,6 +94,11 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+    /** ======================
+     *  WORK EXPERIENCE
+     * =====================*/
+
+    // Add new work experience
     AddWorkExperience: builder.mutation({
       query: ({ body }) => {
         console.log("AddWorkExperience body:", body);
@@ -90,6 +109,8 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    // Delete specific work experience by index
     DeleteWorkExperience: builder.mutation({
       query: ({ index }) => ({
         url: `/user/profile/work-experience/${index}`,
@@ -108,6 +129,11 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    /** ======================
+     *  EDUCATION
+     * =====================*/
+
     // Delete specific education by index
     DeleteEducation: builder.mutation({
       query: ({ index }) => {
@@ -120,6 +146,7 @@ const userApi = baseApi.injectEndpoints({
     }),
   }),
 });
+
 export const {
   useUpdateMeMutation,
   useGetMeQuery,

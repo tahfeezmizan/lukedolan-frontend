@@ -18,6 +18,7 @@ export const dashboardApi = baseApi.injectEndpoints({
 
 export const { useGetStatisticsQuery } = dashboardApi;
 
+
 export interface DashboardStatisticsResponse {
     statusCode: number;
     success: boolean;

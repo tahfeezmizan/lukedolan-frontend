@@ -20,7 +20,7 @@ export default function CompanyProfile() {
   //   console.log("Saving company profile...");
   // };
 
-  const { data } = useGetMeQuery("");
+  const { data } = useGetMeQuery(undefined);
   const profileData = data?.profile;
 
   console.log("Active", profileData);
