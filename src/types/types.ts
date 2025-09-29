@@ -16,13 +16,16 @@ export type JobCardProps = {
 export interface TalentProps {
   // Core display fields
   id: string;
+  _id: string;
+  userId: {
+    _id: string;
+    image: string;
+  };
   name: string;
   title: string;
   experience: string;
   skills: string[];
   price: string;
-  userId: string;
-  image: string;
 
   // Additional fields from your data
   email: string;
@@ -31,11 +34,25 @@ export interface TalentProps {
   location?: string;
   preferredWorkType?: string | null;
   bio?: string | null;
+
   education: Array<{
-    // Define education structure based on your data
+    institution?: string;
+    degree?: string;
+    fieldOfStudy?: string;
+    startDate?: string;
+    endDate?: string;
     [key: string]: any;
   }>;
-  workExperience: any[];
+
+  workExperience: Array<{
+    company?: string;
+    position?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+    [key: string]: any;
+  }>;
+
   salaryExpectation?: number | null;
   mobile: string;
   verified: boolean;
@@ -49,6 +66,7 @@ export interface TalentProps {
   country: string;
   streetAddress: string;
 }
+
 export interface AppliedJob {
     _id: string;
     applicant: string;
