@@ -14,13 +14,40 @@ export type JobCardProps = {
 };
 
 export interface TalentProps {
-    id: number;
-    name: string;
-    title: string;
-    experience: string;
-    skills: string;
-    price: string;
-    image: string | StaticImageData; // if you're using Next.js `Image` import
+  // Core display fields
+  id: string;
+  name: string;
+  title: string;
+  experience: string;
+  skills: string[];
+  price: string;
+  userId: string;
+  image: string;
+
+  // Additional fields from your data
+  email: string;
+  openToWork: boolean;
+  expartes: string[];
+  location?: string;
+  preferredWorkType?: string | null;
+  bio?: string | null;
+  education: Array<{
+    // Define education structure based on your data
+    [key: string]: any;
+  }>;
+  workExperience: any[];
+  salaryExpectation?: number | null;
+  mobile: string;
+  verified: boolean;
+  status: string;
+  role: string;
+
+  // Optional personal info
+  firstName: string;
+  lastName: string;
+  city: string;
+  country: string;
+  streetAddress: string;
 }
 export interface AppliedJob {
     _id: string;
