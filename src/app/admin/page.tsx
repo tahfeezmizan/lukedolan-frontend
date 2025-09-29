@@ -40,7 +40,7 @@ export default function DashboardPage() {
 
             <div className="grid grid-cols-3 gap-4 mt-8">
                 <div className="col-span-2">
-                    <RevenueChart />
+                    <RevenueChart monthlyRevenue={data?.data.monthlyRevenue || []} />
                 </div>
                 <div className="col-span-1">
                     <FeaturePurchaseChart />
