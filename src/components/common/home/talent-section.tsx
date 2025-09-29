@@ -1,6 +1,5 @@
 "use client";
 
-import person from "@/assets/telent-person.png";
 import TalentCards from "@/components/shared/talent-cards";
 import { useGetAllTalentQuery } from "@/redux/features/userApi";
 import { TalentProps } from "@/types/types";
@@ -21,7 +20,7 @@ export function TalentSection() {
             Top Talent Ready to Work
           </h2>
           <Link
-            href={"/job"}
+            href={"/find-talent"}
             className="bg-transparent  text-black hover:text-white hover:bg-green-800 border-2 border-green-900  px-6 py-1 text-lg font-medium rounded-lg duration-300 flex items-center justify-between gap-2"
           >
             Explore all
@@ -31,7 +30,7 @@ export function TalentSection() {
 
         {/* Talent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent?.data.map((talent : TalentProps) => (
+          {talent?.map((talent : TalentProps) => (
             <TalentCards key={talent._id} talent={talent} />
           ))}
         </div>
