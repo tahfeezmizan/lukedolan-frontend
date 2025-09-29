@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 export default function TalentCards({ talent }: { talent: TalentProps }) {
-  // Safely handle skills data - convert to array if it's a string or ensure it's an array
+
   const safeSkills = React.useMemo(() => {
     if (!talent.skills) return [];
     
@@ -15,8 +15,8 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
     }
     
     if (typeof talent.skills === 'string') {
-      // If it's a comma-separated string, split it
-      return talent.skills.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+  
+      return (talent.skills as string).split(',').map((skill: string) => skill.trim()).filter(skill => skill.length > 0);
     }
     
     return [];
@@ -33,7 +33,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
     return [];
   }, [talent.workExperience]);
 
-  // Safely handle country/location
+  
   const location = talent.country || talent.city || 'Location not specified';
 
   return (
@@ -41,7 +41,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
       key={talent.id}
       className="bg-white rounded-lg overflow-hidden border border-gray-200"
     >
-      <Link href={`/find-talent/${talent.id}`}>
+      <Link href={`/find-talent/${talent?.userId._id}`}>
         <div className="p-4 bg-gray-100 space-y-3 relative">
           <div className="flex items-center justify-center gap-2 bg-white p-1 rounded-md w-40 absolute right-4 shadow">
             <CheckCircle className="h-4 w-4 text-green-600" />
@@ -49,16 +49,35 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
               Available For work
             </span>
           </div>
-
+          <p>{talent.title}</p>
           <div className="flex justify-center mt-8">
             <div className="relative h-32">
-              <Image
-                src={getImageUrl(talent?.userId?.image)}
-                alt={talent.name}
-                width={120}
-                height={120}
-                className="rounded-full object-cover"
-              />
+              {talent?.userId?.image ? (
+                <Image
+                  src={getImageUrl(talent.userId.image)}
+                  alt={"image"}
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-[120px] h-[120px] rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21a8 8 0 0 0-16 0" />
+                  </svg>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -105,9 +124,9 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
                     <span className="text-gray-800">
                       <span className="flex gap-2 font-medium">
                         <BriefcaseBusiness className="text-green-800" />
-                        {exp?.jobTitle || 'Position not specified'}
+                        {exp?.jobTitle || "Position not specified"}
                       </span>
-                      {exp?.companyName && `@ ${exp.companyName}`} 
+                      {exp?.companyName && `@ ${exp.companyName}`}
                       {exp?.employmentType && ` (${exp.employmentType})`}
                     </span>
                   </div>

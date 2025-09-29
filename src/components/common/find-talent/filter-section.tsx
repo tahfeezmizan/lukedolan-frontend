@@ -15,7 +15,7 @@ export default function FilterSection() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Convert filter data to API parameters
+  
   const apiFilters = useMemo(() => {
     const apiParams: any = {
       page: currentPage,
