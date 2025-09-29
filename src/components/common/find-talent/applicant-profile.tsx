@@ -6,8 +6,7 @@ import {
   Briefcase,
   Download,
   GraduationCap,
-  Mail,
-  MessageSquare,
+  Mail
 } from "lucide-react";
 import Image from "next/image";
 

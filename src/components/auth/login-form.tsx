@@ -43,10 +43,24 @@ export function LoginForm() {
 
       if (res.data.success) {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
-        route.push("/");
+
+        const role = res?.data?.data?.role;
+        switch (role) {
+          case "admin":
+            route.push("/admin");
+            break;
+          case "recruiter":
+            route.push("/recruiter");
+            break;
+          case "applicant":
+            route.push("/");
+            break;
+          default:
+            route.push("/");
+        }
         toast.success("Login Successful");
       } else {
-        console.log(res.error);
+        // console.log(res.error);
         // toast.error(res.error.data.message);
       }
     } catch (error) {

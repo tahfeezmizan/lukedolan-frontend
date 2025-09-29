@@ -13,8 +13,11 @@ import { TalentSidebar } from "./talent-sidebar";
 
 import person from "@/assets/telent-person.png";
 import TalentCards from "@/components/shared/talent-cards";
+import { useGetAllTalentQuery } from "@/redux/features/userApi";
+import { Talent } from "@/types/talentTypes";
 
 export default function FilterSection() {
+  const { data: talent,  } = useGetAllTalentQuery("");
   const talents = [
     {
       id: 1,
@@ -60,7 +63,7 @@ export default function FilterSection() {
 
   const startIndex = (currentPage - 1) * jobsPerPage;
   const endIndex = startIndex + jobsPerPage;
-  const currentTalents = talents.slice(startIndex, endIndex);
+  // const currentTalents = talents.slice(startIndex, endIndex);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
@@ -71,8 +74,8 @@ export default function FilterSection() {
 
         <div className="col-span-1 md:col-span-2 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {currentTalents.map((talent) => (
-              <TalentCards key={talent.id} talent={talent} />
+            {talent?.map((talent: Talent) => (
+              <TalentCards key={talent._id} talent={talent} />
             ))}
           </div>
 
