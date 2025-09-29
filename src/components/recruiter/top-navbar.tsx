@@ -6,11 +6,12 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import Image from "next/image";
 import { PageLoading } from "../shared/page-loading";
 import { CircleUserRound } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
 
 export function TopNavbar() {
   const { data, isLoading } = useGetMeQuery(undefined);
 
-  // console.log("Active user", data)
+  console.log("Active user", data?.profile?.companyLogo);
 
   if (isLoading) {
     return <PageLoading />;
@@ -30,12 +31,12 @@ export function TopNavbar() {
             variant="ghost"
             className="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 h-auto"
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden">
-              {data?.image ? (
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2">
+              {data?.profile?.companyLogo || data?.image ? (
                 <Image
                   width={10}
                   height={10}
-                  src={data?.image}
+                  src={getImageUrl(data?.profile?.companyLogo || data?.image)}
                   alt={data?.name}
                   className="w-full h-full object-cover"
                 />

@@ -29,9 +29,12 @@ export default function ChatDetail() {
   const params = useParams();
   const { id } = params;
   const chatId = id as string;
+  
  
   const { data: userData } = useGetMeQuery('');
   const myId = userData?._id;
+  console.log(myId, id, chatId)
+  
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,6 +51,7 @@ export default function ChatDetail() {
     { skip: !chatId }
   );
   // Refs
+  console.log(allMessages,"message")
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
   const requestIdRef = useRef(0);

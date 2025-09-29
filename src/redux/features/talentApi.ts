@@ -35,7 +35,20 @@ const talentApi = baseApi.injectEndpoints({
         return response?.data;
       },
     }),
+
+    // Get all talents/applicants
+    getSingleTalent: builder.query({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
+      transformResponse: (response: any) => {
+        return response?.data;
+      },
+    }),
   }),
 });
 
-export const { useGetFilteredTalentsQuery } = talentApi;
+export const { useGetFilteredTalentsQuery, useGetSingleTalentQuery } =
+  talentApi;
