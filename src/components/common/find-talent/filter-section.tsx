@@ -1,134 +1,212 @@
 "use client";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useState } from "react";
-import { TalentSidebar } from "./talent-sidebar";
-
-import person from "@/assets/telent-person.png";
+import { useState, useMemo, useCallback } from "react";
+import { TalentSidebar, TalentFilterData } from "./talent-sidebar";
 import TalentCards from "@/components/shared/talent-cards";
+import { useGetFilteredTalentsQuery } from "@/redux/features/talentApi";
 
 export default function FilterSection() {
-  const talents = [
-    {
-      id: 1,
-      name: "Sophia R.",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-    {
-      id: 3,
-      name: "Sophia R.",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-    {
-      id: 4,
-      name: "Sophia R.",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-  ];
+  const [filters, setFilters] = useState<TalentFilterData>({
+    search: "",
+    location: "",
+    gender: "all",
+    skills: "",
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 4;
-  const totalPages = Math.ceil(talents.length / jobsPerPage);
 
-  const startIndex = (currentPage - 1) * jobsPerPage;
-  const endIndex = startIndex + jobsPerPage;
-  const currentTalents = talents.slice(startIndex, endIndex);
+  
+  const apiFilters = useMemo(() => {
+    const apiParams: any = {
+      page: currentPage,
+      limit: 4,
+    };
+
+    if (filters.search) apiParams.searchTerm = filters.search;
+    if (filters.location) apiParams.location = filters.location;
+    if (filters.gender && filters.gender !== "all") {
+      apiParams.gender = filters.gender;
+    }
+    if (filters.skills) apiParams.skills = filters.skills;
+
+    return apiParams;
+  }, [filters, currentPage]);
+
+  const {
+    data: talentsResponse,
+    isLoading,
+    error,
+  } = useGetFilteredTalentsQuery(apiFilters);
+
+  // Extract talents and pagination data from response
+  const { talents, pagination } = useMemo(() => {
+    if (!talentsResponse) {
+      return { talents: [], pagination: null };
+    }
+
+    return {
+      talents: talentsResponse.data || [],
+      pagination: talentsResponse.meta || null,
+    };
+  }, [talentsResponse]);
+
+  // Transform API data to match TalentCards expected format
+  const transformedTalents = useMemo(() => {
+    return talents.map((talent: any) => ({
+      id: talent._id,
+      name:
+        `${talent.firstName || ""} ${talent.lastName || ""}`.trim() ||
+        talent.userId?.name ||
+        "Unknown",
+      title: talent.workExperience?.[0]?.jobTitle || "Not specified",
+      experience:
+        talent.workExperience?.[0]?.experience || "Experience not specified",
+      skills: Array.isArray(talent.skills)
+        ? talent.skills
+        : Array.isArray(talent.expartes)
+        ? talent.expartes
+        : [],
+      price: talent.salaryExpectation || "Not specified",
+      image: talent.userId?.image || null,
+      bio: talent.bio,
+      education: talent.education?.[0]?.degreeTitle,
+      country: talent.country,
+      city: talent.city,
+      workExperience: Array.isArray(talent.workExperience)
+        ? talent.workExperience
+        : [],
+      userId: talent.userId,
+    }));
+  }, [talents]);
+
+  console.log(transformedTalents, "transformed talents");
+
+  const handleFiltersChange = useCallback((newFilters: TalentFilterData) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  // Generate page numbers for pagination
+  const renderPageNumbers = () => {
+    if (!pagination || pagination.totalPage <= 1) return null;
+
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(
+      pagination.totalPage,
+      startPage + maxVisiblePages - 1
+    );
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    // Previous button
+    pages.push(
+      <button
+        key="prev"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === 1
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+            : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+        }`}
+      >
+        Previous
+      </button>
+    );
+
+    // Page numbers
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 rounded-md ${
+            currentPage === i
+              ? "bg-green-600 text-white border border-green-600"
+              : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Next button
+    pages.push(
+      <button
+        key="next"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === pagination.totalPage}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === pagination.totalPage
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+            : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+        }`}
+      >
+        Next
+      </button>
+    );
+
+    return pages;
+  };
+
+  if (error) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
+        <div className="text-center py-12">
+          <div className="text-red-500 text-lg mb-2">Error loading talents</div>
+          <p className="text-gray-400">Please try again later</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="col-span-1">
-          <TalentSidebar />
+          <TalentSidebar onFiltersChange={handleFiltersChange} />
         </div>
 
-        <div className="col-span-1 md:col-span-2 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {currentTalents.map((talent) => (
-              <TalentCards key={talent.id} talent={talent} />
-            ))}
+        <div className="col-span-1 md:col-span-2">
+          {/* Talents grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="bg-gray-200 h-64 rounded-lg"></div>
+                </div>
+              ))
+            ) : transformedTalents && transformedTalents.length > 0 ? (
+              transformedTalents.map((talent: any) => (
+                <TalentCards key={talent.id} talent={talent} />
+              ))
+            ) : (
+              <div className="col-span-2 text-center py-12">
+                <div className="text-gray-500 text-lg mb-2">
+                  No talents found matching your criteria
+                </div>
+                <p className="text-gray-400">
+                  Try adjusting your filters or search terms
+                </p>
+              </div>
+            )}
           </div>
 
-          {totalPages > 1 && (
-            <div className="flex justify-between mt-8">
-              <Pagination className="!justify-end">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage > 1) setCurrentPage(currentPage - 1);
-                      }}
-                      className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCurrentPage(page);
-                          }}
-                          isActive={currentPage === page}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  )}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage < totalPages)
-                          setCurrentPage(currentPage + 1);
-                      }}
-                      className={
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+          {/* Pagination */}
+          {pagination && pagination.totalPage > 1 && (
+            <div className="flex justify-center items-center space-x-2 mt-8">
+              {renderPageNumbers()}
             </div>
           )}
         </div>

@@ -66,7 +66,8 @@ export default function JobsSection() {
         return apiParams;
     }, [filters, currentPage]);
 
-    const { data: jobsResponse, isLoading, error } = useGetFilterdJobsQuery(apiFilters);
+  const { data: jobsResponse, isLoading, error } = useGetFilterdJobsQuery(apiFilters);
+  console.log(jobsResponse,"jobs")
 
     // Extract jobs and pagination data from response
     const { jobs, pagination } = useMemo(() => {
@@ -195,11 +196,7 @@ export default function JobsSection() {
                 </div>
 
                 <div className="col-span-1 md:col-span-2">
-                    {/* Results count */}
-                    <div className="mb-6">
-                        <p className="text-gray-600">{isLoading ? "Loading..." : pagination ? `Showing ${jobs.length} of ${pagination.total} jobs (Page ${currentPage} of ${pagination.totalPage})` : `Found ${jobs.length} jobs`}</p>
-                    </div>
-
+                  
                     {/* Jobs list */}
                     <div className="space-y-6 mb-8">
                         {isLoading ? (

@@ -1,14 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import JobDetail from "./job-details";
-import {
-  useGetAllJobsQuery,
-  useGetSingleJobQuery,
-} from "@/redux/features/jobsApi";
-import { useParams } from "next/navigation";
 import { formatDate } from "@/lib/format-date";
+import {
+  useGetSingleJobQuery
+} from "@/redux/features/jobsApi";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import JobDetail from "./job-details";
 
 const jobData = {
   appliedCount: 5,
@@ -34,13 +33,7 @@ export default function JobDescriptionPage() {
   //   console.log("Id", id);
 
   const {
-    appliedCount,
     capacity,
-    applyBefore,
-    postedOn,
-    jobType,
-    salary,
-    categories,
     requiredSkills,
   } = jobData;
 

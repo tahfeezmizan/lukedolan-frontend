@@ -2,16 +2,14 @@
 
 import CreateChatModal from "@/components/profile/createChatModal";
 import { Button } from "@/components/ui/button";
-import {
-  Briefcase,
-  Download,
-  GraduationCap,
-  Mail,
-  MessageSquare,
-} from "lucide-react";
+import { Briefcase, Download, GraduationCap, Mail } from "lucide-react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 export default function ApplicantProfile() {
+  const { id }: { id: string } = useParams();
+  console.log(id);
+
   return (
     <section className=" px-4 bg-slate-100">
       <div className="max-w-7xl mx-auto py-20">
@@ -58,15 +56,8 @@ export default function ApplicantProfile() {
                   <Mail className="w-4 h-4" />
                   Email
                 </Button>
-                {/* <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Message
-                </Button> */}
-                <CreateChatModal myId="68d48db814b7a462b44b51ef" />
+
+                <CreateChatModal myId={id} />
               </div>
             </div>
 

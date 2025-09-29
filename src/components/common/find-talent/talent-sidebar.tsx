@@ -1,8 +1,5 @@
 "use client";
-
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -10,36 +7,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { debounce } from "lodash";
 
-interface FilterData {
+export interface TalentFilterData {
+  search: string;
   location: string;
-  category: string;
-  jobType: {
-    fullTime: boolean;
-    partTime: boolean;
-    contract: boolean;
-  };
-  salaryRange: [number, number];
+  gender: string;
+  skills: string;
 }
 
-export function TalentSidebar() {
-  const [filterData, setFilterData] = useState<FilterData>({
+interface TalentSidebarProps {
+  onFiltersChange: (filters: TalentFilterData) => void;
+}
+
+export function TalentSidebar({ onFiltersChange }: TalentSidebarProps) {
+  const [filterData, setFilterData] = useState<TalentFilterData>({
+    search: "",
     location: "",
-    category: "anytime",
-    jobType: {
-      fullTime: false,
-      partTime: false,
-      contract: false,
-    },
-    salaryRange: [0, 100000],
+    gender: "all",
+    skills: "",
   });
 
-  const handleInputChange = <K extends keyof FilterData>(
+  // Debounced filter change handler
+  const debouncedFilterChange = useCallback(
+    debounce((filters: TalentFilterData) => {
+      onFiltersChange(filters);
+    }, 500),
+    [onFiltersChange]
+  );
+
+  // Update debounced filters when filterData changes
+  useEffect(() => {
+    debouncedFilterChange(filterData);
+    return () => {
+      debouncedFilterChange.cancel();
+    };
+  }, [filterData, debouncedFilterChange]);
+
+  const handleInputChange = <K extends keyof TalentFilterData>(
     field: K,
-    value: FilterData[K]
+    value: TalentFilterData[K]
   ) => {
     setFilterData((prev) => ({
       ...prev,
@@ -47,48 +56,41 @@ export function TalentSidebar() {
     }));
   };
 
-  const handleJobTypeChange = (
-    jobTypeField: keyof FilterData["jobType"],
-    value: boolean
-  ) => {
-    setFilterData((prev) => ({
-      ...prev,
-      jobType: {
-        ...prev.jobType,
-        [jobTypeField]: value,
-      },
-    }));
+  const handleClearAll = () => {
+    const clearedFilters: TalentFilterData = {
+      search: "",
+      location: "",
+      gender: "all",
+      skills: "",
+    };
+    setFilterData(clearedFilters);
+    onFiltersChange(clearedFilters);
   };
-
-  // Keep inputs in sync with slider
-  const handleSalaryInputChange = (value: string, index: number) => {
-    const num = Number(value);
-    if (!isNaN(num)) {
-      const newRange = [...filterData.salaryRange] as [number, number];
-      newRange[index] = num;
-      // Ensure lower <= upper
-      if (newRange[0] <= newRange[1]) {
-        setFilterData((prev) => ({
-          ...prev,
-          salaryRange: newRange,
-        }));
-      }
-    }
-  };
-
-  // Log filter state every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("Filter Data:", filterData);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [filterData]);
 
   return (
     <div className="w-full p-6 bg-white rounded-lg space-y-4">
-      <h2 className="font-semibold text-gray-800 leading-relaxed text-xl border-b">
-        Filter
-      </h2>
+      <div className="flex justify-between items-center text-xl border-b">
+        <h2 className="font-semibold text-gray-800 leading-relaxed">Filter</h2>
+        <button
+          className="text-red-500 hover:text-red-600 leading-relaxed cursor-pointer"
+          onClick={handleClearAll}
+        >
+          Clear All
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-lg font-medium text-black">Search</h3>
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Search by name or skills"
+            value={filterData.search}
+            onChange={(e) => handleInputChange("search", e.target.value)}
+            className="pl-4 pr-4 py-2 w-full rounded-lg !text-md text-black border border-gray-300"
+          />
+        </div>
+      </div>
 
       <div className="space-y-3">
         <h3 className="text-lg font-medium text-black">Location</h3>
@@ -104,105 +106,25 @@ export function TalentSidebar() {
         </div>
       </div>
 
-      {/* <hr className="border-t border-gray-200" /> */}
-
-      {/* Category Section */}
-      <div className="space-y-3 pb-4">
-        <h3 className="text-lg font-medium text-black">Category</h3>
+      <div className="space-y-3">
+        <h3 className="text-lg font-medium text-black">Gender</h3>
         <Select
-          value={filterData.category}
-          onValueChange={(val) => handleInputChange("category", val)}
+          value={filterData.gender}
+          onValueChange={(val) => handleInputChange("gender", val)}
         >
           <SelectTrigger className="mt-1 p-4 rounded-lg !text-md text-black w-full">
-            <SelectValue placeholder="Anytime" />
+            <SelectValue placeholder="Select Gender" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="anytime">Anytime</SelectItem>
-            <SelectItem value="last-24-hours">Last 24 hours</SelectItem>
-            <SelectItem value="last-week">Last week</SelectItem>
-            <SelectItem value="last-month">Last month</SelectItem>
+            <SelectItem value="all">All Genders</SelectItem>
+            <SelectItem value="Male">Male</SelectItem>
+            <SelectItem value="Female">Female</SelectItem>
+            <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      {/* <hr className="border-t border-gray-200" /> */}
-
-      {/* Job Type Section */}
-      <div className="space-y-4 pb-3">
-        <h3 className="text-lg font-medium text-black">Job Type</h3>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="full-time"
-              checked={filterData.jobType.fullTime}
-              onCheckedChange={(val) => handleJobTypeChange("fullTime", !!val)}
-            />
-            <Label
-              htmlFor="full-time"
-              className="text-md font-medium leading-none"
-            >
-              Full time
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="part-time"
-              checked={filterData.jobType.partTime}
-              onCheckedChange={(val) => handleJobTypeChange("partTime", !!val)}
-            />
-            <Label
-              htmlFor="part-time"
-              className="text-md font-medium leading-none"
-            >
-              Part time
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="contract"
-              checked={filterData.jobType.contract}
-              onCheckedChange={(val) => handleJobTypeChange("contract", !!val)}
-            />
-            <Label
-              htmlFor="contract"
-              className="text-md font-medium leading-none"
-            >
-              Contract
-            </Label>
-          </div>
-        </div>
-      </div>
-
-      {/* <hr className="border-t border-gray-200" /> */}
-
-      {/* Salary Range Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-black">Salary Range</h3>
-        <Slider
-          value={filterData.salaryRange}
-          onValueChange={(val) =>
-            handleInputChange("salaryRange", val as [number, number])
-          }
-          step={100}
-          min={0}
-          max={200000}
-          className="w-full"
-        />
-        <div className="flex space-x-4">
-          <Input
-            type="number"
-            value={filterData.salaryRange[0]}
-            onChange={(e) => handleSalaryInputChange(e.target.value, 0)}
-            className="w-1/2"
-          />
-          <Input
-            type="number"
-            value={filterData.salaryRange[1]}
-            onChange={(e) => handleSalaryInputChange(e.target.value, 1)}
-            className="w-1/2"
-          />
-        </div>
-      </div>
+     
     </div>
   );
 }
