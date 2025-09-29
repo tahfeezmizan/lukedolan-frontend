@@ -13,22 +13,24 @@ export default function DashboardPage() {
     // Pass year as a parameter to fetch stats
     const { data, isLoading } = useGetStatisticsQuery({ year });
 
+    
+
     if (isLoading) return <p className="text-gray-500">Loading dashboard...</p>;
 
     const stats = [
         {
             title: "Total Job Post",
-            value: data?.data.jobs.totalJobs.toLocaleString() || "0",
+            value: data?.data?.jobs?.totalJobs.toLocaleString() || "0",
             icon: Briefcase,
         },
         {
             title: "Total Applicant",
-            value: data?.data.users.totalApplicants.toLocaleString() || "0",
+            value: data?.data?.users?.totalApplicants.toLocaleString() || "0",
             icon: Users,
         },
         {
             title: "Money Spend",
-            value: `£${data?.data.subscriptions.totalRevenue.toLocaleString() || "0"}`,
+            value: `£${data?.data?.subscriptions?.totalRevenue.toLocaleString() || "0"}`,
             icon: DollarSign,
         },
     ];
@@ -44,7 +46,7 @@ export default function DashboardPage() {
 
             <div className="grid grid-cols-3 gap-4 mt-8">
                 <div className="col-span-2">
-                    <RevenueChart monthlyRevenue={data?.data.monthlyRevenue || []} onYearChange={(newYear) => setYear(newYear)} />
+                    <RevenueChart monthlyRevenue={data?.data?.monthlyRevenue || []} onYearChange={(newYear) => setYear(newYear)} />
                 </div>
                 <div className="col-span-1">
                     <FeaturePurchaseChart />
