@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLoginUserMutation } from "@/redux/features/authApi";
 import { setUser } from "@/redux/slice/userSlice";
+import { ApiError } from "@/types/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,18 +35,17 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("Login form data:", data);
-
     try {
       const res = await loginUser({
         email: data.email,
         password: data.password,
       });
 
-      if (res.data.success) {
+      if (res?.data?.success) {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
 
         const role = res?.data?.data?.role;
+
         switch (role) {
           case "admin":
             route.push("/admin");
@@ -58,14 +59,21 @@ export function LoginForm() {
           default:
             route.push("/");
         }
+
         toast.success("Login Successful");
-      } else {
-        // console.log(res.error);
-        // toast.error(res.error.data.message);
+      } else if (res?.error) {
+        // ✅ type narrowing for FetchBaseQueryError
+        const err = res.error as FetchBaseQueryError;
+        const errorMessage =
+          (err.data as { message?: string })?.message || "Something went wrong";
+
+        toast.error(errorMessage);
       }
-    } catch (error) {
-      // toast.error();
-      console.log("Errors", error);
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      // ✅ show toast from caught error
+      toast.error(apiError?.data?.message || "Login failed");
+      console.log("Errors:", error);
     }
   };
 

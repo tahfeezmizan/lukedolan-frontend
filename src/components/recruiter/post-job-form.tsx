@@ -17,7 +17,10 @@ import { Calendar } from "lucide-react";
 import { PostJobFormData } from "@/types/types";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
 import { toast } from "sonner";
-import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import {
+  useGetAllCategoryQuery,
+  useGetCategoryQuery,
+} from "@/redux/features/categoryApi";
 import { useRouter } from "next/navigation";
 
 export function PostJobForm() {
@@ -47,7 +50,9 @@ export function PostJobForm() {
 
   const route = useRouter();
   const [createJob] = useCreateJobMutation();
-  const { data: categories, isLoading, error } = useGetCategoryQuery({});
+  const { data: categories } = useGetAllCategoryQuery(undefined);
+
+  console.log("Category",categories);
 
   const onSubmit = async (data: PostJobFormData) => {
     console.log(data);
@@ -119,11 +124,17 @@ export function PostJobForm() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories?.map((category: any) => (
-                      <SelectItem key={category._id} value={category.name}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
+                    {Array.isArray(categories) && categories.length > 0 ? (
+                      categories.map((category: any) => (
+                        <SelectItem key={category._id} value={category?.name}>
+                          {category?.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <p className="px-2 py-1 text-gray-500 text-sm">
+                        No categories found
+                      </p>
+                    )}
                   </SelectContent>
                 </Select>
               )}
