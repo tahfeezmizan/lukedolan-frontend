@@ -28,6 +28,7 @@ export const baseApi = createApi({
     "Category",
     "Plan",
     "DashboardStatistics",
+    "Talents",
   ],
   endpoints: (builder) => ({
     getProfile: builder.query<any, void>({
