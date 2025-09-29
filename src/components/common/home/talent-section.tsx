@@ -31,7 +31,7 @@ export function TalentSection() {
 
         {/* Talent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent?.data.map((talent : TalentProps) => (
+          {talent?.map((talent : TalentProps) => (
             <TalentCards key={talent._id} talent={talent} />
           ))}
         </div>

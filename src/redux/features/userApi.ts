@@ -32,7 +32,7 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Auth"],
       transformResponse: (response: any) => {
-        return response?.data;
+        return response?.data?.data;
       },
     }),
 
