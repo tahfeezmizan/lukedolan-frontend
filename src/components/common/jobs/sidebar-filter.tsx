@@ -35,7 +35,7 @@ interface SidebarFilterProps {
 }
 
 export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
-  const { data: categories, isLoading } = useGetCategoryQuery(undefined);
+  const { data: categories, isLoading } = useGetCategoryQuery('');
 
   
   const categoryNames =

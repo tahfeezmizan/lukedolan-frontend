@@ -47,7 +47,7 @@ export default function TalentCards({ talent }: { talent: Talent }) {
           )}
 
           <div className="flex justify-center mt-8">
-            <div className="relative">
+            <div className="relative h-32">
               <Image
                 src={talent?.userId?.image || person}
                 alt={talent?.name}
@@ -72,7 +72,7 @@ export default function TalentCards({ talent }: { talent: Talent }) {
           </p>
         </div>
 
-        <div className="p-5 ">
+        <div className="p-5">
           <h3 className="text-2xl font-bold text-gray-900 text-center mb-4">
             {talent?.userId?.name || "Luke Dolan"}
           </h3>
@@ -105,7 +105,7 @@ export default function TalentCards({ talent }: { talent: Talent }) {
               </span>
             </div>
 
-            {/* Price */}
+            {/* Location */}
             <div className="flex items-center gap-4">
               <PoundSterling className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
               <span className="text-lg font-semibold text-gray-900">
