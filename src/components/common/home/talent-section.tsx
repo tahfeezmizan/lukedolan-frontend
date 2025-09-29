@@ -1,44 +1,13 @@
 "use client";
 
-import person from "@/assets/telent-person.png";
 import TalentCards from "@/components/shared/talent-cards";
 import { useGetAllTalentQuery } from "@/redux/features/userApi";
+import { Talent } from "@/types/talentTypes";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function TalentSection() {
-  const talents = [
-    {
-      id: 1,
-      name: "Sophia R.",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-    {
-      id: 3,
-      name: "Sophia R.",
-      title: "Senior Hair Stylist | Color Specialist | Blow Dry Expert",
-      experience: "5+ years salon experience",
-      skills: "Hair Coloring, Bridal Styling, Extensions",
-      price: "15,000",
-      image: person,
-    },
-  ];
-
-  const { data: talent, isLoading } = useGetAllTalentQuery("");
-  console.log("All Talent", talent);
+  const { data: talent } = useGetAllTalentQuery("");
 
   return (
     <section className="bg-[#EBF1FA] py-20">
@@ -49,7 +18,7 @@ export function TalentSection() {
             Top Talent Ready to Work
           </h2>
           <Link
-            href={"/job"}
+            href={"/find-talent"}
             className="bg-transparent  text-black hover:text-white hover:bg-green-800 border-2 border-green-900  px-6 py-1 text-lg font-medium rounded-lg duration-300 flex items-center justify-between gap-2"
           >
             Explore all
@@ -59,8 +28,8 @@ export function TalentSection() {
 
         {/* Talent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talents.map((talent) => (
-            <TalentCards key={talent.id} talent={talent} />
+          {talent?.slice(0, 6)?.map((talent: Talent) => (
+            <TalentCards key={talent?._id} talent={talent} />
           ))}
         </div>
       </div>

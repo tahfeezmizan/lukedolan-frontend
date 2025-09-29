@@ -178,8 +178,6 @@ export default function FilterSection() {
         </div>
 
         <div className="col-span-1 md:col-span-2">
-         
-
           {/* Talents grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {isLoading ? (

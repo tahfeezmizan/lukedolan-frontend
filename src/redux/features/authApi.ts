@@ -1,3 +1,4 @@
+import { removeUser } from "../slice/userSlice";
 import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -49,6 +50,17 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
       invalidatesTags: ["Auth"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // Clear RTK Query cache
+          dispatch(baseApi.util.resetApiState());
+          // Clear Redux user state
+          dispatch(removeUser()); // This will clear your user slice
+        } catch (error) {
+          console.error("Logout failed:", error);
+        }
+      },
     }),
   }),
 });
