@@ -2,13 +2,17 @@
 
 import CreateChatModal from "@/components/profile/createChatModal";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Download, GraduationCap, Mail } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
+import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
+import { Briefcase, Download, GraduationCap, Mail, User } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
-  console.log(id);
+  const { data: talent } = useGetSingleTalentQuery(id);
+
+  console.log(talent);
 
   return (
     <section className=" px-4 bg-slate-100">
@@ -20,25 +24,35 @@ export default function ApplicantProfile() {
             <div className="text-center mb-8">
               <div className="relative inline-block mb-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden mx-auto shadow-lg ">
-                  <Image
-                    width={32}
-                    height={32}
-                    src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt="John Doe"
-                    className="w-full h-full object-cover"
-                  />
+                  {talent?.image ? (
+                    <Image
+                      width={32}
+                      height={32}
+                      src={getImageUrl(talent?.image)}
+                      alt={talent?.name ?? "User"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-6 w-6 text-white" />
+                  )}
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                John Doe
+                {talent?.name}
               </h3>
               <p className="text-gray-600 font-medium">
-                Senior Hair Specialist
+                {talent?.profile?.expartes && talent.profile.expartes.length > 0
+                  ? talent.profile.expartes.join(", ")
+                  : "No expartes listed"}
               </p>
               <div className="mt-4">
-                <span className="bg-green-900/70 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
-                  Open to work
-                </span>
+                {talent?.profile?.openToWork === true ? (
+                  <span className="bg-green-900/70 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
+                    Open to work
+                  </span>
+                ) : (
+                  "NOt Avaible"
+                )}
               </div>
             </div>
 
@@ -67,14 +81,10 @@ export default function ApplicantProfile() {
                 Languages
               </h4>
               <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  English
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Spanish
-                </li>
+                {talent?.profile?.languages &&
+                talent.profile.languages.length > 0
+                  ? talent.profile.languages.join(", ")
+                  : "No skills listed"}
               </ul>
             </div>
 
@@ -95,7 +105,12 @@ export default function ApplicantProfile() {
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
                 Salary Expectations
               </h4>
-              <p className="text-2xl font-bold text-gray-900">2000</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {talent?.profile?.salaryExpectation &&
+                talent.profile.salaryExpectation.length > 0
+                  ? talent.profile.salaryExpectation.join(", ")
+                  : "No skills listed"}
+              </p>
             </div>
 
             {/* Skills */}
@@ -104,18 +119,9 @@ export default function ApplicantProfile() {
                 Skills
               </h4>
               <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Hair colouring
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Bridal Styling
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Account payable management
-                </li>
+                {talent?.profile?.skills && talent.profile.skills.length > 0
+                  ? talent.profile.skills.join(", ")
+                  : "NO Expectations"}
               </ul>
             </div>
           </div>
