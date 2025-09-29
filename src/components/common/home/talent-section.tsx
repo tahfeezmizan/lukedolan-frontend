@@ -2,12 +2,14 @@
 
 import TalentCards from "@/components/shared/talent-cards";
 import { useGetAllTalentQuery } from "@/redux/features/userApi";
-import { Talent } from "@/types/talentTypes";
+import { TalentProps } from "@/types/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function TalentSection() {
-  const { data: talent } = useGetAllTalentQuery("");
+ 
+  const { data: talent, isLoading } = useGetAllTalentQuery("");
+  console.log("All Talent", talent);
 
   return (
     <section className="bg-[#EBF1FA] py-20">
@@ -28,8 +30,8 @@ export function TalentSection() {
 
         {/* Talent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent?.slice(0, 6)?.map((talent: Talent) => (
-            <TalentCards key={talent?._id} talent={talent} />
+          {talent?.map((talent : TalentProps) => (
+            <TalentCards key={talent._id} talent={talent} />
           ))}
         </div>
       </div>
