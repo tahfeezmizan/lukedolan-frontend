@@ -38,10 +38,10 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
 
   return (
     <div
-      key={talent.id}
+      key={talent._id}
       className="bg-white rounded-lg overflow-hidden border border-gray-200"
     >
-      <Link href={`/find-talent/${talent?.userId._id}`}>
+      <Link href={`/find-talent/${talent?.userId && talent?.userId._id}`}>
         <div className="p-4 bg-gray-100 space-y-3 relative">
           <div className="flex items-center justify-center gap-2 bg-white p-1 rounded-md w-40 absolute right-4 shadow">
             <CheckCircle className="h-4 w-4 text-green-600" />
