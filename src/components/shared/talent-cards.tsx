@@ -63,7 +63,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
             <div className="relative h-32">
               <Image
                 src={getImageUrl(talent?.userId?.image)}
-                alt={talent.name}
+                alt={talent?.name}
                 width={120}
                 height={120}
                 className="rounded-full object-cover"

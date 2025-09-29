@@ -45,7 +45,7 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
           </div>
           <Link
             href={`/job/${_id}`}
-            className="bg-green-900 text-white px-2 py-1 text-sm rounded-lg"
+            className="bg-green-900 text-white px-2 py-1 text-sm rounded-lg w-28 mx-auto text-center"
           >
             View Details
           </Link>
