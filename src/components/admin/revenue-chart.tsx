@@ -1,17 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-interface RevenueChartProps {
-    monthlyRevenue: {
-        monthName: string;
-        revenue: number;
-    }[];
+interface MonthlyRevenue {
+    monthName: string;
+    revenue: number;
 }
 
-export default function RevenueChart({ monthlyRevenue }: RevenueChartProps) {
+interface RevenueChartProps {
+    monthlyRevenue: MonthlyRevenue[];
+    onYearChange?: (year: number) => void;
+}
+
+export default function RevenueChart({ monthlyRevenue, onYearChange }: RevenueChartProps) {
+    const currentYear = new Date().getFullYear();
+    const [year, setYear] = useState(currentYear);
+
+    // Generate array of years: current year ±5
+    const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
+
+    const handleYearChange = (value: string) => {
+        const selectedYear = Number(value);
+        setYear(selectedYear);
+        if (onYearChange) onYearChange(selectedYear);
+    };
+
     const data = monthlyRevenue.map((item) => ({
         month: item.monthName,
         revenue: item.revenue,
@@ -19,16 +36,24 @@ export default function RevenueChart({ monthlyRevenue }: RevenueChartProps) {
 
     return (
         <Card className="bg-white shadow-none border-none">
-            <CardHeader>
-                <CardTitle className="text-2xl font-bold text-gray-900">Revenue</CardTitle>
+            <CardHeader className="flex justify-between items-center">
+                <CardTitle className="text-2xl font-bold text-gray-900">Revenue - {year}</CardTitle>
+                <Select value={year.toString()} onValueChange={handleYearChange}>
+                    <SelectTrigger className="w-24">
+                        <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {years.map((y) => (
+                            <SelectItem key={y} value={y.toString()}>
+                                {y}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </CardHeader>
+
             <CardContent className="pr-0">
-                <ChartContainer
-                    config={{
-                        revenue: { label: "Revenue", color: "#6366F1" },
-                    }}
-                    className="h-96 !w-full"
-                >
+                <ChartContainer config={{ revenue: { label: "Revenue", color: "#6366F1" } }} className="h-96 !w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
