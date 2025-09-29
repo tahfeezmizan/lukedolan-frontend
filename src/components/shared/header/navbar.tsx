@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {
@@ -41,7 +41,7 @@ interface User {
 export function Navbar() {
   const { data: user } = useGetMeQuery(undefined);
   const activeRole = user?.role;
-  console.log("getMe data:", activeRole);
+  console.log("getMe data:", user);
 
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -183,8 +183,8 @@ export function Navbar() {
                         <div className="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center">
                           {user?.image ? (
                             <Image
-                              src={user?.image}
-                              alt="Profile"
+                              src={getImageUrl(user?.image)}
+                              alt={user?.name}
                               width={40}
                               height={40}
                               className="w-10 h-10 rounded-full"
@@ -196,6 +196,11 @@ export function Navbar() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem asChild>
+                        <span className="text-xl font-semibold">
+                          {user?.name}
+                        </span>
+                      </DropdownMenuItem>
                       {/* applicant dropdonw menu */}
                       {activeRole === "applicant" && (
                         <>
@@ -292,8 +297,8 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
-                    <Link href={'/recruiter/messages'}>
-                    <MessageCircle className="h-6 w-6" />
+                    <Link href={"/recruiter/messages"}>
+                      <MessageCircle className="h-6 w-6" />
                     </Link>
                   </Button>
 
@@ -304,7 +309,7 @@ export function Navbar() {
                       pathname === "/" ? "text-white" : "text-black"
                     }`}
                   >
-                    <Link href={'/'}>
+                    <Link href={"/"}>
                       <Bell className="h-6 w-6" />
                     </Link>
                   </Button>
@@ -316,7 +321,7 @@ export function Navbar() {
                         <div className="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center">
                           {user?.image ? (
                             <Image
-                              src={user?.image}
+                              src={getImageUrl(user?.image)}
                               alt="Profile"
                               width={30}
                               height={30}
@@ -391,7 +396,7 @@ export function Navbar() {
               )}
               <Button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2  transition-colors"
+                className="p-2 transition-colors"
               >
                 {isMobileMenuOpen ? (
                   <X

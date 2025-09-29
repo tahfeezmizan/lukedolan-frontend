@@ -1,5 +1,6 @@
 "use client";
 
+import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import Image from "next/image";
 import { useState } from "react";
@@ -31,7 +32,7 @@ export default function CompanyProfile() {
       {/* Company Logo */}
       <div className="mb-8">
         <Image
-          src={profileData?.companyLogo}
+          src={getImageUrl(profileData?.companyLogo)}
           alt={profileData?.companyName}
           width={80}
           height={80}
