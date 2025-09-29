@@ -17,7 +17,7 @@ export default function FindTalentHero() {
   };
   return (
     <section
-      className="bg-[#414652] pb-20 px-4  pt-40"
+      className="bg-[#414652] pb-20 px-4  pt-40 "
       style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg.src})`,
         backgroundSize: "cover",
