@@ -29,7 +29,7 @@ const CreateChatModal = ({ myId }: { myId: string }) => {
       }).unwrap();
        console.log(res)
       if (res.success) {
-        router.push("/profile/messages"); // 🔹 navigate after success
+        router.push("/recruiter/messages"); // 🔹 navigate after success
       }
     } catch (error) {
       console.error("Error creating chat:", error);
