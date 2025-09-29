@@ -69,11 +69,11 @@ export const adminItems: SidebarItems = [
         label: "Dashboard",
         href: "/admin",
     },
-    {
-        icon: MessageCircle,
-        label: "Messages",
-        href: "/admin/messages",
-    },
+    // {
+    //     icon: MessageCircle,
+    //     label: "Messages",
+    //     href: "/admin/messages",
+    // },
     {
         icon: Building2,
         label: "Recruiter",
