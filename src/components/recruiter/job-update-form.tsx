@@ -12,7 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import {
+  useGetAllCategoryQuery,
+  useGetCategoryQuery,
+} from "@/redux/features/categoryApi";
 import {
   useGetAllJobsQuery,
   useUpdateJobMutation,
@@ -48,7 +51,7 @@ export function JobUpdateForm() {
   const { id } = useParams();
   const route = useRouter();
 
-  const { data: categories } = useGetCategoryQuery({});
+  const { data: categories, isLoading } = useGetAllCategoryQuery({});
   const { data: jobs } = useGetAllJobsQuery({});
   const [updateJob] = useUpdateJobMutation();
 

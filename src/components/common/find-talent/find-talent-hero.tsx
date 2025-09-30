@@ -36,7 +36,7 @@ export default function FindTalentHero() {
           </p>
 
           {/* Right side - Email form */}
-          <div className="w-full lg:w-5xl mx-auto bg-white overflow-hidden rounded-md mt-8">
+          {/* <div className="w-full lg:w-5xl mx-auto bg-white overflow-hidden rounded-md mt-8">
             <form onSubmit={handleSubmit} className="flex ">
               <Input
                 type="email"
@@ -54,7 +54,7 @@ export default function FindTalentHero() {
                 Search
               </Button>
             </form>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

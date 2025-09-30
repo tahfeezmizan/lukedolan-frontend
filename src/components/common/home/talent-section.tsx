@@ -7,7 +7,6 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function TalentSection() {
- 
   const { data: talent, isLoading } = useGetAllTalentQuery("");
   console.log("All Talent", talent);
 
@@ -30,9 +29,17 @@ export function TalentSection() {
 
         {/* Talent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent?.map((talent : TalentProps) => (
-            <TalentCards key={talent._id} talent={talent} />
-          ))}
+          {talent && talent.length > 0 ? (
+            talent
+              ?.slice(0, 6)
+              ?.map((talent: TalentProps) => (
+                <TalentCards key={talent._id} talent={talent} />
+              ))
+          ) : (
+            <div className="col-span-full text-center py-8 text-2xl text-gray-500">
+              No Talent available
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -26,7 +26,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 // Types for user roles
@@ -48,6 +48,17 @@ export function Navbar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
+
+  // State for scroll position
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Mock user state - replace with your actual auth logic
 
@@ -103,8 +114,9 @@ export function Navbar() {
     <nav className="text-white relative">
       <div
         className={cn(
-          "absolute top-0 w-full z-50 ",
+          "fixed top-0 w-full z-50 transition-colors duration-400",
           pathname === "/" && "lg:top-12 left-0",
+          pathname === "/" && isScrolled && "bg-[#EBF1FA] !top-0 border-b",
           pathname !== "/" && "bg-[#EBF1FA] border-b"
         )}
       >
@@ -114,13 +126,23 @@ export function Navbar() {
             <div className="flex items-center space-x-2">
               <Link href={"/"}>
                 {pathname === "/" ? (
-                  <Image
-                    src={whiteLogo}
-                    alt="Logo"
-                    width={165}
-                    height={40}
-                    className="w-40 h-11"
-                  />
+                  isScrolled ? (
+                    <Image
+                      src={logo}
+                      alt="Logo"
+                      width={165}
+                      height={40}
+                      className="w-40 h-11"
+                    />
+                  ) : (
+                    <Image
+                      src={whiteLogo}
+                      alt="Logo"
+                      width={165}
+                      height={40}
+                      className="w-40 h-11"
+                    />
+                  )
                 ) : (
                   <Image
                     src={logo}
@@ -135,9 +157,11 @@ export function Navbar() {
 
             {/* Desktop Navigation Links */}
             <div
-              className={`hidden lg:flex items-center space-x-3  ${
-                pathname === "/" ? "text-white" : "text-green-900"
-              }`}
+              className={cn(
+                "hidden lg:flex items-center space-x-3",
+                pathname === "/" ? "text-white" : "text-green-900",
+                pathname === "/" && isScrolled && "text-green-900"
+              )}
             >
               {navigationLinks.map((link) => (
                 <Link
@@ -159,9 +183,11 @@ export function Navbar() {
                   {/* Message Icon */}
                   <button
                     onClick={handleMessage}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
+                    className={cn(
+                      "p-2 rounded-full hover:bg-white/10 transition-colors",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-green-900"
+                    )}
                   >
                     <MessageCircle className="h-6 w-6" />
                   </button>
@@ -169,9 +195,11 @@ export function Navbar() {
                   {/* Notification Icon */}
                   <button
                     onClick={handleNotification}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
+                    className={cn(
+                      "p-2 rounded-full hover:bg-white/10 transition-colors",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-green-900"
+                    )}
                   >
                     <Bell className="h-6 w-6" />
                   </button>
@@ -266,17 +294,20 @@ export function Navbar() {
                   <Link href={"/login"}>
                     <Button
                       variant="outline"
-                      className={`px-6 py-2 text-base font-medium rounded-lg border-2 ${
+                      className={cn(
+                        "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
                         pathname === "/"
                           ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
-                          : "border-green-900 text-black hover:bg-green-900 hover:text-white"
-                      }`}
+                          : "border-green-900 text-black hover:bg-green-900 hover:text-white",
+                        pathname === "/" && isScrolled && "text-green-900 "
+                      )}
                     >
                       Login
                     </Button>
                   </Link>
+
                   <Link href={"/sing-up"}>
-                    <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg">
+                    <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer">
                       Sign Up
                     </Button>
                   </Link>
@@ -293,9 +324,11 @@ export function Navbar() {
                   {/* Message Icon */}
                   <Button
                     onClick={handleMessage}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
+                    className={cn(
+                      "p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-green-900"
+                    )}
                   >
                     <Link href={"/recruiter/messages"}>
                       <MessageCircle className="h-6 w-6" />
@@ -305,9 +338,11 @@ export function Navbar() {
                   {/* Notification Icon */}
                   <Button
                     onClick={handleNotification}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
+                    className={cn(
+                      "p-2 rounded-full hover:bg-white/10 transition-colors bg-transparent",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-green-900"
+                    )}
                   >
                     <Link href={"/"}>
                       <Bell className="h-6 w-6" />
@@ -423,9 +458,11 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-3 py-2 text-base font-normal transition-colors ${
-                      pathname === "/" ? "text-white" : "text-black"
-                    }`}
+                    className={cn(
+                      "px-3 py-2 text-base font-semibold transition-colors",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-green-900"
+                    )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}

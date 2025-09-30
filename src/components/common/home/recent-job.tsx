@@ -91,9 +91,17 @@ export function RecentJob() {
 
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {jobs?.slice(0, 6)?.map((job: PostJobFormData) => (
-            <RecentJobCard job={job} key={job._id} />
-          ))}
+          {jobs && jobs.length > 0 ? (
+            jobs
+              .slice(0, 6)
+              .map((job: PostJobFormData) => (
+                <RecentJobCard job={job} key={job._id} />
+              ))
+          ) : (
+            <div className="col-span-full text-center py-8 text-2xl text-gray-500">
+              No jobs available
+            </div>
+          )}
         </div>
       </div>
     </section>
