@@ -1,20 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
 import heroBg from "@/assets/talent-hero-img.png";
-import { Search } from "lucide-react";
+import React, { useState } from "react";
 
 export default function FindTalentHero() {
-  const [search, setSearch] = useState("");
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log("[v0] Newsletter subscription:", search);
+  //   // Handle newsletter subscription logic here
+  //   setSearch("");
+  // };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("[v0] Newsletter subscription:", search);
-    // Handle newsletter subscription logic here
-    setSearch("");
-  };
   return (
     <section
       className="bg-[#414652] pb-20 px-4  pt-40 "

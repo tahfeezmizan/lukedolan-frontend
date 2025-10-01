@@ -1,6 +1,7 @@
 "use client";
 
 import TalentCards from "@/components/shared/talent-cards";
+import LoadingSpinner from "@/lib/loading-spinner";
 import { useGetAllTalentQuery } from "@/redux/features/userApi";
 import { TalentProps } from "@/types/types";
 import { ArrowRight } from "lucide-react";
@@ -28,19 +29,23 @@ export function TalentSection() {
         </div>
 
         {/* Talent Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {talent && talent.length > 0 ? (
-            talent
-              ?.slice(0, 6)
-              ?.map((talent: TalentProps) => (
-                <TalentCards key={talent._id} talent={talent} />
-              ))
-          ) : (
-            <div className="col-span-full text-center py-8 text-2xl text-gray-500">
-              No Talent available
-            </div>
-          )}
-        </div>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {talent && talent.length > 0 ? (
+              talent
+                ?.slice(0, 6)
+                ?.map((talent: TalentProps) => (
+                  <TalentCards key={talent._id} talent={talent} />
+                ))
+            ) : (
+              <div className="col-span-full text-center py-8 text-2xl text-gray-500">
+                No Talent available
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

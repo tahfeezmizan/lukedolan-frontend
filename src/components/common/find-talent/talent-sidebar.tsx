@@ -7,9 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MapPin } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
 import { debounce } from "lodash";
+import { MapPin } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface TalentFilterData {
   search: string;
