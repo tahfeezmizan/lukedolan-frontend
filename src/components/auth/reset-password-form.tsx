@@ -27,6 +27,7 @@ export default function ResetPasswordForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     console.log("Login form data:", data);
+    setIsLoading(true); // Start loading
 
     try {
       const res = await forgetPasswordSendOTP({ email: data.email });
