@@ -42,7 +42,7 @@ export default function JobsSection() {
 
     // Handle job types - support multiple selection
     const selectedJobTypes = Object.entries(filters.jobType)
-      .filter(([_, isSelected]) => isSelected)
+      .filter(([isSelected]) => isSelected)
       .map(([type]) => type);
 
     if (selectedJobTypes.length > 0) {

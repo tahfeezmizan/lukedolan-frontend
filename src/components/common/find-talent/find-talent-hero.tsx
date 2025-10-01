@@ -1,7 +1,6 @@
 "use client";
 
 import heroBg from "@/assets/talent-hero-img.png";
-import React, { useState } from "react";
 
 export default function FindTalentHero() {
   // const handleSubmit = (e: React.FormEvent) => {

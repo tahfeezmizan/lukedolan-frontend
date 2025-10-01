@@ -3,6 +3,7 @@
 import logo from "@/assets/white-logo.png";
 import { SidebarItem } from "@/lib/sidebar-nav-config";
 import { cn } from "@/lib/utils";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
@@ -10,7 +11,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { Button } from "../ui/button";
-import { useGetMeQuery } from "@/redux/features/userApi";
 
 export function DashboardSidebar({
   sidebarItems,
@@ -22,7 +22,7 @@ export function DashboardSidebar({
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data: userData } = useGetMeQuery({});
+  // const { data: userData } = useGetMeQuery({});
 
   // console.log("User data", userData);
 

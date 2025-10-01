@@ -1,10 +1,9 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -12,16 +11,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "lucide-react";
-import { PostJobFormData } from "@/types/types";
-import { useCreateJobMutation } from "@/redux/features/jobsApi";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  useGetAllCategoryQuery,
-  useGetCategoryQuery,
+  useGetAllCategoryQuery
 } from "@/redux/features/categoryApi";
+import { useCreateJobMutation } from "@/redux/features/jobsApi";
+import { PostJobFormData } from "@/types/types";
+import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function PostJobForm() {
   const {

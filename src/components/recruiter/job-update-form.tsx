@@ -357,7 +357,7 @@ export function JobUpdateForm() {
           type="submit"
           className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-lg"
         >
-          Update Job Post
+          {isLoading ? "Update..." : "Update Job Post"}
         </Button>
       </form>
     </div>

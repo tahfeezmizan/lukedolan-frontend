@@ -49,7 +49,7 @@ export function PersonalDetailsForm() {
     handleSubmit,
     control,
     setValue,
-    getValues,
+
     watch,
     reset,
     formState: { errors },
@@ -96,7 +96,6 @@ export function PersonalDetailsForm() {
   const [updateProfile, { isLoading, isError, error }] =
     useUpdateProfileMutation();
 
- 
   const addSkill = () => {
     if (skillInput.trim()) {
       // Always take latest skills from profile + form
@@ -196,7 +195,7 @@ export function PersonalDetailsForm() {
 
     try {
       const res = await updateProfile({ body: formData });
-      console.log(res)
+      console.log(res);
       if (res?.data?.success) {
         toast.success("Profile updated successfully");
         refetch();
@@ -204,6 +203,7 @@ export function PersonalDetailsForm() {
         toast.error(res?.data?.message || "Failed to update profile");
       }
     } catch (error) {
+      console.log(error);
       toast.error("Error updating profile");
     }
   };
