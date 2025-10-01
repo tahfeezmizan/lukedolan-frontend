@@ -9,6 +9,8 @@ import { useState, useMemo, useCallback } from "react";
 import JobCard from "./job-card";
 import { SidebarFilter, FilterData } from "./sidebar-filter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import LoadingSpinner from "@/lib/loading-spinner";
+import ErrorMessage from "@/lib/error-message";
 
 export default function JobsSection() {
   const [filters, setFilters] = useState<FilterData>({
@@ -211,12 +213,7 @@ export default function JobsSection() {
 
   if (error) {
     return (
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 overflow-hidden">
-        <div className="text-center py-12">
-          <div className="text-red-500 text-lg mb-2">Error loading jobs</div>
-          <p className="text-gray-400">Please try again later</p>
-        </div>
-      </section>
+      <ErrorMessage title="jobs" />
     );
   }
 
@@ -243,9 +240,7 @@ export default function JobsSection() {
           {/* Jobs list */}
           <div className="space-y-6 mb-8">
             {isLoading ? (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-              </div>
+              <LoadingSpinner />
             ) : jobs && jobs.length > 0 ? (
               jobs.map((job: PostJobFormData) => (
                 <JobCard job={job} key={job._id} />

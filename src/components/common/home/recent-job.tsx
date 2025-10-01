@@ -1,11 +1,11 @@
 "use client";
 
+import LoadingSpinner from "@/lib/loading-spinner";
 import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import RecentJobCard from "./recent-job-card";
-import LoadingSpinner from "@/lib/loading-spinner";
 
 export function RecentJob() {
   const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);

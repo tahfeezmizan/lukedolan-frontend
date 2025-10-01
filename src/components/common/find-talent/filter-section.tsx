@@ -5,6 +5,8 @@ import { TalentSidebar, TalentFilterData } from "./talent-sidebar";
 import TalentCards from "@/components/shared/talent-cards";
 import { useGetFilteredTalentsQuery } from "@/redux/features/talentApi";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import ErrorMessage from "@/lib/error-message";
+import LoadingSpinner from "@/lib/loading-spinner";
 
 export default function FilterSection() {
   const [filters, setFilters] = useState<TalentFilterData>({
@@ -160,14 +162,7 @@ export default function FilterSection() {
   };
 
   if (error) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
-        <div className="text-center py-12">
-          <div className="text-red-500 text-lg mb-2">Error loading talents</div>
-          <p className="text-gray-400">Please try again later</p>
-        </div>
-      </section>
-    );
+    return <ErrorMessage title="talents" />;
   }
 
   return (
@@ -181,12 +176,7 @@ export default function FilterSection() {
           {/* Talents grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {isLoading ? (
-              // Loading skeleton
-              Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
-                  <div className="bg-gray-200 h-64 rounded-lg"></div>
-                </div>
-              ))
+              <LoadingSpinner />
             ) : transformedTalents && transformedTalents.length > 0 ? (
               transformedTalents.map((talent: any) => (
                 <TalentCards key={talent.id} talent={talent} />
