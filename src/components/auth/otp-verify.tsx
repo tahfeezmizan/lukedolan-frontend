@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slice/userSlice";
+import { ApiError } from "@/types/types";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -73,14 +74,15 @@ export default function OtpVerify() {
         oneTimeCode: otpValue,
       });
 
-      console.log("OTP Verify", res);
+      console.log("OTP Verify", res?.data?.message);
 
-      if (res?.data?.success === true) {
+      if (res?.data?.success) {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
         toast.success("OTP verification successful");
         route.push("/");
       } else {
-        toast.error(res.error.data.message);
+        const err = res.error as ApiError;
+        toast.error(err?.data?.message || "Something went wrong");
       }
     } catch (error) {
       console.log(error);

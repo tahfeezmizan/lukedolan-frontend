@@ -35,9 +35,8 @@ interface SidebarFilterProps {
 }
 
 export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
-  const { data: categories, isLoading } = useGetCategoryQuery('');
+  const { data: categories } = useGetCategoryQuery({});
 
-  
   const categoryNames =
     categories?.data?.data?.map((category: any) => category.name) || [];
 
@@ -63,7 +62,6 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
     [onFiltersChange]
   );
 
-  
   useEffect(() => {
     debouncedFilterChange(filterData);
     return () => {
@@ -100,7 +98,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
     if (!isNaN(num)) {
       const newRange = [...filterData.salaryRange] as [number, number];
       newRange[index] = num;
-     
+
       if (newRange[0] <= newRange[1]) {
         setFilterData((prev) => ({
           ...prev,

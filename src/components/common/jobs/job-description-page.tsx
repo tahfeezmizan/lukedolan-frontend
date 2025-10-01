@@ -28,7 +28,7 @@ const jobData = {
 
 export default function JobDescriptionPage() {
   const { id } = useParams();
-  const { data: job, isLoading } = useGetSingleJobQuery({ id });
+  const { data: job } = useGetSingleJobQuery({ id });
   console.log("JObs ", job);
   //   console.log("Id", id);
 

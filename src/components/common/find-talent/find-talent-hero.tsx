@@ -1,20 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
 import heroBg from "@/assets/talent-hero-img.png";
-import { Search } from "lucide-react";
 
 export default function FindTalentHero() {
-  const [search, setSearch] = useState("");
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log("[v0] Newsletter subscription:", search);
+  //   // Handle newsletter subscription logic here
+  //   setSearch("");
+  // };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("[v0] Newsletter subscription:", search);
-    // Handle newsletter subscription logic here
-    setSearch("");
-  };
   return (
     <section
       className="bg-[#414652] pb-20 px-4  pt-40 "
@@ -36,7 +31,7 @@ export default function FindTalentHero() {
           </p>
 
           {/* Right side - Email form */}
-          <div className="w-full lg:w-5xl mx-auto bg-white overflow-hidden rounded-md mt-8">
+          {/* <div className="w-full lg:w-5xl mx-auto bg-white overflow-hidden rounded-md mt-8">
             <form onSubmit={handleSubmit} className="flex ">
               <Input
                 type="email"
@@ -54,7 +49,7 @@ export default function FindTalentHero() {
                 Search
               </Button>
             </form>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

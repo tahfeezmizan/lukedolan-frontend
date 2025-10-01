@@ -149,12 +149,12 @@ export function LoginForm() {
               Remember me
             </Label>
           </div>
-          <Button
-            variant="link"
+          <Link
+            href={"/reset-password"}
             className="px-0 text-blue-600 hover:text-blue-800"
           >
             Forgot password ?
-          </Button>
+          </Link>
         </div>
 
         {/* Submit */}

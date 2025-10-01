@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { TalentSidebar, TalentFilterData } from "./talent-sidebar";
 import TalentCards from "@/components/shared/talent-cards";
 import { useGetFilteredTalentsQuery } from "@/redux/features/talentApi";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FilterSection() {
   const [filters, setFilters] = useState<TalentFilterData>({
@@ -15,11 +16,10 @@ export default function FilterSection() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  
   const apiFilters = useMemo(() => {
     const apiParams: any = {
       page: currentPage,
-      limit: 4,
+      limit: 8,
     };
 
     if (filters.search) apiParams.searchTerm = filters.search;
@@ -113,13 +113,13 @@ export default function FilterSection() {
         key="prev"
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`px-3 py-1 rounded-md ${
+        className={`p-1 rounded-full border text-gray-600 hover:bg-gray-100 disabled:opacity-50 ${
           currentPage === 1
             ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            : "bg-white text-green-700 hover:bg-gray-100 border border-gray-300"
         }`}
       >
-        Previous
+        <ChevronLeft />
       </button>
     );
 
@@ -129,9 +129,9 @@ export default function FilterSection() {
         <button
           key={i}
           onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 rounded-md ${
+          className={`px-3 py-1 rounded-full ${
             currentPage === i
-              ? "bg-green-600 text-white border border-green-600"
+              ? "bg-green-600 text-white font-semibold border border-green-600"
               : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
           }`}
         >
@@ -146,13 +146,13 @@ export default function FilterSection() {
         key="next"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === pagination.totalPage}
-        className={`px-3 py-1 rounded-md ${
+        className={`p-1 rounded-full border text-gray-600 hover:bg-gray-100 disabled:opacity-50 ${
           currentPage === pagination.totalPage
             ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            : "bg-white text-green-700 hover:bg-gray-100 border border-gray-300"
         }`}
       >
-        Next
+        <ChevronRight />
       </button>
     );
 
@@ -205,7 +205,7 @@ export default function FilterSection() {
 
           {/* Pagination */}
           {pagination && pagination.totalPage > 1 && (
-            <div className="flex justify-center items-center space-x-2 mt-8">
+            <div className="flex justify-end items-center space-x-2 mt-8">
               {renderPageNumbers()}
             </div>
           )}

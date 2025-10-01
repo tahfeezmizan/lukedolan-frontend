@@ -1,32 +1,24 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
-import {
-  Education,
-  UserData,
-  WorkExperience
-} from "@/types/profileTypes";
+import { Education, UserData, WorkExperience } from "@/types/profileTypes";
 import { Briefcase, Building, Calendar, MapPin } from "lucide-react";
 
 // Type definitions based on your data structure
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
-  const { data: userData, isLoading } = useGetMeQuery('') 
+  const { data: userData, isLoading } = useGetMeQuery("");
   const profileData: UserData | undefined = userData;
 
   console.log("Profile Data:", profileData);
 
   // Loading or no data fallback
   if (isLoading || !profileData) {
-    return (
-      <div className="flex justify-center items-center py-8">
-        <div className="animate-spin h-8 w-8 border-2 border-green-600 border-t-transparent rounded-full"></div>
-        <span className="ml-3 text-gray-600">Loading profile...</span>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

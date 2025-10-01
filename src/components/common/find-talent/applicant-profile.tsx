@@ -2,13 +2,19 @@
 
 import CreateChatModal from "@/components/profile/createChatModal";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Download, GraduationCap, Mail } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
+import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
+import { Mail, User } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
-  console.log(id);
+  const { data: talent } = useGetSingleTalentQuery(id);
+
+  const resume = null;
+
+  console.log("talent", talent?.email);
 
   return (
     <section className=" px-4 bg-slate-100">
@@ -20,25 +26,35 @@ export default function ApplicantProfile() {
             <div className="text-center mb-8">
               <div className="relative inline-block mb-6">
                 <div className="w-32 h-32 rounded-full overflow-hidden mx-auto shadow-lg ">
-                  <Image
-                    width={32}
-                    height={32}
-                    src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt="John Doe"
-                    className="w-full h-full object-cover"
-                  />
+                  {talent?.image ? (
+                    <Image
+                      width={32}
+                      height={32}
+                      src={getImageUrl(talent?.image)}
+                      alt={talent?.name ?? "User"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-6 w-6 text-white" />
+                  )}
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                John Doe
+                {talent?.name}
               </h3>
               <p className="text-gray-600 font-medium">
-                Senior Hair Specialist
+                {talent?.profile?.expartes && talent.profile.expartes.length > 0
+                  ? talent.profile.expartes.join(", ")
+                  : "No expartes listed"}
               </p>
               <div className="mt-4">
-                <span className="bg-green-900/70 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
-                  Open to work
-                </span>
+                {talent?.profile?.openToWork === true ? (
+                  <span className="bg-green-900 text-white text-lg font-semibold px-4 py-1.5 rounded-full">
+                    Open to work
+                  </span>
+                ) : (
+                  "NOt Avaible"
+                )}
               </div>
             </div>
 
@@ -52,6 +68,9 @@ export default function ApplicantProfile() {
                   variant="outline"
                   size="sm"
                   className="flex items-center gap-2"
+                  onClick={() =>
+                    (window.location.href = `mailto:${talent?.email}`)
+                  }
                 >
                   <Mail className="w-4 h-4" />
                   Email
@@ -67,14 +86,10 @@ export default function ApplicantProfile() {
                 Languages
               </h4>
               <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  English
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Spanish
-                </li>
+                {talent?.profile?.languages &&
+                talent.profile.languages.length > 0
+                  ? talent.profile.languages.join(", ")
+                  : "No skills listed"}
               </ul>
             </div>
 
@@ -95,7 +110,12 @@ export default function ApplicantProfile() {
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
                 Salary Expectations
               </h4>
-              <p className="text-2xl font-bold text-gray-900">2000</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {talent?.profile?.salaryExpectation &&
+                talent.profile.salaryExpectation.length > 0
+                  ? talent.profile.salaryExpectation.join(", ")
+                  : "No skills listed"}
+              </p>
             </div>
 
             {/* Skills */}
@@ -104,26 +124,19 @@ export default function ApplicantProfile() {
                 Skills
               </h4>
               <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Hair colouring
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Bridal Styling
-                </li>
-                <li className="flex items-center gap-2 text-gray-700">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Account payable management
-                </li>
+                {talent?.profile?.skills && talent.profile.skills.length > 0
+                  ? talent.profile.skills.join(", ")
+                  : "NO Expectations"}
               </ul>
             </div>
           </div>
 
           {/* Right Column - Resume/CV */}
-          <div className="col-span-2 space-y-6 ">
-            <div className="bg-white p-8 rounded-lg overflow-hidden">
-              {/* Header */}
+          <div className="col-span-2 space-y-6 bg-white p-8 rounded-lg overflow-hidden">
+            {resume === true ? "not foud" : "Not Created"}
+
+            <div className="">
+              {/* <div className="bg-white p-8 rounded-lg overflow-hidden">
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden">
@@ -150,9 +163,8 @@ export default function ApplicantProfile() {
                 </div>
               </div>
 
-              {/* Profile & Employment */}
               <div className="grid md:grid-cols-2 gap-8 mb-8">
-                {/* Profile */}
+               
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-emerald-600" />
@@ -167,7 +179,6 @@ export default function ApplicantProfile() {
                   </p>
                 </div>
 
-                {/* Employment */}
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-emerald-600" />
@@ -201,7 +212,6 @@ export default function ApplicantProfile() {
                 </div>
               </div>
 
-              {/* Education */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-emerald-600" />
@@ -235,7 +245,6 @@ export default function ApplicantProfile() {
                 </div>
               </div>
 
-              {/* Key Skills */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
                   Key Skills
@@ -273,11 +282,11 @@ export default function ApplicantProfile() {
               </div>
             </div>
 
-            {/* Download Resume Button */}
             <Button className="w-full rounded-lg bg-green-900 text-lg px-6 py-5 text-white  hover:bg-green-700 font-medium flex items-center justify-center gap-2">
               <Download className="w-4 h-4" />
               Download Resume
-            </Button>
+            </Button> */}
+            </div>
           </div>
         </div>
       </div>

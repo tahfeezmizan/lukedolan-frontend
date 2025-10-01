@@ -12,7 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetCategoryQuery } from "@/redux/features/categoryApi";
+import {
+  useGetAllCategoryQuery,
+  useGetCategoryQuery,
+} from "@/redux/features/categoryApi";
 import {
   useGetAllJobsQuery,
   useUpdateJobMutation,
@@ -48,7 +51,7 @@ export function JobUpdateForm() {
   const { id } = useParams();
   const route = useRouter();
 
-  const { data: categories } = useGetCategoryQuery({});
+  const { data: categories, isLoading } = useGetAllCategoryQuery({});
   const { data: jobs } = useGetAllJobsQuery({});
   const [updateJob] = useUpdateJobMutation();
 
@@ -354,7 +357,7 @@ export function JobUpdateForm() {
           type="submit"
           className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 mt-5 text-lg font-medium rounded-lg"
         >
-          Update Job Post
+          {isLoading ? "Update..." : "Update Job Post"}
         </Button>
       </form>
     </div>
