@@ -85,7 +85,7 @@ export function Navbar() {
           { href: "/find-talent", label: "Find Talent" },
 
           { href: "/job", label: "Search Job" },
-          { href: "/pricing", label: "Pricing" },
+          // { href: "/pricing", label: "Pricing" },
           { href: "/contact", label: "Contact Us" },
         ];
     }

@@ -73,9 +73,9 @@ export default function OtpVerify() {
         oneTimeCode: otpValue,
       });
 
-      console.log("OTP Verify", res);
+      console.log("OTP Verify", res?.data?.message);
 
-      if (res?.data?.success === true) {
+      if (res?.data?.success) {
         dispatch(setUser({ data: res.data?.data?.accessToken }));
         toast.success("OTP verification successful");
         route.push("/");
