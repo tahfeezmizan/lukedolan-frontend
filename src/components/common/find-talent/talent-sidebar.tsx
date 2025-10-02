@@ -72,7 +72,7 @@ export function TalentSidebar({ onFiltersChange }: TalentSidebarProps) {
       <div className="flex justify-between items-center text-xl border-b">
         <h2 className="font-semibold text-gray-800 leading-relaxed">Filter</h2>
         <button
-          className="text-red-500 hover:text-red-600 leading-relaxed cursor-pointer"
+          className="text-red-500 text-lg hover:text-red-600 leading-relaxed cursor-pointer"
           onClick={handleClearAll}
         >
           Clear All
@@ -123,8 +123,6 @@ export function TalentSidebar({ onFiltersChange }: TalentSidebarProps) {
           </SelectContent>
         </Select>
       </div>
-
-     
     </div>
   );
 }

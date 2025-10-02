@@ -241,8 +241,8 @@ export default function JobsSection() {
           <div className="space-y-6 mb-8">
             {isLoading ? (
               <LoadingSpinner />
-            ) : jobs && jobs.length > 0 ? (
-              jobs.map((job: PostJobFormData) => (
+            ) : jobs && jobs?.length > 0 ? (
+              jobs?.map((job: PostJobFormData) => (
                 <JobCard job={job} key={job._id} />
               ))
             ) : (

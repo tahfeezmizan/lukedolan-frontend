@@ -1,6 +1,7 @@
 "use client";
 
 import CreateChatModal from "@/components/profile/createChatModal";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getImageUrl } from "@/lib/utils";
 import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
@@ -28,14 +29,14 @@ export default function ApplicantProfile() {
                 <div className="w-32 h-32 rounded-full overflow-hidden mx-auto shadow-lg ">
                   {talent?.image ? (
                     <Image
-                      width={32}
-                      height={32}
+                      width={1000}
+                      height={1000}
                       src={getImageUrl(talent?.image)}
                       alt={talent?.name ?? "User"}
-                      className="w-full h-full object-cover"
+                      className="w-32 h-32 object-cover "
                     />
                   ) : (
-                    <User className="h-6 w-6 text-white" />
+                    <User className="h-32 w-32" />
                   )}
                 </div>
               </div>
@@ -81,17 +82,21 @@ export default function ApplicantProfile() {
             </div>
 
             {/* Languages */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                Languages
-              </h4>
-              <ul className="space-y-2">
-                {talent?.profile?.languages &&
-                talent.profile.languages.length > 0
-                  ? talent.profile.languages.join(", ")
-                  : "No skills listed"}
-              </ul>
-            </div>
+            {talent.profile.languages.length > 0 ? (
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Languages
+                </h4>
+                <ul className="space-y-2">
+                  {talent?.profile?.languages &&
+                  talent.profile.languages.length > 0
+                    ? talent.profile.languages.join(", ")
+                    : "No skills listed"}
+                </ul>
+              </div>
+            ) : (
+              ""
+            )}
 
             {/* Bio */}
             <div className="mb-8">
@@ -106,17 +111,21 @@ export default function ApplicantProfile() {
             </div>
 
             {/* Salary Expectations */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                Salary Expectations
-              </h4>
-              <p className="text-2xl font-bold text-gray-900">
-                {talent?.profile?.salaryExpectation &&
-                talent.profile.salaryExpectation.length > 0
-                  ? talent.profile.salaryExpectation.join(", ")
-                  : "No skills listed"}
-              </p>
-            </div>
+            {talent?.profile?.salaryExpectation ? (
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Salary Expectations
+                </h4>
+                <p className="text-2xl font-bold text-gray-900">
+                  {talent?.profile?.salaryExpectation &&
+                  talent.profile.salaryExpectation.length > 0
+                    ? talent.profile.salaryExpectation.join(", ")
+                    : "No skills listed"}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
 
             {/* Skills */}
             <div className="mb-8">
@@ -125,7 +134,11 @@ export default function ApplicantProfile() {
               </h4>
               <ul className="space-y-2">
                 {talent?.profile?.skills && talent.profile.skills.length > 0
-                  ? talent.profile.skills.join(", ")
+                  ? talent.profile.skills?.map((skill: string) => (
+                      <Badge variant={"outline"} className="mx-0.5">
+                        {skill}
+                      </Badge>
+                    ))
                   : "NO Expectations"}
               </ul>
             </div>

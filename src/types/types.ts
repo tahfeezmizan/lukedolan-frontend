@@ -131,7 +131,7 @@ export type CompanyData = {
 };
 
 export interface PostJobFormData {
-  _id?: number | string | undefined;
+  _id?: number | string;
   title: string;
   category?: string;
   type: "Full-time" | "Remote" | "Freelance";
@@ -144,18 +144,18 @@ export interface PostJobFormData {
   jobLocation: string;
   applicationsCount: string;
   experianceLabel: "Experienced" | "Beginner" | "Freshers";
-  user: {
+  user?: {
     email: string;
     image: string | null;
     name: string;
-    profile: {
+    profile?: {
       _id: string;
       companyName: string;
       companyLogo: string | null;
-    };
+    } | null;
     role: string;
     roleProfile: string;
-  };
+  } | null;
 }
 
 export type Column<T> = {

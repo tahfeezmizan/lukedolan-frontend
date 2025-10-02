@@ -8,7 +8,7 @@ import Link from "next/link";
 import RecentJobCard from "./recent-job-card";
 
 export function RecentJob() {
-  const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
+  const { data: jobs, isLoading } = useGetAllJobsQuery('');
 
   return (
     <section className="bg-[#EBF1FA] py-20">
@@ -32,7 +32,7 @@ export function RecentJob() {
           <LoadingSpinner />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {jobs && jobs.length > 0 ? (
+            {jobs && jobs?.length > 0 ? (
               jobs
                 .slice(0, 6)
                 .map((job: PostJobFormData) => (

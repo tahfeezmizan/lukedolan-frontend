@@ -294,7 +294,7 @@ export function PersonalDetailsForm() {
             />
           </div>
         </div>
-        <div>
+        <div className="mt-4">
           <Label htmlFor="mobile" className="text-lg font-medium text-gray-900">
             Mobile Number
           </Label>
