@@ -19,6 +19,7 @@ export interface Education {
 }
 
 export interface Profile {
+  name: string;
   age: string | null;
   bio: string | null;
   citizenship: string | null;

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { ApplicantResume } from "./applicant-resume";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
@@ -155,17 +156,11 @@ export default function ApplicantProfile() {
 
           {/* Right Column - Resume/CV */}
           <div className="col-span-2 space-y-6 bg-white p-8 rounded-lg overflow-hidden">
-            <div className="flex items-start justify-between mb-8">
+            <ApplicantResume data={talent} />
+
+            {/* <div className="flex items-start justify-between mb-8">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden">
-                  <Image
-                    width={16}
-                    height={16}
-                    src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
-                    alt="John Doe"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">John Doe</h3>
                   <p className="text-gray-600">Web Designer</p>
@@ -292,13 +287,8 @@ export default function ApplicantProfile() {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
-
-          <Button className="w-full rounded-lg bg-green-900 text-lg px-6 py-5 text-white  hover:bg-green-700 font-medium flex items-center justify-center gap-2">
-            <Download className="w-4 h-4" />
-            Download Resume
-          </Button>
         </div>
       </div>
     </section>
