@@ -18,6 +18,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { toast } from "sonner";
+import { Textarea } from "../ui/textarea";
+import LoadingSpinner from "@/lib/loading-spinner";
 
 interface EssentialPersonalData {
   firstName: string;
@@ -30,6 +32,7 @@ interface EssentialPersonalData {
   country: string;
   skills: string[];
   expartes: string[];
+  bio: string;
 }
 
 export function PersonalDetailsForm() {
@@ -49,7 +52,6 @@ export function PersonalDetailsForm() {
     handleSubmit,
     control,
     setValue,
-
     watch,
     reset,
     formState: { errors },
@@ -57,6 +59,7 @@ export function PersonalDetailsForm() {
     defaultValues: {
       firstName: "",
       lastName: "",
+      bio: "",
       mobile: "",
       dateOfBirth: "",
       gender: "",
@@ -195,7 +198,7 @@ export function PersonalDetailsForm() {
 
     try {
       const res = await updateProfile({ body: formData });
-      console.log(res);
+      console.log("Api", res);
       if (res?.data?.success) {
         toast.success("Profile updated successfully");
         refetch();
@@ -209,11 +212,7 @@ export function PersonalDetailsForm() {
   };
 
   if (isUserLoading) {
-    return (
-      <div className="flex justify-center items-center py-8">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -302,6 +301,7 @@ export function PersonalDetailsForm() {
             id="mobile"
             placeholder="Mobile Number"
             {...register("mobile")}
+            minLength={11}
             className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
           />
         </div>
@@ -309,8 +309,25 @@ export function PersonalDetailsForm() {
 
       {/* Skills Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills</h3>
-        <div className="space-y-4">
+        <div className="m">
+          <Label htmlFor="bio" className="text-lg font-medium text-gray-900">
+            Bio
+          </Label>
+          <Textarea
+            id="bio"
+            placeholder="Describe the role"
+            {...register("bio", {
+              required: "Job bio is required",
+            })}
+            className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+          />
+          {errors.bio && (
+            <p className="text-red-500 text-sm">{errors.bio.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-4 mt-4">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills</h3>
           <div className="flex gap-2">
             <Input
               value={skillInput}

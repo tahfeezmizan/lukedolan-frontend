@@ -4,6 +4,7 @@ import {
   Briefcase,
   BriefcaseBusiness,
   CheckCircle,
+  CircleUserRound,
   Globe,
   Scissors,
 } from "lucide-react";
@@ -72,20 +73,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
                 />
               ) : (
                 <div className="w-[120px] h-[120px] rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="8" r="5" />
-                    <path d="M20 21a8 8 0 0 0-16 0" />
-                  </svg>
+                  <CircleUserRound className="size-40" />
                 </div>
               )}
             </div>
@@ -127,10 +115,10 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
                 {/* Skills:{" "} */}
                 {talent?.skills && talent?.skills?.length > 0 ? (
                   talent?.skills?.map((s, i) => (
-                    <Badge variant={"outline"}  key={i} className="mx-0.5">
+                    <Badge variant={"outline"} key={i} className="mx-0.5">
                       {s}
                       {i < talent?.skills?.length - 1 && ""}
-                    </Badge >
+                    </Badge>
                   ))
                 ) : (
                   <span>Not Provided</span>

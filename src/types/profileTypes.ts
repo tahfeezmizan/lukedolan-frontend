@@ -58,7 +58,7 @@ export interface UserData {
   email: string;
   image: string;
   name: string;
-  profile: Profile;
+  profile?: Profile;
   role: string;
   roleProfile: string;
   status: string;

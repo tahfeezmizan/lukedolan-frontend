@@ -14,6 +14,7 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {
   Bell,
+  CircleUserRound,
   FileText,
   LayoutDashboard,
   LogOut,
@@ -218,7 +219,8 @@ export function Navbar() {
                               className="w-10 h-10 rounded-full"
                             />
                           ) : (
-                            <User className="h-6 w-6 text-white" />
+                            // <User  />
+                            <CircleUserRound className="h-6 w-6 text-white" />
                           )}
                         </div>
                       </button>

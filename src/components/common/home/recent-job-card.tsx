@@ -7,11 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function RecentJobCard({ job }: { job: PostJobFormData }) {
-  const { _id, title, startDate, experianceLabel, user  } = job || {};
+  const { _id, title, startDate, experianceLabel, user } = job || {};
 
   const { companyName } = user?.profile || {};
-
-  console.log("REcent jobs", job);
 
   return (
     <div key={_id} className="rounded-lg overflow-hidden bg-white  p-5">
@@ -43,7 +41,7 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
           </div>
           <Link
             href={`/job/${_id}`}
-            className="bg-green-900 text-white px-2 py-1 text-sm rounded-lg w-28 mx-auto text-center"
+            className="bg-green-900 text-white px-2 py-1 text-sm rounded-lg w-28 mr-0 text-center"
           >
             View Details
           </Link>

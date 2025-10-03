@@ -41,7 +41,8 @@ export function TopNavbar() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <CircleUserRound className="size-10" />
+                <CircleUserRound className="size-9" />
+                
               )}
             </div>
 
