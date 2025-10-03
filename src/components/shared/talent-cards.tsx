@@ -4,12 +4,14 @@ import {
   Briefcase,
   BriefcaseBusiness,
   CheckCircle,
+  CircleUserRound,
   Globe,
   Scissors,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Badge } from "../ui/badge";
 
 export default function TalentCards({ talent }: { talent: TalentProps }) {
   // Safely handle skills data - convert to array if it's a string or ensure it's an array
@@ -71,20 +73,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
                 />
               ) : (
                 <div className="w-[120px] h-[120px] rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="8" r="5" />
-                    <path d="M20 21a8 8 0 0 0-16 0" />
-                  </svg>
+                  <CircleUserRound className="size-40" />
                 </div>
               )}
             </div>
@@ -123,13 +112,13 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
             <div className="flex items-center gap-4 ">
               <Scissors className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
               <span className="text-lg leading-tight text-gray-700">
-                Skills:{" "}
+                {/* Skills:{" "} */}
                 {talent?.skills && talent?.skills?.length > 0 ? (
                   talent?.skills?.map((s, i) => (
-                    <span key={i}>
+                    <Badge variant={"outline"} key={i} className="mx-0.5">
                       {s}
-                      {i < talent?.skills?.length - 1 && ", "}
-                    </span>
+                      {i < talent?.skills?.length - 1 && ""}
+                    </Badge>
                   ))
                 ) : (
                   <span>Not Provided</span>

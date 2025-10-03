@@ -34,14 +34,15 @@ export function TopNavbar() {
             <div className="w-10 h-10 rounded-full overflow-hidden border-2">
               {data?.profile?.companyLogo || data?.image ? (
                 <Image
-                  width={10}
-                  height={10}
+                  width={1000}
+                  height={1000}
                   src={getImageUrl(data?.profile?.companyLogo || data?.image)}
                   alt={data?.name}
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <CircleUserRound className="size-10" />
+                <CircleUserRound className="size-9" />
+                
               )}
             </div>
 

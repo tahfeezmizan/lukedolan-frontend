@@ -16,10 +16,10 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
     minSalary,
     startDate,
     type,
-    user: {
-      profile: { companyName } = {}, 
-    } = {},
+    user,
   } = job;
+
+  const { companyName } = user?.profile || {};
 
   return (
     <div className="w-full bg-white hover:shadow-md transition rounded-lg">
@@ -35,7 +35,8 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
           />
           <h3 className="text-xl font-semibold leading-loose">{title}</h3>
           <p className="text-gray-800">
-            Company: <span className="font-semibold">{companyName}</span>
+            Company:{" "}
+            <span className="font-semibold">{companyName || "No compnay"}</span>
           </p>
           <div className="flex flex-wrap gap-4 mt-2 text-md text-black">
             <span className="flex items-center gap-1.5">

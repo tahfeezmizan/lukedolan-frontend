@@ -3,14 +3,15 @@
 import { useApplyJobMutation } from "@/redux/features/application";
 import { ApiResponse } from "@/types/profileTypes";
 import { ApiError, JobApplyFormInputs } from "@/types/types";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function JobApplyForm() {
   const params = useParams();
   const { id, slug } = params;
-  
+  const route = useRouter();
+
   const jobTitle = decodeURIComponent(id as string);
   const jobSlug: string = Array.isArray(slug) ? slug[0] : slug ?? "";
 
@@ -47,6 +48,7 @@ export default function JobApplyForm() {
 
       if (res.data?.success) {
         toast.success("Job application successfully");
+        route.push("")
       } else {
         toast.error(res.error?.data?.message || "Something went wrong");
       }

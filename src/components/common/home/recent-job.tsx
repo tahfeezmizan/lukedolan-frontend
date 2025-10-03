@@ -1,14 +1,14 @@
 "use client";
 
+import LoadingSpinner from "@/lib/loading-spinner";
 import { useGetAllJobsQuery } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import RecentJobCard from "./recent-job-card";
-import LoadingSpinner from "@/lib/loading-spinner";
 
 export function RecentJob() {
-  const { data: jobs, isLoading } = useGetAllJobsQuery(undefined);
+  const { data: jobs, isLoading } = useGetAllJobsQuery('');
 
   return (
     <section className="bg-[#EBF1FA] py-20">
@@ -32,7 +32,7 @@ export function RecentJob() {
           <LoadingSpinner />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {jobs && jobs.length > 0 ? (
+            {jobs && jobs?.length > 0 ? (
               jobs
                 .slice(0, 6)
                 .map((job: PostJobFormData) => (

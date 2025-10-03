@@ -74,7 +74,7 @@ export default function ContactForm() {
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                   required
                 />
               </div>
@@ -91,7 +91,7 @@ export default function ContactForm() {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                   required
                 />
               </div>
@@ -108,7 +108,7 @@ export default function ContactForm() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full !text-lg border-0  border-b-2 border-black rounded-lg outline-none"
+                  className="w-full !text-lg border-0  border-b-2 border-black rounded-none outline-none"
                 />
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function ContactForm() {
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
-                className="w-full min-h-32 !text-lg border-0  border-b-2 border-black rounded-lg outline-none "
+                className="w-full min-h-32 !text-lg border-0  border-b-2 border-black rounded-none outline-none "
                 required
               />
             </div>
