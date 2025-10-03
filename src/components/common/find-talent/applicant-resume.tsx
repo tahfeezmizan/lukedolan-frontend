@@ -183,6 +183,7 @@ export function ApplicantResume({ data }: { data: any }) {
           </div>
         </div>
       )}
+      
     </div>
   );
 }
