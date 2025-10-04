@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { LucideIcon } from "lucide-react";
 import { StaticImageData } from "next/image";
 
@@ -11,6 +13,24 @@ export type JobCardProps = {
   jobTitle: string;
   salary?: string;
   location?: string;
+};
+
+export type WorkExperience = {
+  institution?: string;
+  degree?: string;
+  fieldOfStudy?: string;
+  startDate?: string;
+  endDate?: string;
+  [key: string]: any;
+};
+
+export type Education = {
+  institution?: string;
+  degree?: string;
+  fieldOfStudy?: string;
+  startDate?: string;
+  endDate?: string;
+  [key: string]: any;
 };
 
 export interface TalentProps {
@@ -36,23 +56,9 @@ export interface TalentProps {
   preferredWorkType?: string | null;
   bio?: string | null;
 
-  education: Array<{
-    institution?: string;
-    degree?: string;
-    fieldOfStudy?: string;
-    startDate?: string;
-    endDate?: string;
-    [key: string]: any;
-  }>;
+  education: Education[];
 
-  workExperience: Array<{
-    company?: string;
-    position?: string;
-    startDate?: string;
-    endDate?: string;
-    description?: string;
-    [key: string]: any;
-  }>;
+  workExperience: WorkExperience[];
 
   salaryExpectation?: number | null;
   mobile: string;
@@ -164,6 +170,7 @@ export type Column<T> = {
 };
 
 export type JobData = {
+  _id?: string;
   userId: string;
   jobTitle: string;
   companyName: string;
@@ -186,3 +193,22 @@ export interface ApiError {
     message: string;
   };
 }
+
+export type Category = {
+  _id: string;
+  name: string;
+  description: string;
+  status: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+};
+
+export type ApiParams = {
+  page: number;
+  limit: number;
+  searchTerm?: string;
+  location?: string;
+  gender?: string;
+  skills?: string | string[];
+};

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { TalentSidebar, TalentFilterData } from "./talent-sidebar";
 import TalentCards from "@/components/shared/talent-cards";
-import { useGetFilteredTalentsQuery } from "@/redux/features/talentApi";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import ErrorMessage from "@/lib/error-message";
 import LoadingSpinner from "@/lib/loading-spinner";
+import { useGetFilteredTalentsQuery } from "@/redux/features/talentApi";
+import { ApiParams, TalentProps } from "@/types/types";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { TalentFilterData, TalentSidebar } from "./talent-sidebar";
 
 export default function FilterSection() {
   const [filters, setFilters] = useState<TalentFilterData>({
@@ -19,7 +20,7 @@ export default function FilterSection() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const apiFilters = useMemo(() => {
-    const apiParams: any = {
+    const apiParams: ApiParams = {
       page: currentPage,
       limit: 8,
     };
@@ -38,7 +39,12 @@ export default function FilterSection() {
     data: talentsResponse,
     isLoading,
     error,
-  } = useGetFilteredTalentsQuery(apiFilters);
+  } = useGetFilteredTalentsQuery({
+    ...apiFilters,
+    skills: Array.isArray(apiFilters.skills)
+      ? apiFilters.skills.join(",")
+      : apiFilters.skills,
+  });
 
   // Extract talents and pagination data from response
   const { talents, pagination } = useMemo(() => {
@@ -178,8 +184,8 @@ export default function FilterSection() {
             {isLoading ? (
               <LoadingSpinner />
             ) : transformedTalents && transformedTalents.length > 0 ? (
-              transformedTalents.map((talent: any) => (
-                <TalentCards key={talent.id} talent={talent} />
+              transformedTalents.map((talent: TalentProps) => (
+                <TalentCards key={talent._id} talent={talent} />
               ))
             ) : (
               <div className="col-span-2 text-center py-12">

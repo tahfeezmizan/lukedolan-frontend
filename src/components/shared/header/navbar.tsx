@@ -40,6 +40,8 @@ interface User {
 }
 
 export function Navbar() {
+
+  
   const { data: user } = useGetMeQuery(undefined);
   const activeRole = user?.role;
   console.log("getMe data:", user);

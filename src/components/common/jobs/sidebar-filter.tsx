@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { MapPin, Search } from "lucide-react";
 import { useGetCategoryQuery } from "@/redux/features/categoryApi";
 import { debounce } from "lodash";
+import { Category } from "@/types/types";
 
 export interface FilterData {
   search: string;
@@ -38,7 +39,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
   const { data: categories } = useGetCategoryQuery({});
 
   const categoryNames =
-    categories?.data?.data?.map((category: any) => category.name) || [];
+    categories?.data?.data?.map((category: Category) => category.name) || [];
 
   const [filterData, setFilterData] = useState<FilterData>({
     search: "",

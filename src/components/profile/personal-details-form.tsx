@@ -45,6 +45,7 @@ export function PersonalDetailsForm() {
     isLoading: isUserLoading,
     refetch,
   } = useGetMeQuery("");
+
   const profileData = userData?.profile;
 
   const {
@@ -162,6 +163,7 @@ export function PersonalDetailsForm() {
       }
     }
   };
+
   const removeExpertise = (expertiseToRemove: string) => {
     const currentExpertise = expartes || []; // Use watched expartes instead of getValues
     const updatedExpertise = currentExpertise.filter(
@@ -218,7 +220,7 @@ export function PersonalDetailsForm() {
   return (
     <div className="space-y-8">
       {/* Basic Information Section */}
-      <h3 className="text-3xl font-semibold text-gray-900 mb-4">
+      <h3 className="text-3xl font-semibold text-gray-900 mb-2">
         Personal Information
       </h3>
       <div>
@@ -307,7 +309,6 @@ export function PersonalDetailsForm() {
         </div>
       </div>
 
-      {/* Skills Section */}
       <div>
         <div className="m">
           <Label htmlFor="bio" className="text-lg font-medium text-gray-900">
@@ -325,9 +326,12 @@ export function PersonalDetailsForm() {
             <p className="text-red-500 text-sm">{errors.bio.message}</p>
           )}
         </div>
+      </div>
 
-        <div className="space-y-4 mt-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills</h3>
+      {/* Skills and Expertise Section */}
+      <div className="space-y-4">
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Skills</h3>
           <div className="flex gap-2">
             <Input
               value={skillInput}
@@ -351,7 +355,7 @@ export function PersonalDetailsForm() {
               skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-2 rounded-full text-sm"
+                  className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
                 >
                   <span>{skill}</span>
                   <button
@@ -367,18 +371,13 @@ export function PersonalDetailsForm() {
               <p className="text-gray-500 text-sm">No skills added yet</p>
             )}
           </div>
-
-          {/* Debug info */}
-          <div className="text-xs text-gray-400">
-            Current skills in form: {skills?.join(", ") || "None"}
-          </div>
         </div>
-      </div>
 
-      {/* Expertise Section */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Expertise</h3>
-        <div className="space-y-4">
+        <div className="space-y-4 ">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Expertise
+          </h3>
+
           <div className="flex gap-2">
             <Input
               value={expertiseInput}
@@ -402,7 +401,7 @@ export function PersonalDetailsForm() {
               expartes.map((expertise, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm"
+                  className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
                 >
                   <span>{expertise}</span>
                   <button
@@ -418,17 +417,12 @@ export function PersonalDetailsForm() {
               <p className="text-gray-500 text-sm">No expertise added yet</p>
             )}
           </div>
-
-          {/* Debug info */}
-          <div className="text-xs text-gray-400">
-            Current expertise in form: {expartes?.join(", ") || "None"}
-          </div>
         </div>
       </div>
 
       {/* Address Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Address</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Address</h3>
         <div className="space-y-4">
           <div>
             <Label

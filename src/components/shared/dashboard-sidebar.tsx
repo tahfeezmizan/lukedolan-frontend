@@ -3,7 +3,6 @@
 import logo from "@/assets/white-logo.png";
 import { SidebarItem } from "@/lib/sidebar-nav-config";
 import { cn } from "@/lib/utils";
-import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { LogOut } from "lucide-react";
 import Image from "next/image";

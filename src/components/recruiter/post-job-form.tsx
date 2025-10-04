@@ -12,11 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  useGetAllCategoryQuery
-} from "@/redux/features/categoryApi";
+import { useGetAllCategoryQuery } from "@/redux/features/categoryApi";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
-import { PostJobFormData } from "@/types/types";
+import { Category, PostJobFormData } from "@/types/types";
 import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -44,14 +42,11 @@ export function PostJobForm() {
     },
   });
 
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split("T")[0];
-
   const route = useRouter();
   const [createJob] = useCreateJobMutation();
   const { data: categories } = useGetAllCategoryQuery(undefined);
 
-  console.log("Category",categories);
+  console.log("Category", categories);
 
   const onSubmit = async (data: PostJobFormData) => {
     console.log(data);
@@ -124,7 +119,7 @@ export function PostJobForm() {
                   </SelectTrigger>
                   <SelectContent>
                     {Array.isArray(categories) && categories.length > 0 ? (
-                      categories.map((category: any) => (
+                      categories.map((category: Category) => (
                         <SelectItem key={category._id} value={category?.name}>
                           {category?.name}
                         </SelectItem>

@@ -42,7 +42,13 @@ export function LoginForm() {
       });
 
       if (res?.data?.success) {
-        dispatch(setUser({ data: res.data?.data?.accessToken }));
+        // Include the role in the token data for middleware to access
+        dispatch(setUser({ 
+          data: {
+            accessToken: res.data?.data?.accessToken,
+            role: res.data?.data?.role
+          }
+        }));
 
         const role = res?.data?.data?.role;
 

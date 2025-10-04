@@ -2,7 +2,12 @@
 import { Badge } from "@/components/ui/badge";
 import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
-import { Education, Profile, UserData, WorkExperience } from "@/types/profileTypes";
+import {
+  Education,
+  Profile,
+  UserData,
+  WorkExperience,
+} from "@/types/profileTypes";
 
 import { Building, Calendar, MapPin } from "lucide-react";
 
@@ -136,7 +141,7 @@ export function ApplicantResume({ data }: { data: UserData | undefined }) {
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Expartes</h3>
 
         {profileData?.expartes?.map((expert) => (
-          <Badge variant={"outline"} className="mx-0.5 text-md">
+          <Badge variant={"outline"} key={expert} className="mx-0.5 text-md">
             {expert}
           </Badge>
         ))}
@@ -147,14 +152,14 @@ export function ApplicantResume({ data }: { data: UserData | undefined }) {
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Skills</h3>
 
         {profileData?.skills?.map((skill) => (
-          <Badge variant={"outline"} className="mx-0.5 text-md">
+          <Badge variant={"outline"} key={skill} className="mx-0.5 text-md">
             {skill}
           </Badge>
         ))}
       </div>
 
       {/* skills Section */}
-      {profileData?.languages?.length > 0 && (
+      {profileData?.languages && profileData.languages.length > 0 && (
         <div className="">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Languages
@@ -183,7 +188,6 @@ export function ApplicantResume({ data }: { data: UserData | undefined }) {
           </div>
         </div>
       )}
-      
     </div>
   );
 }
