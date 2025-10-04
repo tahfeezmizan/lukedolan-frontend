@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Save, Trash2, Edit } from "lucide-react";
-import { toast } from "sonner";
 import {
   useGetMeQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/userApi";
-import { ApiError } from "@/types/types";
+import { ApiError, Education } from "@/types/types";
+import { Edit, Plus, Save, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface EducationData {
   degreeTitle: string;
@@ -49,7 +51,7 @@ export function EducationForm() {
       if (userData?.profile?.education) {
         if (Array.isArray(userData?.profile?.education)) {
           const formattedEducations = userData?.profile?.education.map(
-            (edu: any) => ({
+            (edu: Education) => ({
               degreeTitle: edu.degreeTitle?.toString() || "",
               major: edu.major?.toString() || "",
               instituteName: edu.instituteName?.toString() || "",

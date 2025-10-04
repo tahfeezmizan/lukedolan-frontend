@@ -81,7 +81,7 @@ export interface AppliedJob {
     companyName: string;
   };
   companyName: string;
-  createdAt: Date;
+  createdAt: string;
   updatedAt: string;
   email: string;
   experience: number;
@@ -120,7 +120,7 @@ export type UserData = {
   status: "active" | "restricted" | string;
   companyName?: string | null;
   subscribe?: boolean;
-  createdAt: string;
+  createdAt: string | Date;
   updatedAt: string;
   profile?: string;
   roleProfile?: string;
@@ -199,8 +199,8 @@ export type Category = {
   name: string;
   description: string;
   status: boolean;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string | Date; // ISO date string
+  updatedAt: string | Date; // ISO date string
   __v: number;
 };
 

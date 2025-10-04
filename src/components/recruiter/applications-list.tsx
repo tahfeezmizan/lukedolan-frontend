@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format-date";
 import { useGetApplicationQuery } from "@/redux/features/application";
+import { AppliedJob } from "@/types/types";
 import Link from "next/link";
 
 export function ApplicationsList() {
@@ -36,7 +37,7 @@ export function ApplicationsList() {
               </tr>
             </thead>
             <tbody>
-              {appliedUser?.map((job: any) => (
+              {appliedUser?.map((job: AppliedJob) => (
                 <tr
                   key={job?._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"

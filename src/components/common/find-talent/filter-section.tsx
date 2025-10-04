@@ -60,7 +60,7 @@ export default function FilterSection() {
 
   // Transform API data to match TalentCards expected format
   const transformedTalents = useMemo(() => {
-    return talents.map((talent: any) => ({
+    return talents.map((talent: TalentProps) => ({
       id: talent._id,
       name:
         `${talent.firstName || ""} ${talent.lastName || ""}`.trim() ||
@@ -106,7 +106,7 @@ export default function FilterSection() {
     const pages = [];
     const maxVisiblePages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(
+    const endPage = Math.min(
       pagination.totalPage,
       startPage + maxVisiblePages - 1
     );
