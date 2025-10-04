@@ -27,7 +27,7 @@ export function HeroSection() {
         </p>
 
         <div className=" flex flex-col items-center justify-center sm:flex-row gap-4">
-          <Link href={"/job"}>
+          <Link href={"/find-talent"}>
             <Button
               size="lg"
               className="bg-green-900 hover:bg-green-800 text-white px-8 py-4 text-lg font-medium rounded-lg"
@@ -35,7 +35,7 @@ export function HeroSection() {
               Hire now
             </Button>
           </Link>
-          <Link href={"/"}>
+          <Link href={"/job"}>
             <Button
               size="lg"
               variant="secondary"

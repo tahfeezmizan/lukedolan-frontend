@@ -2,13 +2,13 @@
 import { Badge } from "@/components/ui/badge";
 import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
-import { Education, Profile, WorkExperience } from "@/types/profileTypes";
+import { Education, Profile, UserData, WorkExperience } from "@/types/profileTypes";
 
 import { Building, Calendar, MapPin } from "lucide-react";
 
 // Type definitions based on your data structure
 
-export function ApplicantResume({ data }: { data: any }) {
+export function ApplicantResume({ data }: { data: UserData | undefined }) {
   console.log("Parent Data", data);
   const profileData: Profile | undefined = data?.profile;
 
