@@ -1,7 +1,6 @@
 "use client";
-
-import companyLogo from "@/assets/company-logo (1).png";
 import TimeAgo from "@/lib/time-ago";
+import { getImageUrl } from "@/lib/utils";
 import { PostJobFormData } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,16 +8,18 @@ import Link from "next/link";
 export default function RecentJobCard({ job }: { job: PostJobFormData }) {
   const { _id, title, startDate, experianceLabel, user } = job || {};
 
-  const { companyName } = user?.profile || {};
+  const { companyName, companyLogo } = user?.profile || {};
+
+  console.log(companyLogo);
 
   return (
     <div key={_id} className="rounded-lg overflow-hidden bg-white  p-5">
       <div className="flex justify-between items-start mb-8">
         <Image
-          src={companyLogo}
+          src={getImageUrl(companyLogo)}
           alt={title}
-          width={80}
-          height={80}
+          width={1000}
+          height={1000}
           className="w-20 h-20 border p-2 rounded"
         />
         <div className="space-y-1">

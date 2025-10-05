@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon } from "lucide-react";
 import { useUpdateProfileMutation } from "@/redux/features/userApi";
+import { toast } from "sonner";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/navigation";
 
 interface CompanyFormData {
   companyName: string;
@@ -47,6 +50,7 @@ export function CompanyProfileForm() {
     },
   });
 
+  const router = useRouter();
   const [updateProfile] = useUpdateProfileMutation();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +80,20 @@ export function CompanyProfileForm() {
       }
 
       const res = await updateProfile({ body: formData });
-      console.log(res);
+
+      if (res?.data?.success) {
+        toast.success("Company profile updated successfully");
+        router.push("/recruiter/company");
+      } else if (res?.error) {
+        // ✅ type narrowing for FetchBaseQueryError
+        const err = res.error as FetchBaseQueryError;
+        const errorMessage =
+          (err.data as { message?: string })?.message || "Something went wrong";
+
+        toast.error(errorMessage);
+      }
+
+      console.log(res?.data?.success);
     } catch (error) {
       console.log(error);
     }
