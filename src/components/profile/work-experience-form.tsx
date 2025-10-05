@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Save, Trash2, Edit } from "lucide-react";
-import { toast } from "sonner";
 import {
   useGetMeQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/userApi";
+import { ApiError } from "@/types/types";
+import { Edit, Plus, Save, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface WorkExperienceData {
   jobTitle: string;
@@ -42,7 +45,7 @@ export function WorkExperienceForm() {
     data: userData,
     refetch,
     isLoading: isUserLoading,
-  } = useGetMeQuery('');
+  } = useGetMeQuery("");
 
   useEffect(() => {
     console.log("Full user data received:", userData);
@@ -57,15 +60,17 @@ export function WorkExperienceForm() {
         if (Array.isArray(userData?.profile?.workExperience)) {
           // Convert any numeric values to strings for form compatibility
           const formattedWorkExperiences =
-            userData?.profile?.workExperience.map((exp: any) => ({
-              jobTitle: exp.jobTitle?.toString() || "",
-              companyName: exp.companyName?.toString() || "",
-              location: exp.location?.toString() || "",
-              employmentType: exp.employmentType?.toString() || "",
-              startDate: exp.startDate?.toString() || "",
-              endDate: exp.endDate?.toString() || "",
-              experience: exp.experience?.toString() || "",
-            }));
+            userData?.profile?.workExperience.map(
+              (exp: WorkExperienceData) => ({
+                jobTitle: exp.jobTitle?.toString() || "",
+                companyName: exp.companyName?.toString() || "",
+                location: exp.location?.toString() || "",
+                employmentType: exp.employmentType?.toString() || "",
+                startDate: exp.startDate?.toString() || "",
+                endDate: exp.endDate?.toString() || "",
+                experience: exp.experience?.toString() || "",
+              })
+            );
 
           console.log(
             "Formatted work experiences for state:",
@@ -234,7 +239,7 @@ export function WorkExperienceForm() {
 
       // Refetch to ensure data consistency
       await refetch();
-    } catch (error: any) {
+    } catch (error: ApiError | any) {
       console.error("Add/Update API error:", error);
 
       // Revert local state if API call failed

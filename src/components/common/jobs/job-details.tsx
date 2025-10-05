@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CheckCircleIcon } from "lucide-react";
+import { JobData } from "@/types/types";
 // app/lib/jobData.ts
 interface JobInfo {
   companyProfile: string;
@@ -36,7 +37,9 @@ export const jobInfo: JobInfo = {
   ],
 };
 
-export default function JobDetail({data}: {data: any}) {
+export default function JobDetail({ data }: { data: JobData }) {
+
+  console.log("JobDetail", data)
   return (
     <aside className="w-full  bg-white p-8 rounded-lg">
       <div className="space-y-8">

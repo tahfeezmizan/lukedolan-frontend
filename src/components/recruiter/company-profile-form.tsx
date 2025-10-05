@@ -30,7 +30,7 @@ export function CompanyProfileForm() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: {},
   } = useForm<CompanyFormData>({
     defaultValues: {
       companyName: "",

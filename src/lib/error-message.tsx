@@ -12,8 +12,8 @@ export default function ErrorMessage({ title }: ErrorMessageProps) {
           Oops! Something went wrong.
         </div>
         <p className="text-gray-400">
-          We couldn't load the {title}. Please refresh the page or try again
-          later.
+          We couldn&apos;t load the {title}. Please refresh the page or try
+          again later.
         </p>
       </div>
     </section>

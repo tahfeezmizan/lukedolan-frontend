@@ -1,5 +1,5 @@
 import { getImageUrl } from "@/lib/utils";
-import { TalentProps } from "@/types/types";
+import { TalentProps, WorkExperience } from "@/types/types";
 import {
   Briefcase,
   BriefcaseBusiness,
@@ -135,7 +135,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
             {/* Experience */}
             <div className="flex flex-col gap-4">
               {safeWorkExperience.length > 0 ? (
-                safeWorkExperience.map((exp: any, index: number) => (
+                safeWorkExperience.map((exp: WorkExperience, index: number) => (
                   <div key={index} className="flex items-center gap-4">
                     <span className="text-gray-800">
                       <span className="flex gap-2 font-medium">

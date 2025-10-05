@@ -3,23 +3,8 @@
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import Image from "next/image";
-import { useState } from "react";
 
 export default function CompanyProfile() {
-  const [responsibilities, setResponsibilities] = useState([
-    "Community engagement to ensure that is supported and actively represented online",
-    "Focus on social media content development and publication",
-    "Marketing and strategy support",
-    "Stay on top of trends on social media platforms, and suggest content ideas to the team",
-    "Engage with online communities",
-  ]);
-
-  setResponsibilities;
-
-  // const handleSave = () => {
-  //   // Handle save functionality
-  //   console.log("Saving company profile...");
-  // };
 
   const { data } = useGetMeQuery(undefined);
   const profileData = data?.profile;

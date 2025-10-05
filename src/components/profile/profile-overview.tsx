@@ -6,8 +6,7 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import {
   Education,
   Profile,
-  UserData,
-  WorkExperience,
+  WorkExperience
 } from "@/types/profileTypes";
 import { Building, Calendar, CircleUserRound, MapPin } from "lucide-react";
 import Image from "next/image";
@@ -174,7 +173,11 @@ export function ProfileOverview() {
             </h3>
 
             {profileData?.expartes?.map((expert) => (
-              <Badge variant={"outline"} className="mx-0.5 text-md">
+              <Badge
+                variant={"outline"}
+                key={expert}
+                className="mx-0.5 text-md"
+              >
                 {expert}
               </Badge>
             ))}
@@ -185,7 +188,7 @@ export function ProfileOverview() {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Skills</h3>
 
             {profileData?.skills?.map((skill) => (
-              <Badge variant={"outline"} className="mx-0.5 text-md">
+              <Badge variant={"outline"} key={skill} className="mx-0.5 text-md">
                 {skill}
               </Badge>
             ))}

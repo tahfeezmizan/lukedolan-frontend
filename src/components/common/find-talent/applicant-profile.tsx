@@ -6,12 +6,8 @@ import { Button } from "@/components/ui/button";
 import { getImageUrl } from "@/lib/utils";
 import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
 import {
-  Briefcase,
   CircleUserRound,
-  Download,
-  GraduationCap,
-  Mail,
-  User,
+  Mail
 } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -20,9 +16,6 @@ import { ApplicantResume } from "./applicant-resume";
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
   const { data: talent } = useGetSingleTalentQuery(id);
-
-  const baseUrl = process.env.NEXT_PUBLIC_BASEURL;
-  const resumeUrl = `${baseUrl}/${talent?.profile?.resume}`;
 
   console.log("talent", talent);
 
@@ -141,18 +134,18 @@ export default function ApplicantProfile() {
               <ul className="space-y-2">
                 {talent?.profile?.skills && talent?.profile?.skills?.length > 0
                   ? talent?.profile?.skills?.map((skill: string) => (
-                      <Badge variant={"outline"} className="mx-0.5">
+                      <Badge variant={"outline"} key={skill} className="mx-0.5">
                         {skill}
                       </Badge>
                     ))
-                  : "NO Expectations"}
+                  : "No Expectations"}
               </ul>
             </div>
           </div>
 
           {/* Right Column - Resume/CV */}
           <div className="col-span-2 space-y-6 bg-white p-8 rounded-lg overflow-hidden">
-            <ApplicantResume data={talent} />
+            <ApplicantResume data={talent} key={talent?._id} />
           </div>
         </div>
       </div>

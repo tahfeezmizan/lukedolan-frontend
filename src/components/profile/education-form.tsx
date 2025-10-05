@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Save, Trash2, Edit } from "lucide-react";
-import { toast } from "sonner";
 import {
   useGetMeQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/userApi";
+import { ApiError, Education } from "@/types/types";
+import { Edit, Plus, Save, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface EducationData {
   degreeTitle: string;
@@ -36,18 +39,19 @@ export function EducationForm() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const { data: userData, refetch, isLoading: isUserLoading, } = useGetMeQuery('');
-
-       
+  const {
+    data: userData,
+    refetch,
+    isLoading: isUserLoading,
+  } = useGetMeQuery("");
 
   useEffect(() => {
-    console.log("Full user data received:", userData); 
+    console.log("Full user data received:", userData);
     if (userData) {
       if (userData?.profile?.education) {
-
         if (Array.isArray(userData?.profile?.education)) {
           const formattedEducations = userData?.profile?.education.map(
-            (edu: any) => ({
+            (edu: Education) => ({
               degreeTitle: edu.degreeTitle?.toString() || "",
               major: edu.major?.toString() || "",
               instituteName: edu.instituteName?.toString() || "",
@@ -134,96 +138,93 @@ export function EducationForm() {
     setFormData(educations[index]);
     setEditingIndex(index);
   };
- const handleDeleteEducation = async (index: number) => {
-   console.log("handleDeleteEducation called with index:", index);
-   console.log("Current educations length:", educations.length);
+  const handleDeleteEducation = async (index: number) => {
+    console.log("handleDeleteEducation called with index:", index);
+    console.log("Current educations length:", educations.length);
 
-   if (index < 0 || index >= educations.length) {
-     console.error("Invalid index for deletion:", index);
-     toast.error("Invalid education selected for deletion");
-     return;
-   }
+    if (index < 0 || index >= educations.length) {
+      console.error("Invalid index for deletion:", index);
+      toast.error("Invalid education selected for deletion");
+      return;
+    }
 
-   const confirmed = window.confirm(
-     "Are you sure you want to delete this work experience?"
-   );
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this work experience?"
+    );
 
-   if (confirmed) {
-     try {
-       console.log("Proceeding with deletion...");
+    if (confirmed) {
+      try {
+        console.log("Proceeding with deletion...");
 
-       // Create new array without the item at index
-       const newEducations = [...educations];
-       newEducations.splice(index, 1);
+        // Create new array without the item at index
+        const newEducations = [...educations];
+        newEducations.splice(index, 1);
 
-       console.log("New educations after deletion:", newEducations);
+        console.log("New educations after deletion:", newEducations);
 
-       // Update local state first for immediate UI feedback
-       setEducations(educations);
+        // Update local state first for immediate UI feedback
+        setEducations(educations);
 
-       // Prepare data for API call
-       const educationsForAPI = newEducations.map((edu) => ({
-         degreeTitle: edu.degreeTitle,
-         major: edu.major,
-         instituteName: edu.instituteName,
-         cgpa: edu.cgpa,
-         scale: edu.scale,
-         yearOfPassing: edu.yearOfPassing,
-         duration: edu.duration,
-       }));
+        // Prepare data for API call
+        const educationsForAPI = newEducations.map((edu) => ({
+          degreeTitle: edu.degreeTitle,
+          major: edu.major,
+          instituteName: edu.instituteName,
+          cgpa: edu.cgpa,
+          scale: edu.scale,
+          yearOfPassing: edu.yearOfPassing,
+          duration: edu.duration,
+        }));
 
-       console.log(
-         "Sending updated educations to API:",
-         educationsForAPI
-       );
+        console.log("Sending updated educations to API:", educationsForAPI);
 
-       // Call API to update database
-       const response = await updateProfile({
-         body: { education: educationsForAPI },
-       }).unwrap();
+        // Call API to update database
+        const response = await updateProfile({
+          body: { education: educationsForAPI },
+        }).unwrap();
 
-       console.log("Delete API response:", response);
-       toast.success("Education deleted and saved to database!");
+        console.log("Delete API response:", response);
+        toast.success("Education deleted and saved to database!");
 
-       // Handle editing state
-       if (editingIndex === index) {
-         console.log("Was editing the deleted item, clearing form");
-         setEditingIndex(null);
-         setFormData({
-           degreeTitle: "",
-           major: "",
-           instituteName: "",
-           cgpa: "",
-           scale: "",
-           yearOfPassing: "",
-           duration: "",
-         });
-       } else if (editingIndex !== null && editingIndex > index) {
-         console.log(
-           "Adjusting editing index from",
-           editingIndex,
-           "to",
-           editingIndex - 1
-         );
-         setEditingIndex(editingIndex - 1);
-       }
+        // Handle editing state
+        if (editingIndex === index) {
+          console.log("Was editing the deleted item, clearing form");
+          setEditingIndex(null);
+          setFormData({
+            degreeTitle: "",
+            major: "",
+            instituteName: "",
+            cgpa: "",
+            scale: "",
+            yearOfPassing: "",
+            duration: "",
+          });
+        } else if (editingIndex !== null && editingIndex > index) {
+          console.log(
+            "Adjusting editing index from",
+            editingIndex,
+            "to",
+            editingIndex - 1
+          );
+          setEditingIndex(editingIndex - 1);
+        }
 
-       // Refetch to ensure data consistency
-       await refetch();
-     } catch (error: any) {
-       console.error("Delete API error:", error);
+        // Refetch to ensure data consistency
+        await refetch();
+      } catch (error: ApiError | any) {
+        console.error("Delete API error:", error);
 
-       // Revert local state if API call failed
-       setEducations(educations);
+        // Revert local state if API call failed
+        setEducations(educations);
 
-       let errorMessage = "Failed to delete education from database";
-       if (error?.data?.message) {
-         errorMessage = error.data.message;
-       }
-       toast.error(errorMessage);
-     }
-   }
- };
+        let errorMessage = "Failed to delete education from database";
+        if (error?.data?.message) {
+          errorMessage = error.data.message;
+        }
+        toast.error(errorMessage);
+      }
+    }
+  };
   // const handleDeleteEducation = (index: number) => {
   //   if (window.confirm("Are you sure you want to delete this education?")) {
   //     setEducations((prev) => prev.filter((_, i) => i !== index));
@@ -277,7 +278,7 @@ export function EducationForm() {
       // Force refetch to ensure we have the latest data
       const refreshedData = await refetch();
       console.log("Refreshed data after save:", refreshedData); // Debug log
-    } catch (error: any) {
+    } catch (error: ApiError | any) {
       toast.error(
         error?.data?.message || "Failed to save education information"
       );
@@ -538,8 +539,6 @@ export function EducationForm() {
           )}
         </div>
       )}
-
-     
     </div>
   );
 }

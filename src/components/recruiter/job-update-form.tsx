@@ -13,14 +13,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  useGetAllCategoryQuery,
-  useGetCategoryQuery,
+  useGetAllCategoryQuery
 } from "@/redux/features/categoryApi";
 import {
   useGetAllJobsQuery,
   useUpdateJobMutation,
 } from "@/redux/features/jobsApi";
-import { PostJobFormData } from "@/types/types";
+import { Category, JobData, PostJobFormData } from "@/types/types";
 import { Calendar } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -55,7 +54,7 @@ export function JobUpdateForm() {
   const { data: jobs } = useGetAllJobsQuery({});
   const [updateJob] = useUpdateJobMutation();
 
-  const job = jobs?.find((job: any) => job._id === id);
+  const job = jobs?.find((job: JobData) => job._id === id);
 
   useEffect(() => {
     if (job) {
@@ -144,7 +143,7 @@ export function JobUpdateForm() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories?.map((category: any) => (
+                    {categories?.map((category: Category) => (
                       <SelectItem key={category._id} value={category.name}>
                         {category.name}
                       </SelectItem>
