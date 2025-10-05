@@ -51,7 +51,7 @@ export default function TermsEditor() {
                 onChange={(newContent) => setTerms(newContent)}
                 config={{
                     readonly: false,
-                    height: 400,
+                    height: 600,
                     toolbarButtonSize: "middle",
                 }}
             />

@@ -1,7 +1,13 @@
 import React from "react";
 
-import { CheckCircleIcon } from "lucide-react";
-import { JobData } from "@/types/types";
+import {
+  CheckCircleIcon,
+  Locate,
+  LocationEdit,
+  Map,
+  MapPin,
+} from "lucide-react";
+import { JobData, PostJobFormData } from "@/types/types";
 // app/lib/jobData.ts
 interface JobInfo {
   companyProfile: string;
@@ -37,69 +43,59 @@ export const jobInfo: JobInfo = {
   ],
 };
 
-export default function JobDetail({ data }: { data: JobData }) {
+export default function JobDetail({ data }: { data: PostJobFormData }) {
+  const compnayData = data?.user?.profile;
 
-  console.log("JobDetail", data)
+  console.log("JobDetail", data);
+
   return (
     <aside className="w-full  bg-white p-8 rounded-lg">
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Company Profile */}
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
-            Company Profile
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            {jobInfo.companyProfile}
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900">{data?.title}</h2>
+          <div className="text-gray-600 leading-relaxed">
+            <span className="font-medium">{compnayData?.companyName}</span>{" "}
+            <span className=" flex items-center gap-0.5 ">
+              {" "}
+              <MapPin size={16} /> {data?.jobLocation}
+            </span>
+          </div>
         </section>
 
-        {/* Description */}
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
-          <p className="text-gray-600 leading-relaxed">{jobInfo.description}</p>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            Job Description
+          </h2>
+          <p className="text-gray-600 leading-relaxed">{data?.description}</p>
         </section>
 
-        {/* Responsibilities */}
         <section>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Responsibilities
           </h2>
-          <ul className="space-y-3">
-            {jobInfo.responsibilities.map((item, index) => (
+          <p className="text-gray-600 leading-relaxed">
+            {data?.responsibilities}
+          </p>
+          {/* <ul className="space-y-3">
+            {data?.responsibilities?.map((item, index) => (
               <li key={index} className="flex items-start">
                 <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
                 <span className="text-gray-600">{item}</span>
               </li>
             ))}
-          </ul>
+          </ul> */}
         </section>
 
-        {/* Who You Are */}
-        <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Who You Are</h2>
-          <ul className="space-y-3">
-            {jobInfo.whoYouAre.map((item, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-gray-600">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Nice-To-Haves */}
+        <hr />
+        {/* Description */}
         <section>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
-            Nice-To-Haves
+            Company Description
           </h2>
-          <ul className="space-y-3">
-            {jobInfo.niceToHaves.map((item, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-gray-600">{item}</span>
-              </li>
-            ))}
-          </ul>
+          <p className="text-gray-600 leading-relaxed">
+            {compnayData?.companyDescription}
+          </p>
         </section>
       </div>
     </aside>

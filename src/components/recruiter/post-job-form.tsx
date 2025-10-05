@@ -19,6 +19,8 @@ import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import JoditEditor from "jodit-react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export function PostJobForm() {
   const {
@@ -67,20 +69,33 @@ export function PostJobForm() {
         responsibilities: data.responsibilities,
       }).unwrap();
 
-      console.log(res);
+      console.log(res.data?.message);
 
       if (res.success) {
         toast.success("✅ Job Createed Sucessfully");
         route.push("/recruiter/jobs");
+      } else {
+        console.log(res.data?.message);
+        toast.error("❌ Job creation failed");
       }
     } catch (error) {
-      toast.error("❌ Job creation failed");
-      console.error("❌ Job creation failed:", error);
+      // ✅ Type the error properly
+      const err = error as FetchBaseQueryError & {
+        data?: { message?: string };
+      };
+
+      const errorMessage =
+        err?.data?.message ||
+        (typeof err.data === "string" ? err.data : undefined) ||
+        "❌ Job creation failed";
+
+      toast.error(errorMessage);
+      console.error("❌ Job creation failed:", err);
     }
   };
 
   return (
-    <div className="p-6 rounded-lg bg-white">
+    <div className="p-6 rounded-lg bg-white min-h-[600px]">
       <h2 className="text-3xl font-bold text-gray-900 mb-6">Post a new job</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
         {/* Job Title */}
@@ -338,7 +353,7 @@ export function PostJobForm() {
           )}
         </div>
 
-        {/* Job Responsibilities */}
+        {/* Job Responsibilities - FIXED */}
         <div className="space-y-2">
           <Label
             htmlFor="responsibilities"
@@ -346,13 +361,19 @@ export function PostJobForm() {
           >
             Job Responsibilities
           </Label>
-          <Textarea
-            id="responsibilities"
-            placeholder="Describe the Job responsibilities"
-            {...register("responsibilities", {
-              required: "Job responsibilities are required",
-            })}
-            className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+          <Controller
+            name="responsibilities"
+            control={control}
+            rules={{ required: "Job responsibilities are required" }}
+            render={({ field }) => (
+              <JoditEditor
+                value={field.value || ""}
+                onChange={(newContent) => field.onChange(newContent)}
+                config={{
+                  height: 250,
+                }}
+              />
+            )}
           />
           {errors.responsibilities && (
             <p className="text-red-500 text-sm">

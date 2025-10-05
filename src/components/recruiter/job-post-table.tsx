@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   useDeleteJobMutation,
-  useGetAllJobsQuery,
+  useGetSingleRecruiterJobQuery,
 } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
@@ -17,6 +17,7 @@ import TableLoader from "../shared/table-loader";
 import Link from "next/link";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useGetMeQuery } from "@/redux/features/userApi";
 
 const tableHeaders = [
   { key: "jobTitle", label: "Job Title" },
@@ -30,15 +31,20 @@ const tableHeaders = [
 
 export function JobPostTable() {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [deleteJob] = useDeleteJobMutation();
+  const limit = 10;
 
-  const { data, isLoading, error } = useGetAllJobsQuery({
+  const [deleteJob] = useDeleteJobMutation();
+  const { data: userData, isLoading: isUserLoading } = useGetMeQuery(undefined);
+
+  const { data, isLoading, error } = useGetSingleRecruiterJobQuery({
+    userId: userData?._id,
     page,
     limit,
   });
 
-  console.log(data);
+  const job = data?.jobs?.data;
+
+  console.log("job data", data);
 
   const handleDelete = (id: string | number | undefined) => {
     console.log(id);
@@ -94,9 +100,8 @@ export function JobPostTable() {
                   Error loading jobs. Please try again.
                 </td>
               </tr>
-            ) : data && data.length > 0 ? (
-              // Show data when available
-              data?.map((job: PostJobFormData) => (
+            ) : job?.length > 0 ? (
+              job?.map((job: PostJobFormData) => (
                 <tr
                   key={job._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
@@ -106,7 +111,7 @@ export function JobPostTable() {
                   </td>
                   <td className="py-4 px-6 text-gray-700">{job.jobLocation}</td>
                   <td className="py-4 px-6 text-gray-700">
-                    {job.minSalary} - {job.maxSalary}{" "}
+                    {job.minSalary} - {job.maxSalary}
                   </td>
                   <td className="py-4 px-6 text-gray-700">
                     {new Date(job.startDate).toLocaleDateString()}
@@ -137,7 +142,10 @@ export function JobPostTable() {
                             Edit Job
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(job._id)} className="text-red-700">
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(job._id)}
+                          className="text-red-700"
+                        >
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -146,7 +154,6 @@ export function JobPostTable() {
                 </tr>
               ))
             ) : (
-              // Show empty state when no data is available
               <tr>
                 <td colSpan={7} className="py-8 px-6 text-center text-gray-500">
                   No jobs found.

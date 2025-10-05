@@ -1,18 +1,23 @@
 "use client";
 
 import type React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon } from "lucide-react";
-import { useUpdateProfileMutation } from "@/redux/features/userApi";
+import {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+} from "@/redux/features/userApi";
 import { toast } from "sonner";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 
 interface CompanyFormData {
   companyName: string;
@@ -29,12 +34,7 @@ interface CompanyFormData {
 }
 
 export function CompanyProfileForm() {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: {},
-  } = useForm<CompanyFormData>({
+  const { register, handleSubmit, setValue, reset } = useForm<CompanyFormData>({
     defaultValues: {
       companyName: "",
       companyDescription: "",
@@ -52,21 +52,41 @@ export function CompanyProfileForm() {
 
   const router = useRouter();
   const [updateProfile] = useUpdateProfileMutation();
+  const { data } = useGetMeQuery(undefined);
+  const profileData = data?.profile;
+
+  // ✅ Pre-fill the form when data is available
+  useEffect(() => {
+    if (profileData) {
+      reset({
+        companyName: profileData.companyName || "",
+        companyDescription: profileData.companyDescription || "",
+        companyEmail: profileData.companyEmail || "",
+        phone: profileData.phone || "",
+        companyWebsite: profileData.companyWebsite || "",
+        location: profileData.location || "",
+        linkedinProfile: profileData.linkedinProfile || "",
+        twitterProfile: profileData.twitterProfile || "",
+        facebookProfile: profileData.facebookProfile || "",
+        instagramProfile: profileData.instagramProfile || "",
+        companyLogo: null,
+      });
+    }
+  }, [profileData, reset]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    console.log(file);
     setValue("companyLogo", file);
   };
 
   const onSubmit = async (data: CompanyFormData) => {
+    console.log("Form DAta",data);
     try {
       const formData = new FormData();
 
-      // Append all fields to FormData
       formData.append("companyName", data.companyName);
       formData.append("companyDescription", data.companyDescription);
-      formData.append("email", data.companyEmail);
+      formData.append("companyEmail", data.companyEmail);
       formData.append("phone", data.phone);
       formData.append("companyWebsite", data.companyWebsite);
       formData.append("location", data.location);
@@ -74,7 +94,7 @@ export function CompanyProfileForm() {
       formData.append("twitterProfile", data.twitterProfile);
       formData.append("facebookProfile", data.facebookProfile);
       formData.append("instagramProfile", data.instagramProfile);
-      console.log(data.companyLogo);
+
       if (data.companyLogo) {
         formData.append("companyLogo", data.companyLogo);
       }
@@ -82,18 +102,15 @@ export function CompanyProfileForm() {
       const res = await updateProfile({ body: formData });
 
       if (res?.data?.success) {
+        console.log(res);
         toast.success("Company profile updated successfully");
-        router.push("/recruiter/company");
+        // router.push("/recruiter/company");
       } else if (res?.error) {
-        // ✅ type narrowing for FetchBaseQueryError
         const err = res.error as FetchBaseQueryError;
         const errorMessage =
           (err.data as { message?: string })?.message || "Something went wrong";
-
         toast.error(errorMessage);
       }
-
-      console.log(res?.data?.success);
     } catch (error) {
       console.log(error);
     }
@@ -114,28 +131,42 @@ export function CompanyProfileForm() {
           <Label className="text-lg font-medium text-gray-90">
             Company Logo
           </Label>
-          <Card className="border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors">
-            <div className="text-center">
-              <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <div className="mt-4">
-                <label htmlFor="companyLogo" className="cursor-pointer">
-                  <span className="text-blue-600 hover:text-blue-500">
-                    Click to replace
-                  </span>
-                  <span className="text-gray-600"> or drag and drop</span>
-                </label>
-                <input
-                  id="companyLogo"
-                  type="file"
-                  className="hidden"
-                  accept=".svg,.png,.jpg,.jpeg,.gif"
-                  onChange={handleFileChange}
+          <Card className="border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors p-4 flex flex-col items-center justify-center">
+            {profileData?.companyLogo ? (
+              <div className="mb-4">
+                <Image
+                  src={
+                    profileData?.companyLogo.startsWith("http")
+                      ? profileData?.companyLogo
+                      : getImageUrl(profileData?.companyLogo)
+                  }
+                  alt="Company Logo"
+                  width={120}
+                  height={120}
+                  className="rounded-md object-cover"
                 />
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                SVG, PNG, JPG or GIF (max. 400 x 400px)
-              </p>
+            ) : (
+              <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+            )}
+            <div className="mt-2 text-center">
+              <label htmlFor="companyLogo" className="cursor-pointer">
+                <span className="text-blue-600 hover:text-blue-500">
+                  Click to replace
+                </span>
+                <span className="text-gray-600"> or drag and drop</span>
+              </label>
+              <input
+                id="companyLogo"
+                type="file"
+                className="hidden"
+                accept=".svg,.png,.jpg,.jpeg,.gif"
+                onChange={handleFileChange}
+              />
             </div>
+            <p className="text-sm text-gray-500 mt-2">
+              SVG, PNG, JPG or GIF (max. 400 x 400px)
+            </p>
           </Card>
         </div>
 
@@ -155,7 +186,7 @@ export function CompanyProfileForm() {
           />
         </div>
 
-        {/* Company companyDescription */}
+        {/* Company Description */}
         <div className="space-y-2">
           <Label
             htmlFor="companyDescription"
@@ -186,7 +217,7 @@ export function CompanyProfileForm() {
               </Label>
               <Input
                 id="companyEmail"
-                type="companyEmail"
+                type="email"
                 placeholder="example@gmail.com"
                 {...register("companyEmail")}
                 className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
