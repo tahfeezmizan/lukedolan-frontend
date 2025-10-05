@@ -3,18 +3,13 @@
 import heroBg from "@/assets/talent-hero-img.png";
 
 export default function FindTalentHero() {
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   console.log("[v0] Newsletter subscription:", search);
-  //   // Handle newsletter subscription logic here
-  //   setSearch("");
-  // };
+
 
   return (
     <section
       className="bg-[#414652] pb-20 px-4  pt-40 "
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg.src})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
