@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +20,10 @@ import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import JoditEditor from "jodit-react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
+// ✅ FIXED: dynamically load JoditEditor with no SSR
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 export function PostJobForm() {
   const {
@@ -91,6 +94,9 @@ export function PostJobForm() {
 
       toast.error(errorMessage);
       console.error("❌ Job creation failed:", err);
+
+      // ✅ Redirect user if an error occurs
+      route.push("/recruiter/company");
     }
   };
 

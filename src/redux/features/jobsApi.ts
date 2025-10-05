@@ -55,6 +55,7 @@ const jobsApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Jobs"],
     }),
 
     updateJob: builder.mutation({

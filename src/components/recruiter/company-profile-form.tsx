@@ -80,7 +80,7 @@ export function CompanyProfileForm() {
   };
 
   const onSubmit = async (data: CompanyFormData) => {
-    console.log("Form DAta",data);
+    console.log("Form DAta", data);
     try {
       const formData = new FormData();
 
@@ -104,7 +104,7 @@ export function CompanyProfileForm() {
       if (res?.data?.success) {
         console.log(res);
         toast.success("Company profile updated successfully");
-        // router.push("/recruiter/company");
+        router.push("/recruiter/company");
       } else if (res?.error) {
         const err = res.error as FetchBaseQueryError;
         const errorMessage =
