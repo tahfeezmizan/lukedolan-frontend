@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-// import heroBg from "../../../../public/banner-img.png";
 import heroBg from "@/assets/hero-bg.png";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,7 +8,7 @@ export function HeroSection() {
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg.src})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
