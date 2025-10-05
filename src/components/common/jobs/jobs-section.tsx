@@ -212,9 +212,7 @@ export default function JobsSection() {
   };
 
   if (error) {
-    return (
-      <ErrorMessage title="jobs" />
-    );
+    return <ErrorMessage title="jobs" />;
   }
 
   return (
@@ -227,7 +225,7 @@ export default function JobsSection() {
           <p className="text-[#515B6F] text-base">
             Find your next career at Roqit
           </p>
-          <Image src={SVGImage.src} alt="rocket image" width={42} height={42} />
+          <Image src={SVGImage} alt="rocket image" width={42} height={42} />
         </div>
       </div>
 

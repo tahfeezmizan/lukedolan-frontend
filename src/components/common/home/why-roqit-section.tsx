@@ -55,7 +55,7 @@ export function WhyRoqitSection() {
 
         <div className="flex-1 ">
           <Image
-            src={image.src}
+            src={image}
             width={632}
             height={556}
             className="w-full lg:w-[632px] h-full lg:h-[556px] mr-0"
