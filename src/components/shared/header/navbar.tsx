@@ -40,8 +40,6 @@ interface User {
 }
 
 export function Navbar() {
-
-  
   const { data: user } = useGetMeQuery(undefined);
   const activeRole = user?.role;
   console.log("getMe data:", user);
@@ -180,7 +178,9 @@ export function Navbar() {
             {/* Desktop Right Section - Based on User Role */}
             <div className="hidden lg:flex items-center space-x-4">
               {user &&
-              (activeRole === "applicant" || activeRole === "recruiter") ? (
+              (activeRole === "applicant" ||
+                activeRole === "recruiter" ||
+                activeRole === "admin") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -282,6 +282,38 @@ export function Navbar() {
                         </>
                       )}
 
+                      {activeRole === "admin" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/jobs"
+                              className="flex items-center space-x-2"
+                            >
+                              <Plus className="h-4 w-4" />
+                              <span>All Jobs</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/users"
+                              className="flex items-center space-x-2"
+                            >
+                              <FileText className="h-4 w-4" />
+                              <span>All Users</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
                       <DropdownMenuItem
                         onClick={handleLogout}
                         className="flex items-center space-x-2"
@@ -322,7 +354,9 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center">
               {user &&
-              (activeRole === "applicant" || activeRole === "recruiter") ? (
+              (activeRole === "applicant" ||
+                activeRole === "recruiter" ||
+                activeRole === "admin") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -414,6 +448,38 @@ export function Navbar() {
                             >
                               <FileText className="h-4 w-4" />
                               <span>Job List</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
+                      {activeRole === "admin" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/jobs"
+                              className="flex items-center space-x-2"
+                            >
+                              <Plus className="h-4 w-4" />
+                              <span>All Jobs</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/users"
+                              className="flex items-center space-x-2"
+                            >
+                              <FileText className="h-4 w-4" />
+                              <span>All Users</span>
                             </Link>
                           </DropdownMenuItem>
                         </>
