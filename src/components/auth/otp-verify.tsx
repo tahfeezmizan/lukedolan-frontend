@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   useResendOTPMutation,
   useVerifyUserMutation,
 } from "@/redux/features/authApi";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
-import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slice/userSlice";
-import { ApiError } from "@/types/types";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -70,22 +69,35 @@ export default function OtpVerify() {
 
     try {
       const res = await verifyUser({
-        email: email,
+        email,
         oneTimeCode: otpValue,
       });
 
-      console.log("OTP Verify", res?.data?.message);
+      const responseData = res?.data;
 
-      if (res?.data?.success) {
-        dispatch(setUser({ data: res.data?.data?.accessToken }));
+      console.log("OTP Verify:", responseData);
+
+      if (responseData?.data?.token) {
+        const token = responseData.data.token;
+        console.log("Token:::::::", token);
+        // ✅ Forgot password flow
+        toast.success(
+          responseData?.message || "OTP verified, please reset your password"
+        );
+        route.push(`/set-new-password?token=${token}`);
+      } else if (responseData?.success) {
+        // ✅ Normal login flow
+        dispatch(setUser({ data: responseData?.data?.accessToken }));
         toast.success("OTP verification successful");
         route.push("/");
       } else {
-        const err = res.error as ApiError;
+        // ❌ Error or unexpected
+        const err = (res as any)?.error;
         toast.error(err?.data?.message || "Something went wrong");
       }
     } catch (error) {
-      console.log(error);
+      console.error("OTP Verify Error:", error);
+      toast.error("Unexpected error occurred");
     }
   };
 
@@ -101,9 +113,9 @@ export default function OtpVerify() {
         authType: authType,
       });
       if (res?.data?.success === true) {
-        route.push("/");
+        console.log(res);
+        toast.success("OTP resent successfully");
       }
-      console.log(res);
     } catch (error) {
       console.log(error);
     }

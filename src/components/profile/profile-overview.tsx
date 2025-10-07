@@ -3,11 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
-import {
-  Education,
-  Profile,
-  WorkExperience
-} from "@/types/profileTypes";
+import { Education, Profile, WorkExperience } from "@/types/profileTypes";
 import { Building, Calendar, CircleUserRound, MapPin } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
@@ -71,9 +67,9 @@ export function ProfileOverview() {
             </div>
 
             <div className="text-right text-sm text-gray-600">
-              <p>{`${profileData?.city}, ${profileData?.country}`}</p>
-              <p>{userData?.email}</p>
-              <p>{profileData?.mobile}</p>
+              <p>{`${profileData?.city}, ${profileData?.country}` || "UK"}</p>
+              <p>{userData?.email || "goroqit@gmail.com"}</p>
+              <p>{profileData?.mobile || "+447362342247"}</p>
             </div>
           </div>
 
@@ -265,23 +261,25 @@ export function ProfileOverview() {
           </div>
 
           {/* Resume Section (if available) */}
-          {profileData?.resume && (
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Resume
-              </h3>
-              <div className="flex items-center gap-2">
-                <a
-                  href={getImageUrl(profileData?.resume)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 font-medium text-sm underline"
-                >
-                  View Resume
-                </a>
+          <div className="">
+            {profileData?.resume && (
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Resume
+                </h3>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={getImageUrl(profileData?.resume)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 font-medium text-sm underline"
+                  >
+                    View Resume
+                  </a>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

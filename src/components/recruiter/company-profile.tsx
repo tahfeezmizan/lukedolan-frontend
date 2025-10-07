@@ -5,11 +5,10 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import Image from "next/image";
 
 export default function CompanyProfile() {
-
   const { data } = useGetMeQuery(undefined);
   const profileData = data?.profile;
 
-  console.log("Active", profileData);
+  // console.log("Active", profileData);
   return (
     <div className="bg-white rounded-lg shadow-sm p-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Company Profile</h1>
@@ -27,8 +26,11 @@ export default function CompanyProfile() {
 
       {/* Company Name */}
       <div className="mb-8 space-y-1">
-        <h3 className="text-xl font-semibold">Company Name</h3>
-        <p className="text-lg ">Hair Stylist</p>
+        <h3 className="text-base">Company Name</h3>
+        <p className="text-lg font-semibold">{profileData?.companyName}</p>
+        <p className="text-lg font-semibold">
+          {profileData?.companyEmail || "Email not available"}
+        </p>
       </div>
 
       {/* Description */}
@@ -36,7 +38,7 @@ export default function CompanyProfile() {
         <h3 className="block text-xl font-semibold text-gray-900 mb-3">
           Description
         </h3>
-        <p>{profileData?.companyDescription}</p>
+        <p>{profileData?.companyDescription || "Description not update"}</p>
       </div>
 
       {/* Responsibilities */}

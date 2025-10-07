@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, getImageUrl } from "@/lib/utils";
+import { cn, getAuthData, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {
@@ -40,11 +40,8 @@ interface User {
 }
 
 export function Navbar() {
-
-  
   const { data: user } = useGetMeQuery(undefined);
   const activeRole = user?.role;
-  console.log("getMe data:", user);
 
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -62,8 +59,6 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Mock user state - replace with your actual auth logic
 
   // Navigation links based on user role
   const getNavigationLinks = (userRole: UserRole) => {
@@ -104,7 +99,6 @@ export function Navbar() {
     console.log("User logged out");
   };
 
-  // Mock functions for testing - replace with your actual navigation logic
   const handleMessage = () => {
     console.log("Message clicked");
   };
@@ -180,7 +174,9 @@ export function Navbar() {
             {/* Desktop Right Section - Based on User Role */}
             <div className="hidden lg:flex items-center space-x-4">
               {user &&
-              (activeRole === "applicant" || activeRole === "recruiter") ? (
+              (activeRole === "applicant" ||
+                activeRole === "recruiter" ||
+                activeRole === "admin") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -282,6 +278,38 @@ export function Navbar() {
                         </>
                       )}
 
+                      {activeRole === "admin" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/jobs"
+                              className="flex items-center space-x-2"
+                            >
+                              <Plus className="h-4 w-4" />
+                              <span>All Jobs</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/users"
+                              className="flex items-center space-x-2"
+                            >
+                              <FileText className="h-4 w-4" />
+                              <span>All Users</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
                       <DropdownMenuItem
                         onClick={handleLogout}
                         className="flex items-center space-x-2"
@@ -322,7 +350,9 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center">
               {user &&
-              (activeRole === "applicant" || activeRole === "recruiter") ? (
+              (activeRole === "applicant" ||
+                activeRole === "recruiter" ||
+                activeRole === "admin") ? (
                 // Authenticated Users (Applicant or Recruiter)
                 <>
                   {/* Message Icon */}
@@ -414,6 +444,38 @@ export function Navbar() {
                             >
                               <FileText className="h-4 w-4" />
                               <span>Job List</span>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
+                      {activeRole === "admin" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin"
+                              className="flex items-center space-x-2"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              <span>Dashboard</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/jobs"
+                              className="flex items-center space-x-2"
+                            >
+                              <Plus className="h-4 w-4" />
+                              <span>All Jobs</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/admin/users"
+                              className="flex items-center space-x-2"
+                            >
+                              <FileText className="h-4 w-4" />
+                              <span>All Users</span>
                             </Link>
                           </DropdownMenuItem>
                         </>

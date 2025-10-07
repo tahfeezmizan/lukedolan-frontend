@@ -158,6 +158,9 @@ export interface PostJobFormData {
       _id: string;
       companyName: string;
       companyLogo: string | null;
+      location: string;
+      companyEmail: string;
+      companyDescription: string;
     } | null;
     role: string;
     roleProfile: string;

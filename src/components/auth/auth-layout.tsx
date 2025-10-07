@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import authImg from "@/assets/auth-layout-img.jpg";
+import authImg from "@/assets/auth-img.png";
 
 interface AuthLayoutProps {
   children: ReactNode;

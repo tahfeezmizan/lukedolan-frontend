@@ -33,6 +33,7 @@ export const planApi = baseApi.injectEndpoints({
         // GET all plans
         getPlans: builder.query<PlanResponse, void>({
             query: () => ({ url: "/plan", method: "GET" }),
+             providesTags: ["Plan"],
             transformResponse: (response: any) => response?.data ?? [],
         }),
 

@@ -219,9 +219,8 @@ export default function Subscription() {
                         </div>
 
                         <div className="flex justify-end gap-2 mt-4">
-                            <Button variant="outline" onClick={() => {}}>
-                                Cancel
-                            </Button>
+                          <Button variant="outline" onClick={() => setIsCreateModalOpen(false)}>Cancel</Button>
+
                             <Button className="bg-green-900 hover:bg-green-800" onClick={handleCreatePlan}>
                                 Create
                             </Button>

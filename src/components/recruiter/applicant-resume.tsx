@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import resumeSample from "@/assets/resume.jpg";
-import applicantImage from "@/assets/applicent-image.png";
+import applicantImage from "@/assets/discover-section-img (1).png";
 import { Button } from "../ui/button";
 import { Mail, MessageCircle } from "lucide-react";
 
