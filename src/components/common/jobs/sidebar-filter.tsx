@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -37,7 +37,6 @@ interface SidebarFilterProps {
 
 export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
   const { data: categories } = useGetCategoryQuery({});
-
   const categoryNames =
     categories?.data?.data?.map((category: Category) => category.name) || [];
 
@@ -55,11 +54,12 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
     salaryRange: [0, 100000],
   });
 
-  // Debounced filter change handler
-  const debouncedFilterChange = useCallback(
-    debounce((filters: FilterData) => {
-      onFiltersChange(filters);
-    }, 500),
+  // ✅ FIXED: useMemo instead of useCallback to avoid dependency warning
+  const debouncedFilterChange = useMemo(
+    () =>
+      debounce((filters: FilterData) => {
+        onFiltersChange(filters);
+      }, 500),
     [onFiltersChange]
   );
 
@@ -99,7 +99,6 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
     if (!isNaN(num)) {
       const newRange = [...filterData.salaryRange] as [number, number];
       newRange[index] = num;
-
       if (newRange[0] <= newRange[1]) {
         setFilterData((prev) => ({
           ...prev,
@@ -121,7 +120,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
         remote: false,
         freeLance: false,
       },
-      salaryRange: [0, 100000] as [number, number],
+      salaryRange: [0, 100000],
     };
     setFilterData(clearedFilters);
     onFiltersChange(clearedFilters);
@@ -139,6 +138,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
         </button>
       </div>
 
+      {/* Search & Location */}
       <div className="space-y-3">
         <h3 className="text-lg font-medium text-black">Search</h3>
         <div className="relative">
@@ -165,7 +165,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
 
       <hr className="border-t border-gray-200" />
 
-      {/* Category Section */}
+      {/* Category */}
       <div className="space-y-3">
         <h3 className="text-lg font-medium text-black">Category</h3>
         <Select
@@ -188,7 +188,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
 
       <hr className="border-t border-gray-200" />
 
-      {/* Job Type Section */}
+      {/* Job Type */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-black">Job Type</h3>
         <div className="space-y-2">
@@ -233,7 +233,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
-              id="contract"
+              id="remote"
               checked={filterData.jobType.remote}
               onCheckedChange={(val) => handleJobTypeChange("remote", !!val)}
             />
@@ -262,7 +262,7 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
 
       <hr className="border-t border-gray-200" />
 
-      {/* Salary Range Section */}
+      {/* Salary Range */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-black">Salary Range</h3>
         <Slider

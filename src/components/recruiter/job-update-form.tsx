@@ -100,7 +100,7 @@ export function JobUpdateForm() {
       }
     } catch (error) {
       toast.error("❌ Job creation failed");
-      // console.error("❌ Job creation failed:", error);
+      console.error("❌ Job creation failed:", error);
     }
   };
 

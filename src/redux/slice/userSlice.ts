@@ -6,39 +6,38 @@ import Cookies from "js-cookie";
 import { RootState } from "../store";
 
 interface UserState {
-    user: any;
+  user: any;
 }
 
 const initialState: UserState = {
-    user: null, // Default value
+  user: null, // Default value
 };
 export const userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {
-        setUser: (state, action) => {
-            state.user = action.payload.data;
-            console.log("Action Payload", action);
-            const role = action.payload.data.token;
+  name: "user",
+  initialState,
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload.data;
+      console.log("Action Payload", action);
+      // const role = action.payload.data.token;
 
-
-            // Save accessToken to localStorage and cookies (client-side only)
-            if (typeof window !== "undefined") {
-                localStorage.setItem("accessToken", action.payload.data?.accessToken);
-                // Set the token in the 'user' cookie that middleware expects
-                Cookies.set("user", action.payload.data);
-            }
-        },
-        removeUser: (state) => {
-            state.user = null;
-            if (typeof window !== "undefined") {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("email");
-                Cookies.remove("accessToken");
-                Cookies.remove("user");
-            }
-        },
+      // Save accessToken to localStorage and cookies (client-side only)
+      if (typeof window !== "undefined") {
+        localStorage.setItem("accessToken", action.payload.data?.accessToken);
+        // Set the token in the 'user' cookie that middleware expects
+        Cookies.set("user", action.payload.data);
+      }
     },
+    removeUser: (state) => {
+      state.user = null;
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("email");
+        Cookies.remove("accessToken");
+        Cookies.remove("user");
+      }
+    },
+  },
 });
 
 export const { setUser, removeUser } = userSlice.actions;

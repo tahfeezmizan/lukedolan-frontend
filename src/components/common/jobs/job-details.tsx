@@ -1,13 +1,8 @@
-import React from "react";
 
+import { PostJobFormData } from "@/types/types";
 import {
-  CheckCircleIcon,
-  Locate,
-  LocationEdit,
-  Map,
-  MapPin,
+  MapPin
 } from "lucide-react";
-import { JobData, PostJobFormData } from "@/types/types";
 // app/lib/jobData.ts
 interface JobInfo {
   companyProfile: string;
