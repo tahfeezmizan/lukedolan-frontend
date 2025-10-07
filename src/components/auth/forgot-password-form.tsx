@@ -3,10 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSetNewPasswordMutation } from "@/redux/features/authApi";
+import { ApiError } from "@/types/types";
 import { Eye, EyeOff } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type LoginFormData = {
   newPassword: string;
@@ -21,18 +24,36 @@ export default function SetNewPasswordForm() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  const route = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const newPassword = watch("newPassword");
+
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  console.log("token pass to params", token);
+  const [setNewPassword] = useSetNewPasswordMutation();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      // ✅ Pass token and body correctly
+      const res = await setNewPassword({
+        token,
+        body: {
+          newPassword: data.newPassword,
+          confirmPassword: data.confirmPassword,
+        },
+      });
 
-  // 👇 Watch password fields for matching validation
-  const newPassword = watch("newPassword");
-
-  const onSubmit = (data: LoginFormData) => {
-    console.log("Reset Password form data:", data);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message || "Password reset successfully");
+        route.push("/login");
+      } else {
+        const err = res.error as ApiError;
+        toast.error(err?.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+    }
   };
 
   return (
