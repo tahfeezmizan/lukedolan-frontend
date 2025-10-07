@@ -109,7 +109,7 @@ export function SignupForm() {
                 : "bg-white text-gray-700"
             }`}
           >
-            Company
+            Recruiter
           </Button>
         </div>
       </div>

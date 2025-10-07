@@ -4,24 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type LoginFormData = {
-  password: string;
+  newPassword: string;
+  confirmPassword: string;
 };
 
-export default function ForgotPasswordForm() {
+export default function SetNewPasswordForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
+  console.log("token pass to params", token);
+
   const [showPassword, setShowPassword] = useState(false);
 
+  // 👇 Watch password fields for matching validation
+  const newPassword = watch("newPassword");
+
   const onSubmit = (data: LoginFormData) => {
-    console.log("Login form data:", data);
+    console.log("Reset Password form data:", data);
   };
 
   return (
@@ -35,17 +46,17 @@ export default function ForgotPasswordForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Password */}
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-lg">
+          <Label htmlFor="newPassword" className="text-lg">
             Enter new password
           </Label>
           <div className="relative">
             <Input
-              id="password"
+              id="newPassword"
               type={showPassword ? "text" : "password"}
               className="p-5 rounded-lg !text-xl text-black"
               placeholder="••••••••"
-              {...register("password", {
-                required: "Password is required",
+              {...register("newPassword", {
+                required: "New Password is required",
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters",
@@ -66,26 +77,26 @@ export default function ForgotPasswordForm() {
               )}
             </Button>
           </div>
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          {errors.newPassword && (
+            <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
           )}
         </div>
+
+        {/* Confirm Password */}
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-lg">
+          <Label htmlFor="confirmPassword" className="text-lg">
             Confirm password
           </Label>
           <div className="relative">
             <Input
-              id="password"
+              id="confirmPassword"
               type={showPassword ? "text" : "password"}
               className="p-5 rounded-lg !text-xl text-black"
               placeholder="••••••••"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
+              {...register("confirmPassword", {
+                required: "Confirm Password is required",
+                validate: (value) =>
+                  value === newPassword || "Passwords do not match", // 👈 match validation
               })}
             />
             <Button
@@ -102,8 +113,10 @@ export default function ForgotPasswordForm() {
               )}
             </Button>
           </div>
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm">
+              {errors.confirmPassword.message}
+            </p>
           )}
         </div>
 

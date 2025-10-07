@@ -53,7 +53,15 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
 
-
+    // ✅ Reset password (with token in headers)
+    setNewPassword: builder.mutation({
+      query: ({ token, body }) => ({
+        url: `/auth/reset-password/${token}`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
 
     // logout user
     logoutUser: builder.mutation({
@@ -84,4 +92,5 @@ export const {
   useResendOTPMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
+  useSetNewPasswordMutation,
 } = authApi;

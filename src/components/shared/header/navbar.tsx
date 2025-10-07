@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, getImageUrl } from "@/lib/utils";
+import { cn, getAuthData, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {
@@ -42,7 +42,6 @@ interface User {
 export function Navbar() {
   const { data: user } = useGetMeQuery(undefined);
   const activeRole = user?.role;
-  console.log("getMe data:", user);
 
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -60,8 +59,6 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Mock user state - replace with your actual auth logic
 
   // Navigation links based on user role
   const getNavigationLinks = (userRole: UserRole) => {
@@ -102,7 +99,6 @@ export function Navbar() {
     console.log("User logged out");
   };
 
-  // Mock functions for testing - replace with your actual navigation logic
   const handleMessage = () => {
     console.log("Message clicked");
   };

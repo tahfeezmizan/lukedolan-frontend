@@ -1,12 +1,13 @@
 import { AuthLayout } from "@/components/auth/auth-layout";
-import SelectRolePage from "@/components/auth/select-role";
+import SetNewPasswordForm from "@/components/auth/forgot-password-form";
+import ForgotPasswordForm from "@/components/auth/forgot-password-form";
 import React from "react";
 
 export default function page() {
   return (
     <div>
       <AuthLayout>
-        <SelectRolePage />
+        <SetNewPasswordForm />
       </AuthLayout>
     </div>
   );
