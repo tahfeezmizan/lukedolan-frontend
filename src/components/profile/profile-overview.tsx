@@ -15,7 +15,7 @@ export function ProfileOverview() {
   const { data: userData, isLoading } = useGetMeQuery("");
   const profileData: Profile | undefined = userData?.profile;
 
-  console.log("Profile Data:", userData);
+  console.log("Profile Data:", profileData);
 
   // Loading or no data fallback
   if (isLoading || !profileData) {
@@ -40,7 +40,7 @@ export function ProfileOverview() {
                     height={1000}
                     src={getImageUrl(userData?.image)}
                     alt={userData?.name ?? "User"}
-                    className="w-32 h-32 object-cover "
+                    className="w-full h-full object-cover "
                   />
                 ) : (
                   <CircleUserRound className="size-20  object-cover" />
@@ -56,12 +56,21 @@ export function ProfileOverview() {
                   </h2>
                   <p className="text-sm  font-medium">2 years of exp</p>
 
-                  <Badge
-                    variant={"outline"}
-                    className="bg-green-200 border-green-200"
-                  >
-                    {userData?.status || "Deactive"}
-                  </Badge>
+                  {profileData?.openToWork ? (
+                    <Badge
+                      variant="outline"
+                      className="bg-green-900 border-green-100 !py-0 text-white"
+                    >
+                      Open to work
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="bg-gray-200 border-gray-200 !py-0 text-gray-700"
+                    >
+                      Not available
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -197,11 +206,15 @@ export function ProfileOverview() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Languages
                 </h3>
-                {profileData.languages.map((language, index) => (
-                  <span key={index} className="">
-                    {language || "English"}
-                  </span>
-                ))}
+                <div className="flex flex-wrap gap-2">
+                  {profileData.languages.map(
+                    (language: string, index: number) => (
+                      <span key={index} className="font-medium capitalize">
+                        {language.trim()}
+                      </span>
+                    )
+                  )}
+                </div>
               </div>
             )}
           </div>

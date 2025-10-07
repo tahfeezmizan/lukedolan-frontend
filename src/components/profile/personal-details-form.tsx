@@ -38,6 +38,8 @@ interface EssentialPersonalData {
 export function PersonalDetailsForm() {
   const [skillInput, setSkillInput] = useState("");
   const [expertiseInput, setExpertiseInput] = useState("");
+  const [languageInput, setLanguageInput] = useState(""); // ✅ new state for languages
+  const [languages, setLanguages] = useState<string[]>([]); // ✅ store languages
 
   // Get user data
   const {
@@ -72,11 +74,10 @@ export function PersonalDetailsForm() {
     },
   });
 
-  // Watch skills and expertise to get real-time updates
   const skills = watch("skills");
   const expartes = watch("expartes");
 
-  // Set form values when user data is loaded
+  // ✅ Set form values when user data is loaded (Bio fix included)
   useEffect(() => {
     if (profileData) {
       console.log("Loading profile data:", profileData);
@@ -93,27 +94,28 @@ export function PersonalDetailsForm() {
         country: profileData.country || "",
         skills: profileData.skills || [],
         expartes: profileData.expartes || [],
+        bio: profileData.bio || "", // ✅ fixed bio value
       });
+
+      // ✅ if API provides languages, load them too
+      if (profileData.languages) {
+        setLanguages(profileData.languages);
+      }
     }
   }, [profileData, reset]);
 
   const [updateProfile, { isLoading, isError, error }] =
     useUpdateProfileMutation();
 
+  // === Skill functions ===
   const addSkill = () => {
     if (skillInput.trim()) {
-      // Always take latest skills from profile + form
       const existingSkills = profileData?.skills || [];
       const currentSkills = skills || [];
-
-      // Merge old + new
       const mergedSkills = [...new Set([...existingSkills, ...currentSkills])];
-
-      // Check if already exists
       const skillExists = mergedSkills.some(
         (skill) => skill.toLowerCase() === skillInput.trim().toLowerCase()
       );
-
       if (!skillExists) {
         const updatedSkills = [...mergedSkills, skillInput.trim()];
         setValue("skills", updatedSkills, { shouldValidate: true });
@@ -125,7 +127,7 @@ export function PersonalDetailsForm() {
   };
 
   const removeSkill = (skillToRemove: string) => {
-    const currentSkills = skills || []; // Use watched skills instead of getValues
+    const currentSkills = skills || [];
     const updatedSkills = currentSkills.filter(
       (skill) => skill !== skillToRemove
     );
@@ -139,21 +141,17 @@ export function PersonalDetailsForm() {
     }
   };
 
-  // Expertise functions - FIXED: Always include existing expertise
-  // Expertise functions
+  // === Expertise functions ===
   const addExpertise = () => {
     if (expertiseInput.trim()) {
       const existingExpertise = profileData?.expartes || [];
       const currentExpertise = expartes || [];
-
       const mergedExpertise = [
         ...new Set([...existingExpertise, ...currentExpertise]),
       ];
-
       const expertiseExists = mergedExpertise.some(
         (exp) => exp.toLowerCase() === expertiseInput.trim().toLowerCase()
       );
-
       if (!expertiseExists) {
         const updatedExpertise = [...mergedExpertise, expertiseInput.trim()];
         setValue("expartes", updatedExpertise, { shouldValidate: true });
@@ -165,7 +163,7 @@ export function PersonalDetailsForm() {
   };
 
   const removeExpertise = (expertiseToRemove: string) => {
-    const currentExpertise = expartes || []; // Use watched expartes instead of getValues
+    const currentExpertise = expartes || [];
     const updatedExpertise = currentExpertise.filter(
       (expertise) => expertise !== expertiseToRemove
     );
@@ -179,9 +177,34 @@ export function PersonalDetailsForm() {
     }
   };
 
+  // === Language functions ===
+  const addLanguage = () => {
+    if (languageInput.trim()) {
+      const exists = languages.some(
+        (lang) => lang.toLowerCase() === languageInput.trim().toLowerCase()
+      );
+      if (!exists) {
+        setLanguages((prev) => [...prev, languageInput.trim()]);
+        setLanguageInput("");
+      } else {
+        toast.error("This language already exists");
+      }
+    }
+  };
+
+  const removeLanguage = (langToRemove: string) => {
+    setLanguages((prev) => prev.filter((lang) => lang !== langToRemove));
+  };
+
+  const handleLanguageKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addLanguage();
+    }
+  };
+
   const onSubmit = async (data: EssentialPersonalData) => {
     console.log("Personal Details Form Data:", data);
-
     const oldSkills = profileData?.profile?.skills || [];
     const oldExpertise = profileData?.profile?.expartes || [];
     const mergedSkills = [...new Set([...oldSkills, ...(data.skills || [])])];
@@ -193,6 +216,7 @@ export function PersonalDetailsForm() {
       ...data,
       skills: mergedSkills,
       expartes: mergedExpertise,
+      languages, // ✅ include languages in API payload
     };
 
     const formData = new FormData();
@@ -219,7 +243,7 @@ export function PersonalDetailsForm() {
 
   return (
     <div className="space-y-8">
-      {/* Basic Information Section */}
+      {/* === Personal Information Section === */}
       <h3 className="text-3xl font-semibold text-gray-900 mb-2">
         Personal Information
       </h3>
@@ -309,118 +333,152 @@ export function PersonalDetailsForm() {
         </div>
       </div>
 
+      {/* === Bio === */}
       <div>
-        <div className="m">
-          <Label htmlFor="bio" className="text-lg font-medium text-gray-900">
-            Bio
-          </Label>
-          <Textarea
-            id="bio"
-            placeholder="Describe the role"
-            {...register("bio", {
-              required: "Job bio is required",
-            })}
-            className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+        <Label htmlFor="bio" className="text-lg font-medium text-gray-900">
+          Bio
+        </Label>
+        <Textarea
+          id="bio"
+          placeholder="Describe yourself"
+          {...register("bio", { required: "Bio is required" })}
+          className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+        />
+        {errors.bio && (
+          <p className="text-red-500 text-sm">{errors.bio.message}</p>
+        )}
+      </div>
+
+      {/* === Skills === */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Skills</h3>
+        <div className="flex gap-2">
+          <Input
+            value={skillInput}
+            onChange={(e) => setSkillInput(e.target.value)}
+            onKeyPress={handleSkillKeyPress}
+            placeholder="Add a skill (e.g., JavaScript, React)"
+            className="p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
           />
-          {errors.bio && (
-            <p className="text-red-500 text-sm">{errors.bio.message}</p>
+          <Button
+            type="button"
+            onClick={addSkill}
+            className="bg-green-900 hover:bg-green-800 text-white px-6"
+          >
+            Add
+          </Button>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {skills && skills.length > 0 ? (
+            skills.map((skill, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm capitalize"
+              >
+                <span>{skill}</span>
+                <button
+                  type="button"
+                  onClick={() => removeSkill(skill)}
+                  className="hover:text-red-600"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-sm">No skills added yet</p>
           )}
         </div>
       </div>
 
-      {/* Skills and Expertise Section */}
+      {/* === Expertise === */}
       <div className="space-y-4">
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Skills</h3>
-          <div className="flex gap-2">
-            <Input
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyPress={handleSkillKeyPress}
-              placeholder="Add a skill (e.g., JavaScript, React, Node.js)"
-              className="p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-            />
-            <Button
-              type="button"
-              onClick={addSkill}
-              className="bg-green-900 hover:bg-green-800 text-white px-6"
-            >
-              Add
-            </Button>
-          </div>
-
-          {/* Skills Display */}
-          <div className="flex flex-wrap gap-2">
-            {skills && skills.length > 0 ? (
-              skills.map((skill, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
-                >
-                  <span>{skill}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeSkill(skill)}
-                    className="hover:text-red-600"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 text-sm">No skills added yet</p>
-            )}
-          </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Expertise</h3>
+        <div className="flex gap-2">
+          <Input
+            value={expertiseInput}
+            onChange={(e) => setExpertiseInput(e.target.value)}
+            onKeyPress={handleExpertiseKeyPress}
+            placeholder="Add an expertise (e.g., Frontend Development)"
+            className="p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+          />
+          <Button
+            type="button"
+            onClick={addExpertise}
+            className="bg-green-900 hover:bg-green-800 text-white px-6"
+          >
+            Add
+          </Button>
         </div>
 
-        <div className="space-y-4 ">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Expertise
-          </h3>
-
-          <div className="flex gap-2">
-            <Input
-              value={expertiseInput}
-              onChange={(e) => setExpertiseInput(e.target.value)}
-              onKeyPress={handleExpertiseKeyPress}
-              placeholder="Add an expertise (e.g., Frontend Development, UI/UX Design)"
-              className="p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
-            />
-            <Button
-              type="button"
-              onClick={addExpertise}
-              className="bg-green-900 hover:bg-green-800 text-white px-6"
-            >
-              Add
-            </Button>
-          </div>
-
-          {/* Expertise Display */}
-          <div className="flex flex-wrap gap-2">
-            {expartes && expartes.length > 0 ? (
-              expartes.map((expertise, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+        <div className="flex flex-wrap gap-2">
+          {expartes && expartes.length > 0 ? (
+            expartes.map((expertise, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm capitalize"
+              >
+                <span>{expertise}</span>
+                <button
+                  type="button"
+                  onClick={() => removeExpertise(expertise)}
+                  className="hover:text-red-600"
                 >
-                  <span>{expertise}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeExpertise(expertise)}
-                    className="hover:text-red-600"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 text-sm">No expertise added yet</p>
-            )}
-          </div>
+                  <X size={16} />
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-sm">No expertise added yet</p>
+          )}
         </div>
       </div>
 
-      {/* Address Section */}
+      {/* ✅ New Language Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Languages</h3>
+        <div className="flex gap-2">
+          <Input
+            value={languageInput}
+            onChange={(e) => setLanguageInput(e.target.value)}
+            onKeyPress={handleLanguageKeyPress}
+            placeholder="Add a language (e.g., English, Spanish)"
+            className="p-4 rounded-sm !text-lg text-black w-full bg-gray-100"
+          />
+          <Button
+            type="button"
+            onClick={addLanguage}
+            className="bg-green-900 hover:bg-green-800 text-white px-6"
+          >
+            Add
+          </Button>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {languages && languages.length > 0 ? (
+            languages.map((language, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm capitalize"
+              >
+                <span>{language}</span>
+                <button
+                  type="button"
+                  onClick={() => removeLanguage(language)}
+                  className="hover:text-red-600 capitalize"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-sm">No languages added yet</p>
+          )}
+        </div>
+      </div>
+
+      {/* === Address === */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Address</h3>
         <div className="space-y-4">
@@ -471,7 +529,7 @@ export function PersonalDetailsForm() {
         </div>
       </div>
 
-      {/* Save Button */}
+      {/* === Save Button === */}
       <div className="pt-4">
         <Button
           onClick={handleSubmit(onSubmit)}

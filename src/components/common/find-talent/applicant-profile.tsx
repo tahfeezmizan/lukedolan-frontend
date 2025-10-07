@@ -5,10 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getImageUrl } from "@/lib/utils";
 import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
-import {
-  CircleUserRound,
-  Mail
-} from "lucide-react";
+import { CircleUserRound, Mail } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ApplicantResume } from "./applicant-resume";
@@ -91,10 +88,13 @@ export default function ApplicantProfile() {
                   Languages
                 </h4>
                 <ul className="space-y-2">
-                  {talent?.profile?.languages &&
-                  talent?.profile?.languages?.length > 0
-                    ? talent?.profile?.languages?.join(", ")
-                    : "No skills listed"}
+                  {talent.profile.languages
+                    .map(
+                      (lang: string) =>
+                        lang.trim().charAt(0).toUpperCase() +
+                        lang.trim().slice(1)
+                    )
+                    .join(", ") || "No languages listed"}
                 </ul>
               </div>
             ) : (

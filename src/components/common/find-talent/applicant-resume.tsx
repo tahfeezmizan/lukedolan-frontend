@@ -164,11 +164,12 @@ export function ApplicantResume({ data }: { data: UserData | undefined }) {
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Languages
           </h3>
-          {profileData?.languages?.map((language: string, index: number) => (
-            <span key={index} className="">
-              {language || "English"}
-            </span>
-          ))}
+          {profileData?.languages
+            ?.map(
+              (lang: string) =>
+                lang.trim().charAt(0).toUpperCase() + lang.trim().slice(1)
+            )
+            .join(", ") || "No languages listed"}
         </div>
       )}
 
