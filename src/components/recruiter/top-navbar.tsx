@@ -31,7 +31,7 @@ export function TopNavbar() {
             variant="ghost"
             className="flex items-center gap-3 hover:bg-gray-50 px-3 py-2 h-auto"
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2">
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2">
               {data?.profile?.companyLogo || data?.image ? (
                 <Image
                   width={1000}
@@ -42,7 +42,6 @@ export function TopNavbar() {
                 />
               ) : (
                 <CircleUserRound className="size-9" />
-                
               )}
             </div>
 

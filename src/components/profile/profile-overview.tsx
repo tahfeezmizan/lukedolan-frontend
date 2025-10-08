@@ -15,7 +15,7 @@ export function ProfileOverview() {
   const { data: userData, isLoading } = useGetMeQuery("");
   const profileData: Profile | undefined = userData?.profile;
 
-  console.log("Profile Data:", profileData);
+  console.log("Profile Data:", userData);
 
   // Loading or no data fallback
   if (isLoading || !profileData) {
@@ -24,9 +24,29 @@ export function ProfileOverview() {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        What recruiters will see
-      </h1>
+      <div className="flex justify-between items-end mb-8  ">
+        <h1 className="text-2xl font-bold text-gray-900 ">
+          What recruiters will see
+        </h1>
+
+        <div className="w-full max-w-xs">
+          <div className="flex justify-between mb-1">
+            <span className="text-gray-700 font-medium">
+              Complete your profile
+            </span>
+            <span className="font-semibold">
+              {userData?.profileCompletion ?? 0}%
+            </span>
+          </div>
+
+          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-3 bg-green-800 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${userData?.profileCompletion ?? 0}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
 
       <Card className="mb-8">
         <CardContent className="p-8 space-y-5">

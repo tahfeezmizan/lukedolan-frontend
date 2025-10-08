@@ -373,11 +373,10 @@ export function PostJobForm() {
             control={control}
             rules={{ required: "Job responsibilities are required" }}
             render={({ field }) => {
-              const editor = useRef(null);
-
+              // Don't create ref inside render callback
               return (
                 <JoditEditor
-                  ref={editor}
+                  ref={null}
                   value={field.value || ""}
                   config={{
                     height: 250,
