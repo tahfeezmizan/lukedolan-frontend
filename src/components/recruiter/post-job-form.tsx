@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useRef, useState } from "react";
 
 // ✅ FIXED: dynamically load JoditEditor with no SSR
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
@@ -114,7 +115,7 @@ export function PostJobForm() {
               id="title"
               placeholder="Hair Stylist"
               {...register("title", { required: "Job title is required" })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
+              className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -135,7 +136,7 @@ export function PostJobForm() {
               rules={{ required: "Job category is required" }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full">
+                  <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -224,7 +225,7 @@ export function PostJobForm() {
               {...register("jobLocation", {
                 required: "jobLocation is required",
               })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
+              className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full"
             />
             {errors.jobLocation && (
               <p className="text-red-500 text-sm">
@@ -249,7 +250,7 @@ export function PostJobForm() {
                 {...register("startDate", {
                   required: "Starting date is required",
                 })}
-                className="mt-1 p-4 rounded-lg !text-lg text-black w-full pl-10"
+                className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full pl-10"
               />
               <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
@@ -269,7 +270,7 @@ export function PostJobForm() {
                 id="endDate"
                 type="date"
                 {...register("endDate", { required: "End date is required" })}
-                className="mt-1 p-4 rounded-lg !text-lg text-black w-full pl-10"
+                className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full pl-10"
               />
               <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
@@ -291,7 +292,7 @@ export function PostJobForm() {
               {...register("minSalary", {
                 required: "Minimum salary is required",
               })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
+              className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full"
             />
             <Input
               type="number"
@@ -299,7 +300,7 @@ export function PostJobForm() {
               {...register("maxSalary", {
                 required: "Maximum salary is required",
               })}
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full"
+              className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full"
             />
           </div>
           {(errors.minSalary || errors.maxSalary) && (
@@ -320,7 +321,7 @@ export function PostJobForm() {
             rules={{ required: "Expricene Level is required" }}
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="mt-1 p-4 rounded-lg !text-lg text-black w-full">
+                <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
                   <SelectValue placeholder="Select Expricene Level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -352,7 +353,7 @@ export function PostJobForm() {
             {...register("description", {
               required: "Job description is required",
             })}
-            className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+            className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full min-h-[120px] resize-none"
           />
           {errors.description && (
             <p className="text-red-500 text-sm">{errors.description.message}</p>
@@ -371,15 +372,23 @@ export function PostJobForm() {
             name="responsibilities"
             control={control}
             rules={{ required: "Job responsibilities are required" }}
-            render={({ field }) => (
-              <JoditEditor
-                value={field.value || ""}
-                onChange={(newContent) => field.onChange(newContent)}
-                config={{
-                  height: 250,
-                }}
-              />
-            )}
+            render={({ field }) => {
+              const editor = useRef(null);
+
+              return (
+                <JoditEditor
+                  ref={editor}
+                  value={field.value || ""}
+                  config={{
+                    height: 250,
+                    readonly: false,
+                  }}
+                  // Use onBlur instead of onChange for better stability
+                  onBlur={(newContent) => field.onChange(newContent)}
+                  onChange={() => {}} // prevent React from re-rendering every keystroke
+                />
+              );
+            }}
           />
           {errors.responsibilities && (
             <p className="text-red-500 text-sm">
