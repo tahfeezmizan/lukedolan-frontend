@@ -8,6 +8,7 @@ import { WorkExperienceForm } from "./work-experience-form";
 import { ResumeUpload } from "./resume-upload";
 import { ProfileOverview } from "./profile-overview";
 import ProfileSection from "./profile-section";
+import { ProfileOthersForm } from "./profile-others-form";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -27,19 +28,31 @@ export default function ProfilePage() {
           onValueChange={handleTabChange}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-5 bg-white mb-8 ">
-            <TabsTrigger value="profile" className="cursor-pointer">Over View</TabsTrigger>
-            <TabsTrigger value="personal-details" className="cursor-pointer">Personal Details</TabsTrigger>
-            <TabsTrigger value="resume" className="cursor-pointer">Resume / CV</TabsTrigger>
-            <TabsTrigger value="education" className="cursor-pointer">Education</TabsTrigger>
-            <TabsTrigger value="work-experience" className="cursor-pointer">Work Experience</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 bg-white mb-8 ">
+            <TabsTrigger value="profile" className="cursor-pointer">
+              Over View
+            </TabsTrigger>
+            <TabsTrigger value="personal-details" className="cursor-pointer">
+              Personal Details
+            </TabsTrigger>
+            <TabsTrigger value="resume" className="cursor-pointer">
+              Resume / CV
+            </TabsTrigger>
+            <TabsTrigger value="education" className="cursor-pointer">
+              Education
+            </TabsTrigger>
+            <TabsTrigger value="work-experience" className="cursor-pointer">
+              Work Experience
+            </TabsTrigger>
+            <TabsTrigger value="others" className="cursor-pointer">
+              Others
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent
             value="profile"
             className="bg-white rounded-lg p-8 shadow-none border-none"
           >
-            
             <ProfileOverview />
           </TabsContent>
           <TabsContent
@@ -69,6 +82,12 @@ export default function ProfilePage() {
             className="bg-white rounded-lg p-8 shadow-none border-none"
           >
             <WorkExperienceForm />
+          </TabsContent>
+          <TabsContent
+            value="others"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
+          >
+            <ProfileOthersForm />
           </TabsContent>
         </Tabs>
       </div>

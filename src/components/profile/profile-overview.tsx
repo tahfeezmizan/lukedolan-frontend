@@ -24,9 +24,29 @@ export function ProfileOverview() {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        What recruiters will see
-      </h1>
+      <div className="flex justify-between items-end mb-8  ">
+        <h1 className="text-2xl font-bold text-gray-900 ">
+          What recruiters will see
+        </h1>
+
+        <div className="w-full max-w-xs">
+          <div className="flex justify-between mb-1">
+            <span className="text-gray-700 font-medium">
+              Complete your profile
+            </span>
+            <span className="font-semibold">
+              {userData?.profileCompletion ?? 0}%
+            </span>
+          </div>
+
+          <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-3 bg-green-800 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${userData?.profileCompletion ?? 0}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
 
       <Card className="mb-8">
         <CardContent className="p-8 space-y-5">
@@ -40,7 +60,7 @@ export function ProfileOverview() {
                     height={1000}
                     src={getImageUrl(userData?.image)}
                     alt={userData?.name ?? "User"}
-                    className="w-32 h-32 object-cover "
+                    className="w-full h-full object-cover "
                   />
                 ) : (
                   <CircleUserRound className="size-20  object-cover" />
@@ -56,12 +76,21 @@ export function ProfileOverview() {
                   </h2>
                   <p className="text-sm  font-medium">2 years of exp</p>
 
-                  <Badge
-                    variant={"outline"}
-                    className="bg-green-200 border-green-200"
-                  >
-                    {userData?.status || "Deactive"}
-                  </Badge>
+                  {profileData?.openToWork ? (
+                    <Badge
+                      variant="outline"
+                      className="bg-green-900 border-green-100 !py-0 text-white"
+                    >
+                      Open to work
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="bg-gray-200 border-gray-200 !py-0 text-gray-700"
+                    >
+                      Not available
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -197,11 +226,15 @@ export function ProfileOverview() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Languages
                 </h3>
-                {profileData.languages.map((language, index) => (
-                  <span key={index} className="">
-                    {language || "English"}
-                  </span>
-                ))}
+                <div className="flex flex-wrap gap-2">
+                  {profileData.languages.map(
+                    (language: string, index: number) => (
+                      <span key={index} className="font-medium capitalize">
+                        {language.trim()}
+                      </span>
+                    )
+                  )}
+                </div>
               </div>
             )}
           </div>

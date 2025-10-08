@@ -225,26 +225,6 @@ export function EducationForm() {
       }
     }
   };
-  // const handleDeleteEducation = (index: number) => {
-  //   if (window.confirm("Are you sure you want to delete this education?")) {
-  //     setEducations((prev) => prev.filter((_, i) => i !== index));
-  //     toast.success("Education deleted successfully!");
-
-  //     // If editing this item, cancel editing
-  //     if (editingIndex === index) {
-  //       setEditingIndex(null);
-  //       setFormData({
-  //         degreeTitle: "",
-  //         major: "",
-  //         instituteName: "",
-  //         cgpa: "",
-  //         scale: "",
-  //         yearOfPassing: "",
-  //         duration: "",
-  //       });
-  //     }
-  //   }
-  // };
 
   const handleSave = async () => {
     if (!isSaveEnabled()) {

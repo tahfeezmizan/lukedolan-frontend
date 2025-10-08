@@ -62,14 +62,14 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
           </div>
 
           <div className="flex justify-center mt-8">
-            <div className="relative h-32">
+            <div className="relative w-32 h-32 overflow-hidden">
               {talent?.userId?.image ? (
                 <Image
                   src={getImageUrl(talent.userId.image)}
                   alt={talent?.userId?.name || "Talent"}
                   width={120}
                   height={120}
-                  className="rounded-full object-cover"
+                  className="rounded-full object-cover max-w-full max-h-full"
                 />
               ) : (
                 <div className="w-[120px] h-[120px] rounded-full bg-gray-200 flex items-center justify-center text-gray-500">

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { debounce } from "lodash";
 import { MapPin } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export interface TalentFilterData {
   search: string;
@@ -31,10 +31,11 @@ export function TalentSidebar({ onFiltersChange }: TalentSidebarProps) {
   });
 
   // Debounced filter change handler
-  const debouncedFilterChange = useCallback(
-    debounce((filters: TalentFilterData) => {
-      onFiltersChange(filters);
-    }, 500),
+  const debouncedFilterChange = useMemo(
+    () =>
+      debounce((filters: TalentFilterData) => {
+        onFiltersChange(filters);
+      }, 500),
     [onFiltersChange]
   );
 

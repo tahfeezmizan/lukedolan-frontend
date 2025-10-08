@@ -52,6 +52,7 @@ export default function SetNewPasswordForm() {
         toast.error(err?.data?.message || "Something went wrong");
       }
     } catch (error) {
+      console.log("Catch Error", error);
       toast.error("An unexpected error occurred");
     }
   };

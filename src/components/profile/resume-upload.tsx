@@ -75,7 +75,7 @@ export function ResumeUpload({ currentResume }: Props) {
       console.log("Resume updated in DB:", res);
 
       // Refetch user data to get updated resume path
-      const updatedUser = await refetchUser();
+      // const updatedUser = await refetchUser();
 
       // Set preview URL based on the response from server
       if (res.resume) {

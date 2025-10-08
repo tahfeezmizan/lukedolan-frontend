@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, getAuthData, getImageUrl } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser, setUser } from "@/redux/slice/userSlice";
 import {

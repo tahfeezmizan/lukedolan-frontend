@@ -7,6 +7,7 @@ import {
   useVerifyUserMutation,
 } from "@/redux/features/authApi";
 import { setUser } from "@/redux/slice/userSlice";
+import { ApiError } from "@/types/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -91,8 +92,7 @@ export default function OtpVerify() {
         toast.success("OTP verification successful");
         route.push("/");
       } else {
-        // ❌ Error or unexpected
-        const err = (res as any)?.error;
+        const err = res as ApiError;
         toast.error(err?.data?.message || "Something went wrong");
       }
     } catch (error) {
