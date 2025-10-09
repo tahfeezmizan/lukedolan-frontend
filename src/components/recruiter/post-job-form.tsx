@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,12 +15,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGetAllCategoryQuery } from "@/redux/features/categoryApi";
 import { useCreateJobMutation } from "@/redux/features/jobsApi";
 import { Category, PostJobFormData } from "@/types/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Calendar } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useRef, useState } from "react";
 
 // ✅ FIXED: dynamically load JoditEditor with no SSR
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });

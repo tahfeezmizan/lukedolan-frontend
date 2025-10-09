@@ -16,7 +16,9 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 export default function GoogleLogin() {
   const handleGoogleLogin = () => {
     // Redirect to your Google auth endpoint
-    window.location.href = "https://api.goroqit.com/api/v1/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_BASEURL}/api/v1/auth/google`;
+    // window.location.href = `http://localhost:5000/api/v1/auth/google`;
+    console.log("goolge api called")
   };
 
   return (

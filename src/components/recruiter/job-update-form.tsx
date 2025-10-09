@@ -12,19 +12,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  useGetAllCategoryQuery
-} from "@/redux/features/categoryApi";
+import { useGetAllCategoryQuery } from "@/redux/features/categoryApi";
 import {
   useGetAllJobsQuery,
   useUpdateJobMutation,
 } from "@/redux/features/jobsApi";
 import { Category, JobData, PostJobFormData } from "@/types/types";
 import { Calendar } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 export function JobUpdateForm() {
   const {
@@ -329,7 +329,7 @@ export function JobUpdateForm() {
         </div>
 
         {/* Job Responsibilities */}
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <Label
             htmlFor="responsibilities"
             className="text-lg font-medium text-gray-90"
@@ -343,6 +343,41 @@ export function JobUpdateForm() {
               required: "Job responsibilities are required",
             })}
             className="mt-1 p-4 rounded-lg !text-lg text-black w-full min-h-[120px] resize-none"
+          />
+          {errors.responsibilities && (
+            <p className="text-red-500 text-sm">
+              {errors.responsibilities.message}
+            </p>
+          )}
+        </div> */}
+        {/* Job Responsibilities - FIXED */}
+        <div className="space-y-2">
+          <Label
+            htmlFor="responsibilities"
+            className="text-lg font-medium text-gray-90"
+          >
+            Job Responsibilities
+          </Label>
+          <Controller
+            name="responsibilities"
+            control={control}
+            rules={{ required: "Job responsibilities are required" }}
+            render={({ field }) => {
+              // Don't create ref inside render callback
+              return (
+                <JoditEditor
+                  ref={null}
+                  value={field.value || ""}
+                  config={{
+                    height: 250,
+                    readonly: false,
+                  }}
+                  // Use onBlur instead of onChange for better stability
+                  onBlur={(newContent) => field.onChange(newContent)}
+                  onChange={() => {}} // prevent React from re-rendering every keystroke
+                />
+              );
+            }}
           />
           {errors.responsibilities && (
             <p className="text-red-500 text-sm">
