@@ -130,7 +130,7 @@ export function Navbar() {
                       alt="Logo"
                       width={165}
                       height={40}
-                      className="w-40 h-11"
+                      className="w-40 h-auto"
                     />
                   ) : (
                     <Image
@@ -138,7 +138,7 @@ export function Navbar() {
                       alt="Logo"
                       width={165}
                       height={40}
-                      className="w-40 h-11"
+                      className="w-40 h-auto"
                     />
                   )
                 ) : (
@@ -147,7 +147,7 @@ export function Navbar() {
                     alt="Logo"
                     width={165}
                     height={40}
-                    className="w-40 h-11"
+                    className="w-40 h-auto"
                   />
                 )}
               </Link>
@@ -209,9 +209,11 @@ export function Navbar() {
                     <DropdownMenuTrigger asChild>
                       <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
                         <div className="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center">
-                          {user?.image ? (
+                          {user?.profile?.companyLogo || user?.image ? (
                             <Image
-                              src={getImageUrl(user?.image)}
+                              src={getImageUrl(
+                                user?.profile?.companyLogo || user?.image
+                              )}
                               alt={user?.name}
                               width={40}
                               height={40}
