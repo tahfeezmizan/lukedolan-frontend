@@ -16,7 +16,7 @@ export function Footer() {
                 alt="Logo"
                 width={165}
                 height={40}
-                className="w-40 h-11"
+                className="w-40 h-auto"
               />
             </Link>
           </div>

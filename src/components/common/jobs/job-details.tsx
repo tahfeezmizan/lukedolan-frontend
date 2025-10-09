@@ -1,8 +1,5 @@
-
 import { PostJobFormData } from "@/types/types";
-import {
-  MapPin
-} from "lucide-react";
+import { MapPin } from "lucide-react";
 // app/lib/jobData.ts
 interface JobInfo {
   companyProfile: string;
@@ -69,17 +66,10 @@ export default function JobDetail({ data }: { data: PostJobFormData }) {
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Responsibilities
           </h2>
-          <p className="text-gray-600 leading-relaxed">
-            {data?.responsibilities}
-          </p>
-          {/* <ul className="space-y-3">
-            {data?.responsibilities?.map((item, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-gray-600">{item}</span>
-              </li>
-            ))}
-          </ul> */}
+          <div
+            className="text-gray-600 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: data?.responsibilities || "" }}
+          />
         </section>
 
         <hr />
