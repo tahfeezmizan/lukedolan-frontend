@@ -13,6 +13,7 @@ import { ApiError } from "@/types/types";
 import { Edit, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 interface WorkExperienceData {
   jobTitle: string;
@@ -268,6 +269,7 @@ export function WorkExperienceForm() {
     }
   };
 
+
   const handleDeleteExperience = async (index: number) => {
     console.log("handleDeleteExperience called with index:", index);
     console.log("Current workExperiences length:", workExperiences.length);
@@ -278,24 +280,27 @@ export function WorkExperienceForm() {
       return;
     }
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this work experience?"
-    );
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-    if (confirmed) {
+    if (result.isConfirmed) {
       try {
         console.log("Proceeding with deletion...");
 
-        // Create new array without the item at index
         const newWorkExperiences = [...workExperiences];
         newWorkExperiences.splice(index, 1);
 
         console.log("New workExperiences after deletion:", newWorkExperiences);
 
-        // Update local state first for immediate UI feedback
         setWorkExperiences(newWorkExperiences);
 
-        // Prepare data for API call
         const workExperiencesForAPI = newWorkExperiences.map((exp) => ({
           jobTitle: exp.jobTitle,
           companyName: exp.companyName,
@@ -311,7 +316,6 @@ export function WorkExperienceForm() {
           workExperiencesForAPI
         );
 
-        // Call API to update database
         const response = await updateProfile({
           body: { workExperience: workExperiencesForAPI },
         }).unwrap();
@@ -319,9 +323,7 @@ export function WorkExperienceForm() {
         console.log("Delete API response:", response);
         toast.success("Work experience deleted and saved to database!");
 
-        // Handle editing state
         if (editingIndex === index) {
-          console.log("Was editing the deleted item, clearing form");
           setEditingIndex(null);
           setFormData({
             jobTitle: "",
@@ -333,21 +335,12 @@ export function WorkExperienceForm() {
             experience: "",
           });
         } else if (editingIndex !== null && editingIndex > index) {
-          console.log(
-            "Adjusting editing index from",
-            editingIndex,
-            "to",
-            editingIndex - 1
-          );
           setEditingIndex(editingIndex - 1);
         }
 
-        // Refetch to ensure data consistency
         await refetch();
       } catch (error: any) {
         console.error("Delete API error:", error);
-
-        // Revert local state if API call failed
         setWorkExperiences(workExperiences);
 
         let errorMessage = "Failed to delete work experience from database";

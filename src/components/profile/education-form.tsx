@@ -13,6 +13,7 @@ import { ApiError, Education } from "@/types/types";
 import { Edit, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 interface EducationData {
   degreeTitle: string;
@@ -138,6 +139,7 @@ export function EducationForm() {
     setFormData(educations[index]);
     setEditingIndex(index);
   };
+
   const handleDeleteEducation = async (index: number) => {
     console.log("handleDeleteEducation called with index:", index);
     console.log("Current educations length:", educations.length);
@@ -148,24 +150,28 @@ export function EducationForm() {
       return;
     }
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this work experience?"
-    );
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-    if (confirmed) {
+    if (result.isConfirmed) {
       try {
         console.log("Proceeding with deletion...");
 
-        // Create new array without the item at index
         const newEducations = [...educations];
         newEducations.splice(index, 1);
 
         console.log("New educations after deletion:", newEducations);
 
         // Update local state first for immediate UI feedback
-        setEducations(educations);
+        setEducations(newEducations);
 
-        // Prepare data for API call
         const educationsForAPI = newEducations.map((edu) => ({
           degreeTitle: edu.degreeTitle,
           major: edu.major,
@@ -178,7 +184,6 @@ export function EducationForm() {
 
         console.log("Sending updated educations to API:", educationsForAPI);
 
-        // Call API to update database
         const response = await updateProfile({
           body: { education: educationsForAPI },
         }).unwrap();
@@ -186,9 +191,7 @@ export function EducationForm() {
         console.log("Delete API response:", response);
         toast.success("Education deleted and saved to database!");
 
-        // Handle editing state
         if (editingIndex === index) {
-          console.log("Was editing the deleted item, clearing form");
           setEditingIndex(null);
           setFormData({
             degreeTitle: "",
@@ -200,21 +203,12 @@ export function EducationForm() {
             duration: "",
           });
         } else if (editingIndex !== null && editingIndex > index) {
-          console.log(
-            "Adjusting editing index from",
-            editingIndex,
-            "to",
-            editingIndex - 1
-          );
           setEditingIndex(editingIndex - 1);
         }
 
-        // Refetch to ensure data consistency
         await refetch();
       } catch (error: ApiError | any) {
         console.error("Delete API error:", error);
-
-        // Revert local state if API call failed
         setEducations(educations);
 
         let errorMessage = "Failed to delete education from database";

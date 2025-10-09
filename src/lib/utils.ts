@@ -6,6 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const getImageUrl = (imagePath: string | null | undefined): string => {
   if (!imagePath) return "/default.png";
+
+  // If it's already an absolute URL (http/https), just return it as is
+  if (imagePath.startsWith("http")) {
+    return imagePath;
+  }
+
+  // Otherwise, prepend your base URL
   return `${process.env.NEXT_PUBLIC_BASEURL}/${imagePath}`;
 };
 
