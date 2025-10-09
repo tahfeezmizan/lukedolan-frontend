@@ -41,6 +41,7 @@ export function JobPostTable() {
     page,
     limit,
   });
+  
 
   const job = data?.jobs?.data;
 
@@ -135,7 +136,7 @@ export function JobPostTable() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
-                          <Link href={"/"}>View Details</Link>
+                          <Link href={`/job/${job._id}`}>View Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <Link href={`/recruiter/jobs/${job._id}`}>

@@ -66,8 +66,12 @@ export function WorkExperienceForm() {
                 companyName: exp.companyName?.toString() || "",
                 location: exp.location?.toString() || "",
                 employmentType: exp.employmentType?.toString() || "",
-                startDate: exp.startDate?.toString() || "",
-                endDate: exp.endDate?.toString() || "",
+                startDate: exp.startDate
+                  ? new Date(exp.startDate).toISOString().split("T")[0]
+                  : "",
+                endDate: exp.endDate
+                  ? new Date(exp.endDate).toISOString().split("T")[0]
+                  : "",
                 experience: exp.experience?.toString() || "",
               })
             );
