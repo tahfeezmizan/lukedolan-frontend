@@ -1,6 +1,7 @@
 "use client";
 
 import logo from "@/assets/logo.png";
+import mainLogo from "@/assets/mian-logo.png";
 import whiteLogo from "@/assets/white-logo.png";
 import { Button } from "@/components/ui/button";
 import {
@@ -125,7 +126,7 @@ export function Navbar() {
                 {pathname === "/" ? (
                   isScrolled ? (
                     <Image
-                      src={logo}
+                      src={mainLogo}
                       alt="Logo"
                       width={165}
                       height={40}

@@ -2,9 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format-date";
-import {
-  useGetSingleJobQuery
-} from "@/redux/features/jobsApi";
+import { useGetSingleJobQuery } from "@/redux/features/jobsApi";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import JobDetail from "./job-details";
@@ -29,13 +27,10 @@ const jobData = {
 export default function JobDescriptionPage() {
   const { id } = useParams();
   const { data: job } = useGetSingleJobQuery({ id });
-  console.log("JObs ", job);
+
   //   console.log("Id", id);
 
-  const {
-    capacity,
-    requiredSkills,
-  } = jobData;
+  const { capacity, requiredSkills } = jobData;
 
   const progressPercentage = (job?.applicationsCount / capacity) * 100;
   return (
@@ -131,7 +126,7 @@ export default function JobDescriptionPage() {
               </div>
             </aside>
 
-            <div className="">
+            <div>
               <Link href={`/job/${job?.title}/${job?._id}`}>
                 <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg">
                   Apply Now
