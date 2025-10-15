@@ -181,9 +181,9 @@ export function LoginForm() {
           <p className="text-sm text-muted-foreground mb-2">
             Don&apos;t have an account?{" "}
           </p>
-          <Link href={"/sing-up"}>
+          <Link href={"/sign-up"}>
             <Button className="bg-transparent text-black hover:bg-transparent border shadow-none outline-none rounded-lg">
-              sing up
+              Sign up
             </Button>
           </Link>
         </div>

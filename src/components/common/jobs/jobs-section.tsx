@@ -27,13 +27,13 @@ export default function JobsSection() {
     salaryRange: [0, 100000],
   });
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(10);
 
   // Convert filter data to API parameters
   const apiFilters = useMemo(() => {
     const apiParams: any = {
       page: currentPage,
-      limit: 8,
+      limit: 10,
     };
 
     if (filters.search) apiParams.searchTerm = filters.search;
@@ -74,6 +74,7 @@ export default function JobsSection() {
     isLoading,
     error,
   } = useGetFilterdJobsQuery(apiFilters);
+  
   console.log(jobsResponse, "jobs");
 
   // Extract jobs and pagination data from response
@@ -241,7 +242,7 @@ export default function JobsSection() {
               <LoadingSpinner />
             ) : jobs && jobs?.length > 0 ? (
               jobs?.map((job: PostJobFormData) => (
-                <JobCard job={job} key={job._id} />
+                <JobCard job={job} key={job?._id} />
               ))
             ) : (
               <div className="text-center py-12">

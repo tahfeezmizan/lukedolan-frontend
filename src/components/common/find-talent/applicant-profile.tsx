@@ -118,7 +118,7 @@ export default function ApplicantProfile() {
                 <p className="text-2xl font-bold text-gray-900">
                   {talent?.profile?.salaryExpectation &&
                   talent?.profile?.salaryExpectation?.length > 0
-                    ? talent?.profile?.salaryExpectation?.join(", ")
+                    ? talent?.profile?.salaryExpectation
                     : "No skills listed"}
                 </p>
               </div>

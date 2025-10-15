@@ -86,6 +86,7 @@ const jobsApi = baseApi.injectEndpoints({
         return response?.data;
       },
     }),
+
     getFilterdJobs: builder.query({
       query: (filters?: {
         searchTerm?: string;
@@ -113,7 +114,7 @@ const jobsApi = baseApi.injectEndpoints({
         if (filters?.limit) params.append("limit", filters.limit.toString());
 
         return {
-          url: `/job${params.toString() ? `?${params.toString()}` : ""}`,
+          url: `/job?=${params.toString() ? `?${params.toString()}` : ""}`,
           method: "GET",
         };
       },

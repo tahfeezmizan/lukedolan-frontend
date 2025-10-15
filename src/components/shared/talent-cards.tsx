@@ -4,6 +4,7 @@ import {
   Briefcase,
   BriefcaseBusiness,
   CheckCircle,
+  CirclePoundSterling,
   CircleUserRound,
   Globe,
   Scissors,
@@ -15,37 +16,34 @@ import { Badge } from "../ui/badge";
 
 export default function TalentCards({ talent }: { talent: TalentProps }) {
   // Safely handle skills data - convert to array if it's a string or ensure it's an array
-  const safeSkills = React.useMemo(() => {
-    if (!talent.skills) return [];
+  // const safeSkills = React.useMemo(() => {
+  //   if (!talent.skills) return [];
 
-    if (Array.isArray(talent.skills)) {
-      return talent.skills;
-    }
+  //   if (Array.isArray(talent.skills)) {
+  //     return talent.skills;
+  //   }
 
-    if (typeof talent.skills === "string") {
-      // If it's a comma-separated string, split it
-      return (talent.skills as string)
-        .split(",")
-        .map((skill: string) => skill.trim())
-        .filter((skill) => skill.length > 0);
-    }
+  //   if (typeof talent.skills === "string") {
+  //     // If it's a comma-separated string, split it
+  //     return (talent.skills as string)
+  //       .split(",")
+  //       .map((skill: string) => skill.trim())
+  //       .filter((skill) => skill.length > 0);
+  //   }
 
-    return [];
-  }, [talent.skills]);
+  //   return [];
+  // }, [talent.skills]);
 
   // Safely handle work experience
-  const safeWorkExperience = React.useMemo(() => {
-    if (!talent.workExperience) return [];
+  // const safeWorkExperience = React.useMemo(() => {
+  //   if (!talent.workExperience) return [];
 
-    if (Array.isArray(talent.workExperience)) {
-      return talent.workExperience;
-    }
+  //   if (Array.isArray(talent.workExperience)) {
+  //     return talent.workExperience;
+  //   }
 
-    return [];
-  }, [talent.workExperience]);
-
-  // Safely handle country/location
-  const location = talent.country || talent.city || "Location not specified";
+  //   return [];
+  // }, [talent.workExperience]);
 
   return (
     <div
@@ -126,14 +124,26 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
               </span>
             </div>
 
-            {/* Location */}
-            <div className="flex items-center gap-4">
-              <Globe className="text-green-800" />
-              <p className="text-gray-800 font-medium">{location}</p>
+            <div className="flex items-center gap-4 ">
+              <CirclePoundSterling className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
+              <span className="text-lg leading-tight text-gray-700">
+                {/* Skills:{" "} */}
+                {talent?.price && talent?.price?.length > 0 ? (
+                  <p>{talent.price}</p>
+                ) : (
+                  <span>15000</span>
+                )}
+              </span>
             </div>
 
+            {/* Location */}
+            {/* <div className="flex items-center gap-4">
+              <Globe className="text-green-800" />
+              <p className="text-gray-800 font-medium">{location}</p>
+            </div> */}
+
             {/* Experience */}
-            <div className="flex flex-col gap-4">
+            {/* <div className="flex flex-col gap-4">
               {safeWorkExperience.length > 0 ? (
                 safeWorkExperience.map((exp: WorkExperience, index: number) => (
                   <div key={index} className="flex items-center gap-4">
@@ -150,7 +160,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
               ) : (
                 <p className="text-gray-800 italic">No experience added yet</p>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </Link>

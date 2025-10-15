@@ -128,7 +128,7 @@ export function Navbar() {
                   )
                 ) : (
                   <Image
-                    src={logo}
+                    src={mainLogo}
                     alt="Logo"
                     width={165}
                     height={40}
@@ -292,7 +292,7 @@ export function Navbar() {
 
                   <Link href={"/sign-up"}>
                     <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer">
-                      Sign Up
+                      Sign up
                     </Button>
                   </Link>
                 </div>
@@ -356,7 +356,7 @@ export function Navbar() {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <Button className="w-full bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg">
-                          Sign Up
+                          Sign up
                         </Button>
                       </Link>
                     </div>

@@ -21,7 +21,7 @@ export function HeroSection() {
           <span className="text-[#0F5F3E]">All in One</span> Place.
         </h1>
         <p className="text-lg md:text-2xl px-0 lg:px-40 leading-snug text-gray-200">
-          Roqit connects salons, barbers, and beauty creatives with fresh talent
+          GoRoqit connects salons, barbers, and beauty creatives with fresh talent
           and opportunities. No stress. Just jobs that fit.
         </p>
 
