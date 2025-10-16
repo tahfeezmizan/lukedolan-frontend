@@ -1,17 +1,14 @@
 import { getImageUrl } from "@/lib/utils";
-import { TalentProps, WorkExperience } from "@/types/types";
+import { TalentProps } from "@/types/types";
 import {
   Briefcase,
-  BriefcaseBusiness,
   CheckCircle,
   CirclePoundSterling,
   CircleUserRound,
-  Globe,
-  Scissors,
+  Scissors
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { Badge } from "../ui/badge";
 
 export default function TalentCards({ talent }: { talent: TalentProps }) {

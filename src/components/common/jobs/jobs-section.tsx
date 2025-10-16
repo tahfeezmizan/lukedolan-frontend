@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import SVGImage from "@/assets/rocket.png";
+import SVGImage from "@/assets/mian-white-logo.png";
 import { useGetFilterdJobsQuery } from "@/redux/features/jobsApi";
 import { PostJobFormData } from "@/types/types";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default function JobsSection() {
     salaryRange: [0, 100000],
   });
 
-  const [currentPage, setCurrentPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Convert filter data to API parameters
   const apiFilters = useMemo(() => {
@@ -36,16 +36,21 @@ export default function JobsSection() {
       limit: 10,
     };
 
+    // ✅ FIXED: Use "searchTerm" to match your API
     if (filters.search) apiParams.searchTerm = filters.search;
-    if (filters.location) apiParams.jobLocation = filters.search;
+
+    // ✅ Fixed location mapping
+    if (filters.location) apiParams.jobLocation = filters.location;
+
+    // ✅ Category filter
     if (filters.category && filters.category !== "all-categories") {
       apiParams.category = filters.category;
     }
 
-    // Handle job types - support multiple selection
+    // ✅ Job types
     const selectedJobTypes = Object.entries(filters.jobType)
-      .filter(([isSelected]) => isSelected)
-      .map(([type]) => type);
+      .filter(([_, value]) => value)
+      .map(([key]) => key);
 
     if (selectedJobTypes.length > 0) {
       const jobTypeMapping: Record<string, string> = {
@@ -57,11 +62,10 @@ export default function JobsSection() {
       };
 
       const apiJobTypes = selectedJobTypes.map((type) => jobTypeMapping[type]);
-
-      // If your API only supports single type, take the first one
       apiParams.type = apiJobTypes[0];
     }
 
+    // ✅ Salary range
     const [minSalary, maxSalary] = filters.salaryRange;
     if (minSalary > 0) apiParams.minSalary = minSalary;
     if (maxSalary < 100000) apiParams.maxSalary = maxSalary;
@@ -74,7 +78,7 @@ export default function JobsSection() {
     isLoading,
     error,
   } = useGetFilterdJobsQuery(apiFilters);
-  
+
   console.log(jobsResponse, "jobs");
 
   // Extract jobs and pagination data from response
@@ -94,6 +98,7 @@ export default function JobsSection() {
   }, [jobsResponse]);
 
   const handleFiltersChange = useCallback((newFilters: FilterData) => {
+    console.log("handleFiltersChange", newFilters);
     setFilters(newFilters);
     setCurrentPage(1);
   }, []);
@@ -220,7 +225,7 @@ export default function JobsSection() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 overflow-hidden h-full min-h-screen">
       <div className="text-center mb-10 space-y-2 pt-5 lg:pt-10">
         <h2 className="text-3xl lg:text-4xl font-bold text-center">
-          Find Your <span className="text-green-600">Styler</span>
+          Find Your <span className="text-green-900">Styler</span>
         </h2>
         <div className="flex items-center justify-center gap-3">
           <p className="text-[#515B6F] text-base">
