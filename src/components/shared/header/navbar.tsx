@@ -1,6 +1,5 @@
 "use client";
 
-import logo from "@/assets/logo.png";
 import mainLogo from "@/assets/mian-logo.png";
 import whiteLogo from "@/assets/white-logo.png";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,7 @@ import {
 import { cn, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
+import { RootState } from "@/redux/store"; // adjust import based on your setup
 import {
   CircleUserRound,
   FileText,
@@ -29,7 +29,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store"; // adjust import based on your setup
 
 // Types for user roles
 type UserRole = "guest" | "applicant" | "recruiter" | "admin";

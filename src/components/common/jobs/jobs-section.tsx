@@ -37,7 +37,7 @@ export default function JobsSection() {
     };
 
     if (filters.search) apiParams.searchTerm = filters.search;
-    if (filters.location) apiParams.jobLocation = filters.location;
+    if (filters.location) apiParams.jobLocation = filters.search;
     if (filters.category && filters.category !== "all-categories") {
       apiParams.category = filters.category;
     }

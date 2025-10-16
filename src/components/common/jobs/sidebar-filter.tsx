@@ -93,18 +93,23 @@ export function SidebarFilter({ onFiltersChange }: SidebarFilterProps) {
     }));
   };
 
-  // Keep inputs in sync with slider
+  // Prevent negative numbers in salary inputs
   const handleSalaryInputChange = (value: string, index: number) => {
-    const num = Number(value);
-    if (!isNaN(num)) {
-      const newRange = [...filterData.salaryRange] as [number, number];
-      newRange[index] = num;
-      if (newRange[0] <= newRange[1]) {
-        setFilterData((prev) => ({
-          ...prev,
-          salaryRange: newRange,
-        }));
-      }
+    let num = Number(value);
+    if (isNaN(num)) return;
+
+    // 🔒 Ensure value can't go below 0
+    if (num < 0) num = 0;
+
+    const newRange = [...filterData.salaryRange] as [number, number];
+    newRange[index] = num;
+
+    // Only update if valid range
+    if (newRange[0] <= newRange[1]) {
+      setFilterData((prev) => ({
+        ...prev,
+        salaryRange: newRange,
+      }));
     }
   };
 

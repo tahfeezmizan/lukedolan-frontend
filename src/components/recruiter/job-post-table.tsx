@@ -41,14 +41,12 @@ export function JobPostTable() {
     page,
     limit,
   });
-  
 
   const job = data?.jobs?.data;
 
-  console.log("job data", data);
+  // console.log("job data", data);
 
   const handleDelete = (id: string | number | undefined) => {
-    console.log(id);
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
