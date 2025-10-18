@@ -14,6 +14,7 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { RootState } from "@/redux/store"; // adjust import based on your setup
 import {
+  Bell,
   CircleUserRound,
   FileText,
   LayoutDashboard,
@@ -163,22 +164,68 @@ export function Navbar() {
                 <>
                   {/* Role-based Messages Link */}
                   {activeRole !== "admin" && (
-                    <Link
-                      href={
-                        activeRole === "applicant"
-                          ? "/profile/messages"
-                          : activeRole === "recruiter"
-                          ? "/recruiter/messages"
-                          : "#"
-                      }
-                      className={cn(
-                        "p-2 rounded-full hover:bg-white/10 transition-colors",
-                        pathname === "/" ? "text-white" : "text-black",
-                        pathname === "/" && isScrolled && "text-green-900"
-                      )}
-                    >
-                      <MessageCircle className="h-6 w-6" />
-                    </Link>
+                    <>
+                      <Link
+                        href={
+                          activeRole === "applicant"
+                            ? "/profile/messages"
+                            : activeRole === "recruiter"
+                            ? "/recruiter/messages"
+                            : "#"
+                        }
+                        className={cn(
+                          "p-2 rounded-full hover:bg-white/10 transition-colors",
+                          pathname === "/" ? "text-white" : "text-black",
+                          pathname === "/" && isScrolled && "text-green-900"
+                        )}
+                      >
+                        <MessageCircle className="h-6 w-6" />
+                      </Link>
+                      {/* Notifications Dropdown */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button
+                            className={cn(
+                              "relative p-2 rounded-full hover:bg-white/10 transition-colors",
+                              pathname === "/" ? "text-white" : "text-black",
+                              pathname === "/" && isScrolled && "text-green-900"
+                            )}
+                          >
+                            <Bell className="h-6 w-6" />
+                            {/* 🔹 Optional Notification Dot */}
+                            {/* <span className="absolute top-2 right-2 block h-2 w-2 bg-red-500 rounded-full"></span> */}
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-64 p-2 shadow-lg border rounded-lg"
+                        >
+                          {/* Example Notification Logic */}
+                          {userData?.notifications &&
+                          userData.notifications.length > 0 ? (
+                            userData.notifications.map(
+                              (note: any, index: number) => (
+                                <DropdownMenuItem
+                                  key={index}
+                                  className="flex flex-col items-start gap-1 py-2"
+                                >
+                                  <span className="font-medium text-sm">
+                                    {note.title}
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    {note.time}
+                                  </span>
+                                </DropdownMenuItem>
+                              )
+                            )
+                          ) : (
+                            <DropdownMenuItem className="text-sm text-gray-500 justify-center">
+                              No notifications yet
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
                   )}
 
                   {/* Profile Dropdown */}
