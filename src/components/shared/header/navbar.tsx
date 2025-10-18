@@ -161,15 +161,25 @@ export function Navbar() {
               {token ? (
                 // Authenticated
                 <>
-                  <button
-                    className={cn(
-                      "p-2 rounded-full hover:bg-white/10 transition-colors",
-                      pathname === "/" ? "text-white" : "text-black",
-                      pathname === "/" && isScrolled && "text-green-900"
-                    )}
-                  >
-                    <MessageCircle className="h-6 w-6" />
-                  </button>
+                  {/* Role-based Messages Link */}
+                  {activeRole !== "admin" && (
+                    <Link
+                      href={
+                        activeRole === "applicant"
+                          ? "/profile/messages"
+                          : activeRole === "recruiter"
+                          ? "/recruiter/messages"
+                          : "#"
+                      }
+                      className={cn(
+                        "p-2 rounded-full hover:bg-white/10 transition-colors",
+                        pathname === "/" ? "text-white" : "text-black",
+                        pathname === "/" && isScrolled && "text-green-900"
+                      )}
+                    >
+                      <MessageCircle className="h-6 w-6" />
+                    </Link>
+                  )}
 
                   {/* Profile Dropdown */}
                   <DropdownMenu>

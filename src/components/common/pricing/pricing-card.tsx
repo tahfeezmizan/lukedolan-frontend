@@ -204,7 +204,7 @@ export function PricingCard({ _id, title, price, duration, features, paymentLink
     };
 
     return (
-        <Card className="flex flex-col py-12 px-5 bg-white !rounded-md border-none shadow-none group hover:bg-[#E7EFEC] duration-300">
+        <Card className="flex flex-col py-12 px-5 bg-white !rounded-md border-none shadow-none hover:bg-[#E7EFEC] duration-300">
             <CardHeader className="text-center pb-8">
                 <CardTitle className="text-xl font-semibold text-gray-900 mb-2">{editData.title}</CardTitle>
                 <div className="text-3xl font-bold text-gray-900">{price === 0 ? "(Free)" : `£ ${price} / ${duration}`}</div>
@@ -225,7 +225,7 @@ export function PricingCard({ _id, title, price, duration, features, paymentLink
                     <div className="space-y-4">
                         <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
                             <DialogTrigger asChild>
-                                <Button className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300">Edit</Button>
+                                <Button className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 hover:text-white hover:bg-green-900 duration-300">Edit</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]">
                                 <DialogHeader>
@@ -256,13 +256,13 @@ export function PricingCard({ _id, title, price, duration, features, paymentLink
                             </DialogContent>
                         </Dialog>
 
-                        <Button onClick={handleDelete} className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300">
+                        <Button onClick={handleDelete} className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 hover:text-white hover:bg-green-900 duration-300">
                             Delete
                         </Button>
                     </div>
                 ) : (
                     <Link href={paymentLink ?? "/"}>
-                        <Button className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 group-hover:text-white group-hover:bg-green-900 duration-300">Get Started</Button>
+                        <Button className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 hover:text-white hover:bg-green-900 duration-300">Get Started</Button>
                     </Link>
                 )}
             </CardContent>
