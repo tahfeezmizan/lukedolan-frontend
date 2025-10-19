@@ -49,7 +49,7 @@ export default function JobsSection() {
 
     // ✅ Job types
     const selectedJobTypes = Object.entries(filters.jobType)
-      .filter(([_, value]) => value)
+      .filter(([, value]) => value)
       .map(([key]) => key);
 
     if (selectedJobTypes.length > 0) {

@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, getImageUrl, getToken } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { RootState } from "@/redux/store"; // adjust import based on your setup

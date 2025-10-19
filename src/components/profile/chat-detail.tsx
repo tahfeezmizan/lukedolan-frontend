@@ -12,7 +12,7 @@ import {
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { AlertCircle, Send } from "lucide-react";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
@@ -51,6 +51,11 @@ export default function ChatDetail() {
     { skip: !chatId }
   );
   const { data: chatData } = useGetChatsQuery(undefined);
+
+  console.log("All Data", data);
+
+  const activeUser = chatData?.data.find((chat: any) => chat._id === chatId);
+  console.log(activeUser);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -333,10 +338,6 @@ export default function ChatDetail() {
     );
   }
 
-  const participant = data?.data?.participant || {};
-
-  console.log("chatData", chatData);
-
   return (
     <div className="flex-1 flex flex-col bg-white min-h-[calc(100vh-128px)]">
       {/* Header - fixed height */}
@@ -344,17 +345,19 @@ export default function ChatDetail() {
         <div className="flex items-center">
           <Image
             src={
-              participant.image
-                ? getImageUrl(participant.image)
+              activeUser.participants[0]?.image
+                ? getImageUrl(activeUser.participants[0]?.image)
                 : placeholderImg
             }
-            alt={participant.name || "User"}
+            alt={activeUser.participants[0]?.name || "User"}
             width={40}
             height={40}
             className="rounded-full mr-3"
           />
 
-          <h2 className="font-semibold">{participant.name || "Chat"}</h2>
+          <h2 className="font-semibold">
+            {activeUser.participants[0]?.name || "Chat"}
+          </h2>
         </div>
         <div className="flex items-center space-x-2">
           <div
@@ -412,21 +415,19 @@ export default function ChatDetail() {
                   isMyMessage ? "justify-end" : "justify-start"
                 }`}
               >
-                <div
-                  className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm ${
-                    isMyMessage
-                      ? "bg-blue-500 text-white rounded-br-md"
-                      : "bg-gray-100 text-gray-800 rounded-bl-md"
-                  }`}
-                >
-                  <p className="text-sm break-words leading-relaxed">
-                    {message.text}
-                  </p>
+                <div>
                   <p
-                    className={`text-xs mt-2 ${
-                      isMyMessage ? "text-blue-100" : "text-gray-500"
+                    className={`text-base leading-relaxed rounded-full py-0.5 px-1.5 ${
+                      isMyMessage
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
+                    {message.text}
+                  </p>
+                  <p className={`text-xs mt-1 text-gray-500 ${
+                  isMyMessage ? "justify-end" : "justify-start"
+                }`}>
                     {new Date(message.createdAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
