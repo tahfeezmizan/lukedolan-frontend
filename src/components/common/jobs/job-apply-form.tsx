@@ -47,20 +47,18 @@ export default function JobApplyForm() {
       };
 
       if (res.data?.success) {
-        toast.success("Job application successfully");
-        route.push("")
+        toast.success("Job application submitted successfully!");
+        route.push("/profile/applied-jobs");
       } else {
         toast.error(res.error?.data?.message || "Something went wrong");
       }
-
-      console.log(res);
     } catch (error) {
       console.error(error);
       toast.error("An unexpected error occurred");
     }
   };
 
-  // Watch selected file for display
+  // Watch fields for validation display
   const resumeFile = watch("resume")?.[0];
 
   return (
@@ -70,8 +68,8 @@ export default function JobApplyForm() {
           Job Application
         </h1>
 
-        {/* Form Fields */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Name */}
           <div>
             <label
               htmlFor="name"
@@ -84,13 +82,14 @@ export default function JobApplyForm() {
               id="name"
               placeholder="Enter your name"
               {...register("name", { required: "Name is required" })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
             />
             {errors.name && (
               <p className="text-sm text-red-500">{errors.name.message}</p>
             )}
           </div>
 
+          {/* Email */}
           <div>
             <label
               htmlFor="email"
@@ -103,13 +102,14 @@ export default function JobApplyForm() {
               id="email"
               placeholder="example@gmail.com"
               {...register("email", { required: "Email is required" })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
             />
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
           </div>
 
+          {/* Phone Number */}
           <div>
             <label
               htmlFor="phone"
@@ -120,15 +120,34 @@ export default function JobApplyForm() {
             <input
               type="tel"
               id="phone"
-              placeholder="000 0000 0000"
-              {...register("phone", { required: "Phone is required" })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="0000000000"
+              {...register("phone", {
+                required: "Phone is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Only numbers are allowed",
+                },
+                minLength: {
+                  value: 7,
+                  message: "Phone number must be at least 7 digits",
+                },
+                // maxLength removed so users can enter >15 digits
+              })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+              onInput={(e) => {
+                const target = e.target as HTMLInputElement;
+                // remove any non-digit characters while typing
+                const digits = target.value.replace(/\D/g, "");
+                // keep cursor position reasonably correct by setting value
+                target.value = digits;
+              }}
             />
             {errors.phone && (
               <p className="text-sm text-red-500">{errors.phone.message}</p>
             )}
           </div>
 
+          {/* Location */}
           <div>
             <label
               htmlFor="location"
@@ -141,28 +160,38 @@ export default function JobApplyForm() {
               id="location"
               placeholder="City, Country"
               {...register("location", { required: "Location is required" })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
             />
             {errors.location && (
               <p className="text-sm text-red-500">{errors.location.message}</p>
             )}
           </div>
 
+          {/* Experience */}
           <div>
             <label
               htmlFor="experience"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Experience
+              Experience (years)
             </label>
             <input
               type="number"
               id="experience"
-              placeholder="2 years"
+              placeholder="2"
               {...register("experience", {
                 required: "Experience is required",
+                min: {
+                  value: 0,
+                  message: "Experience cannot be negative",
+                },
+                valueAsNumber: true,
               })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              onInput={(e) => {
+                const target = e.target as HTMLInputElement;
+                if (parseInt(target.value) < 0) target.value = "0"; // Prevent negative numbers
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
             />
             {errors.experience && (
               <p className="text-sm text-red-500">
@@ -172,7 +201,7 @@ export default function JobApplyForm() {
           </div>
 
           {/* Resume Upload */}
-          <div className="mb-6">
+          <div>
             <label
               htmlFor="resume"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -184,7 +213,7 @@ export default function JobApplyForm() {
               id="resume"
               accept=".pdf,.doc,.docx"
               {...register("resume", { required: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
             />
             {resumeFile && (
               <p className="mt-1 text-sm text-green-600">

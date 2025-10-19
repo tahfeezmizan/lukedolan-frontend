@@ -64,11 +64,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${montserrat.variable}`}>
         <ReduxProvider>
-          <Suspense>
-            
-            {children}
-          </Suspense>
-          <Toaster />
+          <Suspense>{children}</Suspense>
+          <Toaster position="top-right" />
         </ReduxProvider>
       </body>
     </html>

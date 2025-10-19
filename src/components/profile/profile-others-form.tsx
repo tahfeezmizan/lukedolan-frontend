@@ -242,7 +242,18 @@ export function ProfileOthersForm() {
             type="number"
             id="salaryExpectation"
             placeholder="Enter salary expectations"
-            {...register("salaryExpectation")}
+            {...register("salaryExpectation", {
+              required: "Salary expectation is required",
+              min: {
+                value: 0,
+                message: "Salary expectation cannot be negative",
+              },
+              valueAsNumber: true,
+            })}
+            onInput={(e) => {
+              const target = e.target as HTMLInputElement;
+              if (parseInt(target.value) < 0) target.value = "0"; // Prevent negative numbers
+            }}
             className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
           />
         </div>
@@ -272,7 +283,7 @@ export function ProfileOthersForm() {
                         htmlFor="Full-time"
                         className="text-md font-medium text-gray-600"
                       >
-                        Full-time 
+                        Full-time
                       </Label>
                     </div>
 

@@ -113,7 +113,7 @@ export function Footer() {
       <div className="bg-[#414652] py-4">
         <div className="container mx-auto px-4">
           <p className="text-center text-gray-300 text-sm">
-            © 2025 Roqit · All rights reserved.
+            © 2025 GoRoqit · All rights reserved.
           </p>
         </div>
       </div>

@@ -324,9 +324,9 @@ export function PostJobForm() {
                   <SelectValue placeholder="Select Expricene Level" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Experienced">Experienced</SelectItem>
-                  <SelectItem value="Beginner">Beginner</SelectItem>
                   <SelectItem value="Freshers">Freshers</SelectItem>
+                  <SelectItem value="Beginner">Beginners</SelectItem>
+                  <SelectItem value="Experienced">Experience</SelectItem>
                 </SelectContent>
               </Select>
             )}

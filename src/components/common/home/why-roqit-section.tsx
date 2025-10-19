@@ -33,7 +33,7 @@ export function WhyRoqitSection() {
       <div className="flex flex-col md:flex-row gap-10 items-center justify-between overflow-hidden">
         <div className="flex-1 space-y-8 ">
           <h2 className=" text-4xl  font-bold text-black leading-tight mb-10">
-            Why Roqit?
+            Why GoRoqit?
           </h2>
 
           <div className="space-y-8 ">

@@ -2,10 +2,12 @@
 import companyLogo from "@/assets/company-logo (1).png";
 import { CardContent } from "@/components/ui/card";
 import TimeAgo from "@/lib/time-ago";
+import { RootState } from "@/redux/store";
 import { PostJobFormData } from "@/types/types";
 import { Briefcase, Calendar, CirclePoundSterling, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function JobCard({ job }: { job: PostJobFormData }) {
   const {
@@ -20,6 +22,9 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
   } = job;
 
   const { companyName } = user?.profile || {};
+
+  const { user: currentUser } = useSelector((state: RootState) => state.user);
+  const role = currentUser?.role;
 
   return (
     <div className="w-full bg-white hover:shadow-md transition rounded-lg">
@@ -55,12 +60,14 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
 
         {/* Right Info */}
         <div className="flex flex-row-reverse lg:flex-col justify-between lg:justify-between sm:items-end gap-3 md:gap-5">
-          <Link
-            href={`job/${_id}`}
-            className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
-          >
-            Apply Now
-          </Link>
+          {role !== "recruiter" && (
+            <Link
+              href={`job/${_id}`}
+              className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
+            >
+              Apply Now
+            </Link>
+          )}
           <div className="flex items-center justify-between gap-2">
             {" "}
             <CirclePoundSterling

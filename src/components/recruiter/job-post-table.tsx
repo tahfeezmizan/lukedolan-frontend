@@ -11,13 +11,12 @@ import {
   useDeleteJobMutation,
   useGetSingleRecruiterJobQuery,
 } from "@/redux/features/jobsApi";
+import { useGetMeQuery } from "@/redux/features/userApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
-import TableLoader from "../shared/table-loader";
 import Link from "next/link";
-import { useState } from "react";
 import Swal from "sweetalert2";
-import { useGetMeQuery } from "@/redux/features/userApi";
+import TableLoader from "../shared/table-loader";
 
 const tableHeaders = [
   { key: "jobTitle", label: "Job Title" },
@@ -30,25 +29,23 @@ const tableHeaders = [
 ];
 
 export function JobPostTable() {
-  const [page, setPage] = useState(1);
+  const page = 1;
   const limit = 10;
 
   const [deleteJob] = useDeleteJobMutation();
-  const { data: userData, isLoading: isUserLoading } = useGetMeQuery(undefined);
+  const { data: userData } = useGetMeQuery(undefined);
 
   const { data, isLoading, error } = useGetSingleRecruiterJobQuery({
     userId: userData?._id,
     page,
     limit,
   });
-  
 
   const job = data?.jobs?.data;
 
-  console.log("job data", data);
+  // console.log("job data", data);
 
   const handleDelete = (id: string | number | undefined) => {
-    console.log(id);
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",

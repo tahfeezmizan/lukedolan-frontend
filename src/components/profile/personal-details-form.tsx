@@ -53,8 +53,6 @@ export function PersonalDetailsForm() {
     register,
     handleSubmit,
     control,
-    setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm<EssentialPersonalData>({

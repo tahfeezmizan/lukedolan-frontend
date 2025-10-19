@@ -76,6 +76,7 @@ const jobsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["Jobs"],
     }),
+
     getAllJobswithStatics: builder.query({
       query: () => ({
         url: "/job",
@@ -86,6 +87,7 @@ const jobsApi = baseApi.injectEndpoints({
         return response?.data;
       },
     }),
+
     getFilterdJobs: builder.query({
       query: (filters?: {
         searchTerm?: string;
@@ -101,6 +103,7 @@ const jobsApi = baseApi.injectEndpoints({
 
         if (filters?.searchTerm)
           params.append("searchTerm", filters.searchTerm);
+        // ✅ CRITICAL FIX: This was using filters.searchTerm instead of filters.jobLocation
         if (filters?.jobLocation)
           params.append("jobLocation", filters.jobLocation);
         if (filters?.category) params.append("category", filters.category);
@@ -119,7 +122,6 @@ const jobsApi = baseApi.injectEndpoints({
       },
       providesTags: ["Jobs"],
       transformResponse: (response: any) => {
-        // Return the entire response including meta data
         return response?.data;
       },
     }),

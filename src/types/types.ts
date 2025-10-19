@@ -192,8 +192,11 @@ export type JobApplyFormInputs = {
 };
 
 export interface ApiError {
+  status: number;
   data?: {
-    message: string;
+    message?: string;
+    success?: boolean;
+    errorMessages?: { message: string }[];
   };
 }
 
