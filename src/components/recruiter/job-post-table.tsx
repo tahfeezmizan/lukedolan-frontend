@@ -15,7 +15,6 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import { PostJobFormData } from "@/types/types";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import TableLoader from "../shared/table-loader";
 

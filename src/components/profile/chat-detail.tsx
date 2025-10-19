@@ -54,7 +54,7 @@ export default function ChatDetail() {
 
   console.log("All Data", data);
 
-  const activeUser = chatData?.data.find((chat: any) => chat._id === chatId);
+  const activeUser = chatData?.data.find((chat: { _id: string }) => chat._id === chatId);
   console.log(activeUser);
 
   // Refs
