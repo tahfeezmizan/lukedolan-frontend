@@ -22,7 +22,6 @@ export default function JobApplyForm() {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue,
   } = useForm<JobApplyFormInputs>();
 
   const onSubmit = async (data: JobApplyFormInputs) => {

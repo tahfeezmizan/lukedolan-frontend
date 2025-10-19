@@ -34,7 +34,7 @@ export function JobPostTable() {
   const limit = 10;
 
   const [deleteJob] = useDeleteJobMutation();
-  const { data: userData, isLoading: isUserLoading } = useGetMeQuery(undefined);
+  const { data: userData } = useGetMeQuery(undefined);
 
   const { data, isLoading, error } = useGetSingleRecruiterJobQuery({
     userId: userData?._id,

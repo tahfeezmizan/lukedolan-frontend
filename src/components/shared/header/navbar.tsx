@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
+
 
 import mainLogo from "@/assets/mian-logo.png";
 import whiteLogo from "@/assets/white-logo.png";

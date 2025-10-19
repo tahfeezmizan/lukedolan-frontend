@@ -1,22 +1,23 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Send, AlertCircle } from "lucide-react";
-import io, { Socket } from "socket.io-client";
 import placeholderImg from "@/assets/telent-person.png";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getImageUrl } from "@/lib/utils";
 import {
+  useGetChatsQuery,
   useGetMessagesQuery,
   useSendMessageMutation,
 } from "@/redux/features/chatAPI";
-import { PageLoading } from "../shared/page-loading";
-import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
-import { useInfiniteScroll } from "../shared/use-infinite-scroll";
-import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
+import { AlertCircle, Send } from "lucide-react";
+import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
+import { InfiniteScrollLoaderPresets } from "../shared/infinite-scroll-loader";
+import { PageLoading } from "../shared/page-loading";
+import { useInfiniteScroll } from "../shared/use-infinite-scroll";
 
 interface Message {
   _id: string;
@@ -32,7 +33,6 @@ export default function ChatDetail() {
 
   const { data: userData } = useGetMeQuery("");
   const myId = userData?._id;
-  console.log(myId);
 
   // State management
   const [allMessages, setAllMessages] = useState<Message[]>([]);
@@ -44,13 +44,15 @@ export default function ChatDetail() {
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
   const [messageText, setMessageText] = useState("");
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  // RTK Query for messages with dynamic page
+
+  // RTK Query hooks - moved BEFORE any conditional returns
   const { data, isLoading, isError, error } = useGetMessagesQuery(
     { chatId, page: currentPage, limit: 10 },
     { skip: !chatId }
   );
+  const { data: chatData } = useGetChatsQuery(undefined);
+
   // Refs
-  console.log(allMessages, "message");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isScrollingToBottom = useRef(false);
   const requestIdRef = useRef(0);
@@ -95,8 +97,9 @@ export default function ChatDetail() {
   });
 
   // Socket connection
-  const socket: Socket = useMemo(() => io(process.env.NEXT_PUBLIC_BASEURL), []);
+  const socket: Socket = useMemo(() => io("http://10.10.7.62:5001"), []);
   const [sendMessageAPI] = useSendMessageMutation();
+
   // Dynamic height management for responsive design
   useEffect(() => {
     const updateContainerHeight = () => {
@@ -216,6 +219,7 @@ export default function ChatDetail() {
       }
     }
   }, [isInitialLoad, allMessages.length, currentPage, containerRef]);
+
   // Socket events
   useEffect(() => {
     if (!chatId || !socket) return;
@@ -257,6 +261,7 @@ export default function ChatDetail() {
       socket.disconnect();
     };
   }, [chatId, socket, containerRef]);
+
   const handleSendMessage = async () => {
     if (!messageText.trim()) return;
 
@@ -330,18 +335,25 @@ export default function ChatDetail() {
 
   const participant = data?.data?.participant || {};
 
+  console.log("chatData", chatData);
+
   return (
     <div className="flex-1 flex flex-col bg-white min-h-[calc(100vh-128px)]">
       {/* Header - fixed height */}
       <div className="bg-white border-b border-gray-200 p-3 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center">
           <Image
-            src={getImageUrl(participant.image || placeholderImg)}
+            src={
+              participant.image
+                ? getImageUrl(participant.image)
+                : placeholderImg
+            }
             alt={participant.name || "User"}
             width={40}
             height={40}
             className="rounded-full mr-3"
           />
+
           <h2 className="font-semibold">{participant.name || "Chat"}</h2>
         </div>
         <div className="flex items-center space-x-2">

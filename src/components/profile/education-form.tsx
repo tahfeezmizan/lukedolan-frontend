@@ -9,7 +9,7 @@ import {
   useGetMeQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/userApi";
-import { ApiError, Education } from "@/types/types";
+import {ApiError, Education } from "@/types/types";
 import { Edit, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

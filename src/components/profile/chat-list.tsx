@@ -14,8 +14,6 @@ export default function ChatList() {
   const { data, isLoading, isError } = useGetChatsQuery(undefined);
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(data, "chat");
-
   // Filter chats based on search term
   const filteredMessages = useMemo(() => {
     const messages = data?.data || [];
@@ -29,6 +27,8 @@ export default function ChatList() {
     return messages.filter((chat: any) => {
       const participant = chat.participants?.[0] || {};
       const participantName = participant.name || "";
+
+      console.log(participant)
 
       return participantName.toLowerCase().includes(lowercasedSearchTerm);
     });

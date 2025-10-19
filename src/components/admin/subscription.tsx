@@ -87,15 +87,6 @@
 
 "use client";
 
-import { useState } from "react";
-import { PricingCard } from "../common/pricing/pricing-card";
-import { StatsCard } from "../shared/stats-card";
-import { AlertTriangle, CheckCircle, Users } from "lucide-react";
-import {
-  useGetPlansQuery,
-  useCreatePlanMutation,
-} from "@/redux/features/planApi";
-import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -105,7 +96,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -113,7 +103,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  useCreatePlanMutation,
+  useGetPlansQuery,
+} from "@/redux/features/planApi";
+import { useState } from "react";
 import Swal from "sweetalert2";
+import { PricingCard } from "../common/pricing/pricing-card";
+import { Button } from "../ui/button";
 
 export default function Subscription() {
   const { data, isLoading, refetch } = useGetPlansQuery();
