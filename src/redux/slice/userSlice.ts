@@ -26,6 +26,7 @@ export const userSlice = createSlice({
         localStorage.setItem("accessToken", action.payload.data?.accessToken);
         // Set the token in the 'user' cookie that middleware expects
         Cookies.set("user", action.payload.data);
+        Cookies.set("token", action.payload.data?.accessToken);
       }
     },
     removeUser: (state) => {

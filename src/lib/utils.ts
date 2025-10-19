@@ -43,3 +43,24 @@ export function getAuthData() {
     return null;
   }
 }
+
+export function getToken(): string | null {
+  try {
+    // 1️⃣ Try direct key first
+    const directToken = localStorage.getItem("accessToken");
+    if (directToken) return directToken;
+
+    // 2️⃣ Otherwise, try Redux persisted store
+    const persistedData = localStorage.getItem("persist:root");
+    if (persistedData) {
+      const parsedRoot = JSON.parse(persistedData);
+      const userData = JSON.parse(parsedRoot.user || "{}");
+      return userData.accessToken || null;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Failed to read token from localStorage:", error);
+    return null;
+  }
+}
