@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { getImageUrl } from "@/lib/utils";
 import { useGetChatsQuery } from "@/redux/features/chatAPI";
-import { Search } from "lucide-react";
+import { CircleUserRound, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,7 +28,7 @@ export default function ChatList() {
       const participant = chat.participants?.[0] || {};
       const participantName = participant.name || "";
 
-      console.log(participant)
+      console.log(participant);
 
       return participantName.toLowerCase().includes(lowercasedSearchTerm);
     });
@@ -85,13 +85,17 @@ export default function ChatList() {
                   <Link href={`${basePath}/${chat._id}`}>
                     <div className="flex items-start space-x-3">
                       <div className="relative">
-                        <Image
-                          src={getImageUrl(participant.image)}
-                          alt={participant.name || "Chat"}
-                          width={40}
-                          height={40}
-                          className="rounded-full"
-                        />
+                        {participant?.image ? (
+                          <Image
+                            src={getImageUrl(participant?.image)}
+                            alt={participant?.name || "Chat"}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
+                        ) : (
+                          <CircleUserRound className="size-11" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
