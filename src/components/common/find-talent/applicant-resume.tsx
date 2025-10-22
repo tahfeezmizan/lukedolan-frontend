@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import LoadingSpinner from "@/lib/loading-spinner";
-import { getImageUrl } from "@/lib/utils";
+import { formatWorkDuration, getImageUrl } from "@/lib/utils";
 import {
   Education,
   Profile,
@@ -94,8 +94,9 @@ export function ApplicantResume({ data }: { data: UserData | undefined }) {
                     {exp.startDate && exp.endDate && (
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {new Date(exp.startDate).toLocaleDateString()} -{" "}
-                        {new Date(exp.endDate).toLocaleDateString()}
+                        {/* {new Date(exp.startDate).toLocaleDateString()} -{" "}
+                        {new Date(exp.endDate).toLocaleDateString()} */}
+                        {formatWorkDuration(exp.startDate, exp.endDate)}
                       </span>
                     )}
                     {exp.experience && <span>• {exp.experience}</span>}

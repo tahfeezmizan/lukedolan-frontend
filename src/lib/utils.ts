@@ -64,3 +64,33 @@ export function getToken(): string | null {
     return null;
   }
 }
+
+
+export function formatWorkDuration(startDate: string, endDate?: string): string {
+  const start = new Date(startDate);
+  const end = endDate ? new Date(endDate) : new Date();
+
+  // Month names
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  // Format dates
+  const startStr = `${monthNames[start.getMonth()]} ${start.getFullYear()}`;
+  const endStr = endDate ? `${monthNames[end.getMonth()]} ${end.getFullYear()}` : "present";
+
+  // Calculate total months difference
+  const totalMonths =
+    (end.getFullYear() - start.getFullYear()) * 12 +
+    (end.getMonth() - start.getMonth());
+
+  // Convert to years and months
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  // Build duration string
+  let duration = "";
+  if (years > 0) duration += `${years} yr${years > 1 ? "s" : ""}`;
+  if (months > 0) duration += `${years > 0 ? " " : ""}${months} mo${months > 1 ? "s" : ""}`;
+  if (!duration) duration = "Less than a month";
+
+  return `${duration}`;
+}

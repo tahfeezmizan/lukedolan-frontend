@@ -24,7 +24,7 @@ export function NewsletterSection() {
 
       // ✅ Handle success
       if (res?.success) {
-        toast.success(res?.data?.message || "Newsletter created successfully!");
+        toast.success("Thanks for subscribing! Exciting updates are coming your way");
       } else {
         toast.error(res?.message || "Something went wrong. Please try again.");
       }
