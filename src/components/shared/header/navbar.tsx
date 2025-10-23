@@ -2,7 +2,6 @@
 
 "use client";
 
-
 import mainLogo from "@/assets/mian-logo.png";
 import whiteLogo from "@/assets/white-logo.png";
 import { Button } from "@/components/ui/button";
@@ -44,12 +43,13 @@ export function Navbar() {
 
   // 🔹 User from Redux store
   const { user } = useSelector((state: RootState) => state.user);
+
   const { data: userData } = useGetMeQuery(undefined, {
     skip: !user?.accessToken,
   });
 
   const activeRole: UserRole = userData?.role || "guest";
-  const token = user?.accessToken;
+  const token = user?.accessToken || user;
 
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

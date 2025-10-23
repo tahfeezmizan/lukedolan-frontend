@@ -25,8 +25,6 @@ export default function OtpVerify() {
   const email = searchParams.get("email");
   const authType = searchParams.get("authType");
 
-  // console.log(email, authType);
-
   const [verifyUser] = useVerifyUserMutation();
   const [resendOTP] = useResendOTPMutation();
 
@@ -76,19 +74,24 @@ export default function OtpVerify() {
 
       const responseData = res?.data;
 
-      console.log("OTP Verify:", responseData);
-
       if (responseData?.data?.token) {
         const token = responseData.data.token;
-        console.log("Token:::::::", token);
         // ✅ Forgot password flow
         toast.success(
           responseData?.message || "OTP verified, please reset your password"
         );
         route.push(`/set-new-password?token=${token}`);
-      } else if (responseData?.success) {
+      } else if (responseData?.data?.accessToken) {
         // ✅ Normal login flow
-        dispatch(setUser({ data: responseData?.data?.accessToken }));
+        dispatch(
+          setUser({
+            data: {
+              accessToken: responseData?.data?.accessToken,
+              role: responseData?.data?.role,
+            },
+          })
+        );
+
         toast.success("OTP verification successful");
         route.push("/");
       } else {

@@ -43,7 +43,6 @@ export function LoginForm() {
       });
 
       if (res?.data?.success) {
-        // Include the role in the token data for middleware to access
         dispatch(
           setUser({
             data: {
@@ -63,7 +62,7 @@ export function LoginForm() {
             route.push("/recruiter");
             break;
           case "applicant":
-            route.push("/");
+            route.push("/profile");
             break;
           default:
             route.push("/");

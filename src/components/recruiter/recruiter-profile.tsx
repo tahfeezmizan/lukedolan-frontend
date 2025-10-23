@@ -52,8 +52,8 @@ export default function MergedProfileForm() {
   useEffect(() => {
     if (profileData) {
       reset({
-        name: profileData.name || "",
-        email: profileData.email || "",
+        name: userData.name || "",
+        email: userData.email || "",
       });
     }
 
@@ -104,6 +104,10 @@ export default function MergedProfileForm() {
 
   return (
     <div className="space-y-10 max-w-2xl mx-auto">
+      <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+        Personal Details
+      </h3>
+
       {/* === Profile Image Section === */}
       <div className="flex flex-col items-center space-y-4">
         <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
@@ -137,10 +141,6 @@ export default function MergedProfileForm() {
 
       {/* === Personal Info Form === */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-          Personal Details
-        </h3>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="name" className="text-lg text-gray-900">
