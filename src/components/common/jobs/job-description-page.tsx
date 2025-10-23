@@ -1,11 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { parseCookies } from "nookies"; // lightweight cookie parser
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format-date";
 import { useGetSingleJobQuery } from "@/redux/features/jobsApi";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import JobDetail from "./job-details";
+import { jwtDecode } from "jwt-decode";
 
 const jobData = {
   appliedCount: 5,
@@ -24,15 +28,41 @@ const jobData = {
   ],
 };
 
+type TokenPayload = {
+  role?: string;
+};
+
 export default function JobDescriptionPage() {
+  const router = useRouter();
   const { id } = useParams();
   const { data: job } = useGetSingleJobQuery({ id });
 
-  //   console.log("Id", id);
+  useEffect(() => {
+    const cookies = parseCookies();
+    const token = cookies.token || cookies.user;
+
+    if (!token) {
+      // Save the current URL before redirecting to login
+      const currentPath = window.location.pathname;
+      router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode<TokenPayload>(token);
+      if (decoded.role !== "applicant") {
+        const currentPath = window.location.pathname;
+        router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
+      }
+    } catch (err) {
+      const currentPath = window.location.pathname;
+      router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
+    }
+  }, [router]);
 
   const { capacity, requiredSkills } = jobData;
-
   const progressPercentage = (job?.applicationsCount / capacity) * 100;
+
   return (
     <div className="bg-[#EBF1FA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden ">
@@ -48,8 +78,6 @@ export default function JobDescriptionPage() {
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     About this role
                   </h2>
-
-                  {/* Application Progress */}
                   <div className="bg-gray-50 rounded-lg p-4 mb-6">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium text-gray-700">
@@ -63,8 +91,6 @@ export default function JobDescriptionPage() {
                       ></div>
                     </div>
                   </div>
-
-                  {/* Job Details */}
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Apply Before</span>

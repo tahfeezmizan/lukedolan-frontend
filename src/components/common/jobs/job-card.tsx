@@ -1,7 +1,7 @@
 // components/JobCard.tsx
-import companyLogo from "@/assets/company-logo (1).png";
 import { CardContent } from "@/components/ui/card";
 import TimeAgo from "@/lib/time-ago";
+import { getImageUrl } from "@/lib/utils";
 import { RootState } from "@/redux/store";
 import { PostJobFormData } from "@/types/types";
 import { Briefcase, Calendar, CirclePoundSterling, MapPin } from "lucide-react";
@@ -21,7 +21,7 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
     user,
   } = job;
 
-  const { companyName } = user?.profile || {};
+  const { companyName, companyLogo } = user?.profile || {};
 
   const { user: currentUser } = useSelector((state: RootState) => state.user);
   const role = currentUser?.role;
@@ -32,11 +32,11 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
         {/* Left Info */}
         <div>
           <Image
-            src={companyLogo}
+            src={getImageUrl(companyLogo)}
             alt={"image"}
             width={80}
             height={80}
-            className="w-20 h-20b object-contain border p-2 rounded mb-2"
+            className="w-24 h-24 object-contain border p-2 rounded mb-2"
           />
           <h3 className="text-xl font-semibold leading-loose">{title}</h3>
           <p className="text-gray-800">

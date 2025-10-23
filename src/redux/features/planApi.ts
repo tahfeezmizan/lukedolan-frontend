@@ -58,11 +58,32 @@ export const planApi = baseApi.injectEndpoints({
     }),
 
     createCheckoutSession: builder.mutation({
-      query: (body) => ({
-        url: "/plan/create-checkout-session",
+      query: (id: string) => ({
+        url: `/plan/create-checkout-session/${id}`,
         method: "POST",
-        body,
+        // Add headers to ensure JSON response
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }),
+      // Force JSON parsing
+      transformResponse: (response: any) => {
+        // If it's already parsed, return it
+        if (typeof response === "object") return response;
+
+        // If it's a string, try to parse it as JSON
+        if (typeof response === "string") {
+          try {
+            return JSON.parse(response);
+          } catch (e) {
+            console.error("Failed to parse response as JSON:", response);
+            throw e;
+          }
+        }
+
+        return response;
+      },
     }),
 
     // PATCH update plan

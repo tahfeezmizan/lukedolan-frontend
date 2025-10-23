@@ -10,7 +10,7 @@ import { ApiError } from "@/types/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -29,11 +29,15 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>();
-  const route = useRouter();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  // Get the redirect URL from query parameters
+  const redirectUrl = searchParams.get("redirect") || "/profile";
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -54,20 +58,27 @@ export function LoginForm() {
 
         const role = res?.data?.data?.role;
 
-        switch (role) {
-          case "admin":
-            route.push("/admin");
-            break;
-          case "recruiter":
-            route.push("/recruiter");
-            break;
-          case "applicant":
-            route.push("/profile");
-            break;
-          default:
-            route.push("/");
+        // Redirect to the saved URL or role-based default
+        let targetPath = redirectUrl;
+
+        // If no specific redirect was saved, use role-based routing
+        if (redirectUrl === "/profile") {
+          switch (role) {
+            case "admin":
+              targetPath = "/admin";
+              break;
+            case "recruiter":
+              targetPath = "/recruiter";
+              break;
+            case "applicant":
+              targetPath = "/profile";
+              break;
+            default:
+              targetPath = "/";
+          }
         }
 
+        router.push(targetPath);
         toast.success("Login Successful");
       } else if (res?.error) {
         // ✅ type narrowing for FetchBaseQueryError
