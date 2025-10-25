@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
+import { useAddContactMutation } from "@/redux/features/contactApi";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ export default function ContactForm() {
     phone: "",
     message: "",
   });
+
+  const [addContact] = useAddContactMutation();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,9 +29,16 @@ export default function ContactForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Contact form data:", formData);
+
+    try {
+      const res = await addContact(formData).unwrap();
+      console.log("Contact form submitted successfully:", res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
