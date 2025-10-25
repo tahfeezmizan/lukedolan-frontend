@@ -4,11 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { EducationForm } from "./education-form";
 import { PersonalDetailsForm } from "./personal-details-form";
-import { WorkExperienceForm } from "./work-experience-form";
-import { ResumeUpload } from "./resume-upload";
+import { ProfileOthersForm } from "./profile-others-form";
 import { ProfileOverview } from "./profile-overview";
 import ProfileSection from "./profile-section";
-import { ProfileOthersForm } from "./profile-others-form";
+import { ResumeUpload } from "./resume-upload";
+import { WorkExperienceForm } from "./work-experience-form";
 import PortfolioForm from "./portfolio-form";
 
 export default function ProfilePage() {
@@ -97,7 +97,7 @@ export default function ProfilePage() {
             value="others"
             className="bg-white rounded-lg p-8 shadow-none border-none"
           >
-            <ProfileOthersForm />
+            <PortfolioForm />
           </TabsContent>
         </Tabs>
       </div>

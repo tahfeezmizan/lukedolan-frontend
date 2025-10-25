@@ -8,8 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { UploadCloud, X } from "lucide-react";
 import Image from "next/image";
+import { useAddPortfolioMutation } from "@/redux/features/userApi";
+import { toast } from "sonner";
+import { ApiResponse } from "@/types/profileTypes";
+import { ApiError } from "@/types/types";
 
-type PortfolioFormData = {
+type PortfolioData = {
   title: string;
   description: string;
   images: File[];
@@ -17,20 +21,45 @@ type PortfolioFormData = {
 
 export default function PortfolioForm() {
   const { register, handleSubmit, reset, setValue, watch } =
-    useForm<PortfolioFormData>({
+    useForm<PortfolioData>({
       defaultValues: { images: [] },
     });
 
+  const [addPortfolio] = useAddPortfolioMutation();
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
-  const onSubmit = (data: PortfolioFormData) => {
-    console.log({
-      title: data.title,
-      description: data.description,
-      images: data.images.map((file) => file),
-    });
-    reset();
-    setPreviewImages([]);
+  const onSubmit = async (data: PortfolioData) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+
+    // Check if images exist and are proper files
+    if (data.images && data.images.length > 0) {
+      data.images.forEach((file, index) => {
+        console.log(`File ${index}:`, file);
+        console.log(`File ${index} type:`, typeof file);
+        console.log(`File ${index} instanceof File:`, file instanceof File);
+        formData.append("portfolio", file);
+      });
+    }
+
+    try {
+      const res = (await addPortfolio({ body: formData })) as {
+        data?: ApiResponse;
+        error?: ApiError;
+      };
+
+      if (res.data?.success) {
+        toast.success("Portfolio has been successfully added.");
+      } else {
+        toast.error(res.error?.data?.message || "Something went wrong");
+      }
+      console.log("Response:", res);
+      reset();
+      setPreviewImages([]);
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

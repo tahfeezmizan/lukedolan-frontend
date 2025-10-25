@@ -3,11 +3,12 @@ import { baseApi } from "./baseApi";
 const contactApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getContacts: builder.query({
-      query: () => "/contacts",
+      query: () => "/public/contact/all",
     }),
+
     addContact: builder.mutation({
       query: (newContact) => ({
-        url: "/contacts",
+        url: "/public/contact",
         method: "POST",
         body: newContact,
       }),

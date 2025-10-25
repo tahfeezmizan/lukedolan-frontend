@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
 import { useAddContactMutation } from "@/redux/features/contactApi";
+import { toast } from "sonner";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -31,11 +32,16 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Contact form data:", formData);
 
     try {
       const res = await addContact(formData).unwrap();
-      console.log("Contact form submitted successfully:", res);
+
+      if (res.success) {
+        toast.success("Thanks for contacting us! We’ll respond soon.");
+      } else {
+        console.log(res.data?.message);
+        toast.error("❌ Job creation failed");
+      }
     } catch (error) {
       console.log(error);
     }

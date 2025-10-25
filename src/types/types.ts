@@ -33,6 +33,13 @@ export type Education = {
   [key: string]: any;
 };
 
+export interface PortfolioData {
+  title: string;
+  description: string;
+  images: File[];
+  imageUrls: string[]; // For displaying existing images from server
+}
+
 export interface TalentProps {
   // Core display fields
   id: string;
