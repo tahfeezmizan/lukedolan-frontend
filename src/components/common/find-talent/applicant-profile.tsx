@@ -14,17 +14,7 @@ import ApplicantPortfolio from "./applicant-portfolio";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
-  const { data: talent } = useGetSingleTalentQuery(id);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "profile";
-
-  const handleTabChange = (value: string) => {
-    router.push(`/profile?tab=${value}`);
-  };
-
-  console.log("talent", talent);
+  const { data: talent } = useGetSingleTalentQuery(id);  
 
   return (
     <section className=" px-4 bg-slate-50">
@@ -166,7 +156,7 @@ export default function ApplicantProfile() {
                 <TabsTrigger value="resume">Resume</TabsTrigger>
               </TabsList>
               <TabsContent value="portfolio">
-                <ApplicantPortfolio />
+                <ApplicantPortfolio data={talent} key={talent?._id} />
               </TabsContent>
               <TabsContent value="resume">
                 <ApplicantResume data={talent} key={talent?._id} />

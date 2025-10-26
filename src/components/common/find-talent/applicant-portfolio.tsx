@@ -1,14 +1,66 @@
-import React from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import LoadingSpinner from "@/lib/loading-spinner";
+import { getImageUrl } from "@/lib/utils";
+import { Portfolio, UserData } from "@/types/profileTypes";
+import Image from "next/image";
 
-export default function ApplicantPortfolio() {
+export default function ApplicantPortfolio({
+  data,
+}: {
+  data: UserData | undefined;
+}) {
+  const portfolios = data?.profile?.portfolio;
+
+  console.log("Portfolio", portfolios);
+
+  if (!portfolios) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <div className="grid grid-cols-3 gap-6">
-      {Array.from({ length: 6 }).map((_, index) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {portfolios?.map((item: Portfolio, index: number) => (
         <div
           key={index}
-          className="w-64 h-64 bg-gray-200 flex items-center justify-center rounded-lg shadow-md"
+          className="rounded-2xl border border-gray-200 transition-all group relative overflow-hidden"
         >
-          <p className="text-gray-600 text-lg font-medium">Item {index + 1}</p>
+          {/* --- Carousel --- */}
+          <div className="relative">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {item.portfolioImages?.map((img: string, i: number) => (
+                  <CarouselItem key={i} className="relative aspect-[4/3]">
+                    <Image
+                      src={getImageUrl(img)}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+
+              {/* Show arrows only on hover */}
+              <CarouselPrevious className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute left-2 top-1/2 -translate-y-1/2 z-10" />
+              <CarouselNext className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute right-2 top-1/2 -translate-y-1/2 z-10" />
+            </Carousel>
+          </div>
+
+          {/* --- Content --- */}
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {item.title}
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {item.description}
+            </p>
+          </div>
         </div>
       ))}
     </div>

@@ -243,8 +243,8 @@ export function Navbar() {
                                   userData?.image
                               )}
                               alt={userData?.name}
-                              width={40}
-                              height={40}
+                              width={1000}
+                              height={1000}
                               className="w-10 h-10 rounded-full"
                             />
                           ) : (

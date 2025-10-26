@@ -1,3 +1,20 @@
+export interface UserData {
+  companyName: string;
+  createdAt: string;
+  email: string;
+  image: string;
+  name: string;
+  profile?: Profile;
+  role: string;
+  roleProfile: string;
+  status: string;
+  subscribe: boolean;
+  updatedAt: string;
+  verified: boolean;
+  __v: number;
+  _id: string;
+}
+
 export interface WorkExperience {
   jobTitle: string;
   companyName: string;
@@ -43,7 +60,7 @@ export interface Profile {
   salaryExpectation: string | null;
   skills: string[];
   expartes: string[];
-
+  portfolio?: Portfolio[];
   streetAddress: string;
   updatedAt: string;
   userId: string;
@@ -53,21 +70,11 @@ export interface Profile {
   __v: number;
 }
 
-export interface UserData {
-  companyName: string;
-  createdAt: string;
-  email: string;
-  image: string;
-  name: string;
-  profile?: Profile;
-  role: string;
-  roleProfile: string;
-  status: string;
-  subscribe: boolean;
-  updatedAt: string;
-  verified: boolean;
-  __v: number;
-  _id: string;
+export interface Portfolio {
+  title: string;
+  description: string;
+  images: File[];
+  portfolioImages?: string[];
 }
 
 export interface ApiResponse {
