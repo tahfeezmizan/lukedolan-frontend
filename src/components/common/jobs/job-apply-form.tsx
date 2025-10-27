@@ -3,7 +3,9 @@
 import { useApplyJobMutation } from "@/redux/features/application";
 import { ApiResponse } from "@/types/profileTypes";
 import { ApiError, JobApplyFormInputs } from "@/types/types";
+import { Loader } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -15,7 +17,7 @@ export default function JobApplyForm() {
   const jobTitle = decodeURIComponent(id as string);
   const jobSlug: string = Array.isArray(slug) ? slug[0] : slug ?? "";
 
-  const [applyJob] = useApplyJobMutation();
+  const [applyJob, { isLoading }] = useApplyJobMutation();
 
   const {
     register,
@@ -50,7 +52,13 @@ export default function JobApplyForm() {
         toast.success("Job application submitted successfully!");
         route.push("/profile/applied-jobs");
       } else {
-        toast.error(res.error?.data?.message || "Something went wrong");
+        const errorMessage = res.error?.data?.message;
+
+        toast.error(errorMessage || "Something went wrong");
+
+        if (errorMessage === "Please complete your profile first!") {
+          route.push("/profile");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -178,7 +186,7 @@ export default function JobApplyForm() {
             <input
               type="number"
               id="experience"
-              placeholder="2"
+              placeholder="Enter your professional experience."
               {...register("experience", {
                 required: "Experience is required",
                 min: {
@@ -228,9 +236,14 @@ export default function JobApplyForm() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-green-700 hover:bg-green-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200"
+            disabled={isLoading}
+            className="flex items-center justify-center w-full bg-green-700 hover:bg-green-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200"
           >
-            Submit Now
+            {isLoading ? (
+              <Loader className="animate-spin size-8 " />
+            ) : (
+              "Submit Now"
+            )}
           </button>
         </form>
       </div>

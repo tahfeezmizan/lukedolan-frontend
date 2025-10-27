@@ -25,8 +25,8 @@ export const userSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", action.payload.data?.accessToken);
         // Set the token in the 'user' cookie that middleware expects
-        Cookies.set("user", action.payload.data);
-        Cookies.set("token", action.payload.data?.accessToken);
+        Cookies.set("user", action.payload.data );
+        Cookies.set("token", action.payload.data?.accessToken || action.payload.data);
       }
     },
     removeUser: (state) => {
@@ -36,6 +36,7 @@ export const userSlice = createSlice({
         localStorage.removeItem("email");
         Cookies.remove("accessToken");
         Cookies.remove("user");
+        Cookies.remove("token");
       }
     },
   },

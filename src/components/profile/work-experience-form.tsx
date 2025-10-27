@@ -5,6 +5,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formatWorkDuration } from "@/lib/utils";
 import {
   useGetMeQuery,
   useUpdateProfileMutation,
@@ -269,7 +270,6 @@ export function WorkExperienceForm() {
     }
   };
 
-
   const handleDeleteExperience = async (index: number) => {
     console.log("handleDeleteExperience called with index:", index);
     console.log("Current workExperiences length:", workExperiences.length);
@@ -427,9 +427,9 @@ export function WorkExperienceForm() {
             workExperience: altWorkExperience,
           });
 
-          const altResponse = await updateProfile({
-            body: { workExperience: altWorkExperience },
-          }).unwrap();
+          // const altResponse = await updateProfile({
+          //   body: { workExperience: altWorkExperience },
+          // }).unwrap();
 
           toast.success("Work experience saved with alternative format!");
           await refetch();
@@ -454,9 +454,9 @@ export function WorkExperienceForm() {
             work_experience: workExp,
           });
 
-          const altResponse2 = await updateProfile({
-            body: { work_experience: workExp },
-          }).unwrap();
+          // const altResponse2 = await updateProfile({
+          //   body: { work_experience: workExp },
+          // }).unwrap();
 
           toast.success("Work experience saved with work_experience key!");
           await refetch();
@@ -616,6 +616,7 @@ export function WorkExperienceForm() {
               Experience
             </Label>
             <Input
+              type="number"
               id="experience"
               value={formData.experience}
               onChange={(e) => handleInputChange("experience", e.target.value)}
@@ -719,7 +720,11 @@ export function WorkExperienceForm() {
                           {new Date(experience.endDate).toLocaleDateString()}
                         </span>
                         <span>
-                          <strong>Experience:</strong> {experience.experience}
+                          <strong>Experience:</strong>{" "}
+                          {formatWorkDuration(
+                            experience.startDate,
+                            experience.endDate
+                          )}
                         </span>
                       </div>
                     </div>

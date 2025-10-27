@@ -207,7 +207,7 @@ export function ResumeUpload({ currentResume }: Props) {
         <div className="space-y-4">
           {/* Upload area */}
           <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200 ${
+            className={`border border-dashed rounded-lg p-8 text-center transition-all duration-200 ${
               dragOver
                 ? "border-blue-400 bg-blue-50"
                 : isLoading

@@ -6,7 +6,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
+import { ArrowRight, Facebook, Instagram, Loader, Twitter } from "lucide-react";
+import { useAddContactMutation } from "@/redux/features/contactApi";
+import { toast } from "sonner";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ export default function ContactForm() {
     phone: "",
     message: "",
   });
+
+  const [addContact, { isLoading }] = useAddContactMutation();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,9 +30,21 @@ export default function ContactForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Contact form data:", formData);
+
+    try {
+      const res = await addContact(formData).unwrap();
+
+      if (res.success) {
+        toast.success("Thanks for contacting us! We’ll respond soon.");
+      } else {
+        console.log(res.data?.message);
+        toast.error("❌ Job creation failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -132,10 +148,17 @@ export default function ContactForm() {
 
             <Button
               type="submit"
-              className="bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg flex items-center gap-2"
+              className="w-72 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg flex items-center gap-2"
             >
-              Leave us a Message
-              <ArrowRight size={18} />
+              {isLoading ? (
+                <Loader className="animate-spin size-8" />
+              ) : (
+                <>
+                  {" "}
+                  Leave us a Message
+                  <ArrowRight size={18} />
+                </>
+              )}
             </Button>
           </form>
 

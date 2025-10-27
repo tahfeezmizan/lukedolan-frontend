@@ -10,8 +10,6 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
 
   const { companyName, companyLogo } = user?.profile || {};
 
-  console.log(companyLogo);
-
   return (
     <div key={_id} className="rounded-lg overflow-hidden bg-white  p-5">
       <div className="flex justify-between items-start mb-8">

@@ -3,23 +3,23 @@
 import CreateChatModal from "@/components/profile/createChatModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getImageUrl } from "@/lib/utils";
 import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
 import { CircleUserRound, Mail } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import ApplicantPortfolio from "./applicant-portfolio";
 import { ApplicantResume } from "./applicant-resume";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();
-  const { data: talent } = useGetSingleTalentQuery(id);
-
-  console.log("talent", talent);
+  const { data: talent } = useGetSingleTalentQuery(id);  
 
   return (
-    <section className=" px-4 bg-slate-100">
+    <section className=" px-4 bg-slate-50">
       <div className="max-w-7xl mx-auto py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-10 ">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-6 ">
           {/* Left Column - Profile Card */}
           <div className="col-auto md:col-span-1 bg-white p-6 rounded-lg overflow-hidden">
             {/* Profile Header */}
@@ -60,8 +60,8 @@ export default function ApplicantProfile() {
             </div>
 
             {/* Contact */}
-            <div className="mb-4">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
                 Contact
               </h4>
               <div className="flex gap-3">
@@ -81,29 +81,9 @@ export default function ApplicantProfile() {
               </div>
             </div>
 
-            {/* Languages */}
-            {talent?.profile?.languages?.length > 0 ? (
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Languages
-                </h4>
-                <ul className="space-y-2">
-                  {talent.profile.languages
-                    .map(
-                      (lang: string) =>
-                        lang.trim().charAt(0).toUpperCase() +
-                        lang.trim().slice(1)
-                    )
-                    .join(", ") || "No languages listed"}
-                </ul>
-              </div>
-            ) : (
-              ""
-            )}
-
             {/* Bio */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Bio</h4>
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Bio</h4>
               <p className="text-gray-700 leading-relaxed text-justify text-sm">
                 {talent?.profile?.bio}
               </p>
@@ -111,15 +91,18 @@ export default function ApplicantProfile() {
 
             {/* Salary Expectations */}
             {talent?.profile?.salaryExpectation ? (
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="mb-4">
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">
                   Salary Expectations
                 </h4>
-                <p className="text-2xl font-bold text-gray-900">
+
+                <p className="text-lg text-gray-900">
+                  <span>£</span>
                   {talent?.profile?.salaryExpectation &&
                   talent?.profile?.salaryExpectation?.length > 0
                     ? talent?.profile?.salaryExpectation
                     : "No skills listed"}
+                  <span>/hr</span>
                 </p>
               </div>
             ) : (
@@ -127,8 +110,8 @@ export default function ApplicantProfile() {
             )}
 
             {/* Skills */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
                 Skills
               </h4>
               <ul className="space-y-2">
@@ -141,11 +124,44 @@ export default function ApplicantProfile() {
                   : "No Expectations"}
               </ul>
             </div>
+
+            <div className="mb-4">
+              {/* Languages */}
+              {talent?.profile?.languages?.length > 0 ? (
+                <div className="">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    Languages
+                  </h4>
+                  <ul className="space-y-2">
+                    {talent.profile.languages
+                      .map(
+                        (lang: string) =>
+                          lang.trim().charAt(0).toUpperCase() +
+                          lang.trim().slice(1)
+                      )
+                      .join(", ") || "No languages listed"}
+                  </ul>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
 
           {/* Right Column - Resume/CV */}
           <div className="col-span-2 space-y-6 bg-white p-8 rounded-lg overflow-hidden">
-            <ApplicantResume data={talent} key={talent?._id} />
+            <Tabs defaultValue="portfolio">
+              <TabsList className="mb-6">
+                <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
+                <TabsTrigger value="resume">Resume</TabsTrigger>
+              </TabsList>
+              <TabsContent value="portfolio">
+                <ApplicantPortfolio data={talent} key={talent?._id} />
+              </TabsContent>
+              <TabsContent value="resume">
+                <ApplicantResume data={talent} key={talent?._id} />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>

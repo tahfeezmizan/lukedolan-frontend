@@ -8,6 +8,8 @@ export default function CompanyProfile() {
   const { data } = useGetMeQuery(undefined);
   const profileData = data?.profile;
 
+  console.log(data)
+
   // console.log("Active", profileData);
   return (
     <div className="bg-white rounded-lg shadow-sm p-8">

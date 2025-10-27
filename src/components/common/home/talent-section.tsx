@@ -9,7 +9,6 @@ import Link from "next/link";
 
 export function TalentSection() {
   const { data: talent, isLoading } = useGetAllTalentQuery("");
-  console.log("All Talent", talent);
 
   return (
     <section className="bg-[#EBF1FA] py-20">

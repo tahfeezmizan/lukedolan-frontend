@@ -130,6 +130,19 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
+AddPortfolio: builder.mutation({
+  query: ({ body }) => {
+    console.log("Add Portfolio body type:", body);
+    return {
+      url: "/user/applicants/portfolio",
+      method: "POST",
+      body,
+      // Don't set Content-Type header for FormData
+      // The browser will set it automatically with boundary
+    };
+  },
+}),
+
     /** ======================
      *  EDUCATION
      * =====================*/
@@ -152,6 +165,7 @@ export const {
   useGetMeQuery,
   useGetAllTalentQuery,
   useGetAllUserQuery,
+  useAddPortfolioMutation,
   useUpdateProfileMutation,
   useDeleteWorkExperienceMutation,
   useDeleteEducationMutation,

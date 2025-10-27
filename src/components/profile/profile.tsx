@@ -4,11 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { EducationForm } from "./education-form";
 import { PersonalDetailsForm } from "./personal-details-form";
-import { WorkExperienceForm } from "./work-experience-form";
-import { ResumeUpload } from "./resume-upload";
+import { ProfileOthersForm } from "./profile-others-form";
 import { ProfileOverview } from "./profile-overview";
 import ProfileSection from "./profile-section";
-import { ProfileOthersForm } from "./profile-others-form";
+import { ResumeUpload } from "./resume-upload";
+import { WorkExperienceForm } from "./work-experience-form";
+import PortfolioForm from "./portfolio-form";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function ProfilePage() {
           onValueChange={handleTabChange}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-6 bg-white mb-8 ">
+          <TabsList className="grid w-full grid-cols-3  md:grid-cols-7 bg-white mb-8 ">
             <TabsTrigger value="profile" className="cursor-pointer">
               Over View
             </TabsTrigger>
@@ -43,6 +44,9 @@ export default function ProfilePage() {
             </TabsTrigger>
             <TabsTrigger value="work-experience" className="cursor-pointer">
               Work Experience
+            </TabsTrigger>
+            <TabsTrigger value="portfolio" className="cursor-pointer">
+              Portfolio
             </TabsTrigger>
             <TabsTrigger value="others" className="cursor-pointer">
               Others
@@ -82,6 +86,12 @@ export default function ProfilePage() {
             className="bg-white rounded-lg p-8 shadow-none border-none"
           >
             <WorkExperienceForm />
+          </TabsContent>
+          <TabsContent
+            value="portfolio"
+            className="bg-white rounded-lg p-8 shadow-none border-none"
+          >
+            <PortfolioForm />
           </TabsContent>
           <TabsContent
             value="others"

@@ -31,7 +31,6 @@ export default function Subscription() {
 
   // Safely extract plans and meta
   const planData = data?.plans ?? [];
-  const meta = data?.meta;
 
   const [createPlan] = useCreatePlanMutation();
   type DurationType = "1 month" | "3 months" | "6 months" | "1 year";
@@ -46,7 +45,6 @@ export default function Subscription() {
     "1 month" | "3 months" | "6 months" | "1 year"
   >("1 month");
   const [newFeatures, setNewFeatures] = useState("");
-
 
   // Determine paymentType dynamically
   const getPaymentType = (duration: string) =>
