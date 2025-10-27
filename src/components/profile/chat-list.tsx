@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Input } from "@/components/ui/input";
+import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
 import { useGetChatsQuery } from "@/redux/features/chatAPI";
 import { useGetMeQuery } from "@/redux/features/userApi";
@@ -8,7 +9,7 @@ import { CircleUserRound, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 export default function ChatList() {
@@ -262,7 +263,7 @@ export default function ChatList() {
   }
 
   if (isLoading) {
-    return <div className="p-4">Loading chats...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -335,9 +336,9 @@ export default function ChatList() {
                           <Image
                             src={getImageUrl(participant?.image)}
                             alt={participant?.name || "Chat"}
-                            width={40}
-                            height={40}
-                            className="rounded-full"
+                            width={1000}
+                            height={1000}
+                            className="rounded-full w-10 h-10"
                           />
                         ) : (
                           <CircleUserRound className="size-11" />

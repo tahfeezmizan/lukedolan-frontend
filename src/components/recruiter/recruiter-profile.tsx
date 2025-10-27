@@ -96,7 +96,7 @@ export default function MergedProfileForm() {
         toast.error(res?.data?.message || "Failed to update profile");
       }
     } catch (error) {
-      toast.error("Error updating profile");
+      toast.error(error?.toString() || "Error updating profile");
     }
   };
 

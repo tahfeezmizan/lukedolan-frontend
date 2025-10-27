@@ -54,7 +54,7 @@ export default function JobDescriptionPage() {
         const currentPath = window.location.pathname;
         router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
       }
-    } catch (err) {
+    } catch {
       const currentPath = window.location.pathname;
       router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
     }

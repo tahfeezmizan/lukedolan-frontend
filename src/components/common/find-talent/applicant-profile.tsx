@@ -3,14 +3,14 @@
 import CreateChatModal from "@/components/profile/createChatModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getImageUrl } from "@/lib/utils";
 import { useGetSingleTalentQuery } from "@/redux/features/talentApi";
 import { CircleUserRound, Mail } from "lucide-react";
 import Image from "next/image";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { ApplicantResume } from "./applicant-resume";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useParams } from "next/navigation";
 import ApplicantPortfolio from "./applicant-portfolio";
+import { ApplicantResume } from "./applicant-resume";
 
 export default function ApplicantProfile() {
   const { id }: { id: string } = useParams();

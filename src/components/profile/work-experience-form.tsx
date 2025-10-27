@@ -427,9 +427,9 @@ export function WorkExperienceForm() {
             workExperience: altWorkExperience,
           });
 
-          const altResponse = await updateProfile({
-            body: { workExperience: altWorkExperience },
-          }).unwrap();
+          // const altResponse = await updateProfile({
+          //   body: { workExperience: altWorkExperience },
+          // }).unwrap();
 
           toast.success("Work experience saved with alternative format!");
           await refetch();
@@ -454,9 +454,9 @@ export function WorkExperienceForm() {
             work_experience: workExp,
           });
 
-          const altResponse2 = await updateProfile({
-            body: { work_experience: workExp },
-          }).unwrap();
+          // const altResponse2 = await updateProfile({
+          //   body: { work_experience: workExp },
+          // }).unwrap();
 
           toast.success("Work experience saved with work_experience key!");
           await refetch();

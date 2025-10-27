@@ -23,9 +23,18 @@ export default function ApplicantPortfolio({
     return <LoadingSpinner />;
   }
 
+  // ✅ If array is empty, show "No data available"
+  if (portfolios.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-10 text-gray-500 text-sm">
+        No data available
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {portfolios?.map((item: Portfolio, index: number) => (
+      {portfolios.map((item: Portfolio, index: number) => (
         <div
           key={index}
           className="rounded-2xl border border-gray-200 transition-all group relative overflow-hidden"

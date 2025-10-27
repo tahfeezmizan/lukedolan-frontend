@@ -17,6 +17,7 @@ import {
   useDeletePlanMutation,
   useUpdatePlanMutation,
 } from "@/redux/features/planApi";
+import { Loader } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -38,7 +39,6 @@ export function PricingCard({
   price,
   duration,
   features,
-  paymentLink,
   onDeleted,
 }: PricingCardProps) {
   const pathName = usePathname();
@@ -52,8 +52,9 @@ export function PricingCard({
   console.log(_id);
 
   const [updatePlan] = useUpdatePlanMutation();
-  const [deletePlan] = useDeletePlanMutation();
-  const [createCheckoutSession] = useCreateCheckoutSessionMutation();
+  const [deletePlan, { isLoading: isDeleteLoading }] = useDeletePlanMutation();
+  const [createCheckoutSession, { isLoading }] =
+    useCreateCheckoutSessionMutation();
 
   const handleCheckout = async () => {
     try {
@@ -209,7 +210,11 @@ export function PricingCard({
               onClick={handleDelete}
               className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 hover:text-white hover:bg-green-900 duration-300"
             >
-              Delete
+              {isDeleteLoading ? (
+                <Loader className="animate-spin size-8" />
+              ) : (
+                "Delete"
+              )}
             </Button>
           </div>
         ) : (
@@ -217,7 +222,11 @@ export function PricingCard({
             onClick={() => handleCheckout()}
             className="w-full px-8 py-6 text-lg font-medium rounded-lg border border-gray-300 bg-transparent text-gray-700 hover:text-white hover:bg-green-900 duration-300"
           >
-            Get Started
+            {isLoading ? (
+              <Loader className="animate-spin size-8" />
+            ) : (
+              "Get Started"
+            )}
           </Button>
         )}
       </CardContent>

@@ -49,32 +49,27 @@ export function PersonalDetailsForm() {
 
   console.log("Profile data:", profileData);
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm<EssentialPersonalData>({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
+  const { register, handleSubmit, control, reset } =
+    useForm<EssentialPersonalData>({
+      defaultValues: {
+        firstName: "",
+        lastName: "",
 
-      mobile: "",
-      dateOfBirth: "",
-      gender: "",
-      streetAddress: "",
-      city: "",
-      country: "",
-      citizenship: "",
-      yearsOfExperience: "",
-      landLine: "",
-      zipCode: "",
-      maritalStatus: "",
-      age: profileData?.age ? Number(profileData.age) : undefined,
-      province: "",
-    },
-  });
+        mobile: "",
+        dateOfBirth: "",
+        gender: "",
+        streetAddress: "",
+        city: "",
+        country: "",
+        citizenship: "",
+        yearsOfExperience: "",
+        landLine: "",
+        zipCode: "",
+        maritalStatus: "",
+        age: profileData?.age ? Number(profileData.age) : undefined,
+        province: "",
+      },
+    });
 
   // ✅ Set form values when user data is loaded (Bio fix included)
   useEffect(() => {

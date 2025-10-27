@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
+import { ArrowRight, Facebook, Instagram, Loader, Twitter } from "lucide-react";
 import { useAddContactMutation } from "@/redux/features/contactApi";
 import { toast } from "sonner";
 
@@ -18,7 +18,7 @@ export default function ContactForm() {
     message: "",
   });
 
-  const [addContact] = useAddContactMutation();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -148,10 +148,17 @@ export default function ContactForm() {
 
             <Button
               type="submit"
-              className="bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg flex items-center gap-2"
+              className="w-72 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-lg font-medium rounded-lg flex items-center gap-2"
             >
-              Leave us a Message
-              <ArrowRight size={18} />
+              {isLoading ? (
+                <Loader className="animate-spin size-8" />
+              ) : (
+                <>
+                  {" "}
+                  Leave us a Message
+                  <ArrowRight size={18} />
+                </>
+              )}
             </Button>
           </form>
 

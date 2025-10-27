@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -15,7 +17,11 @@ import {
 } from "@/redux/features/userApi";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
-import { ApiResponse, Portfolio } from "@/types/profileTypes";
+import {
+  ApiResponse,
+  Portfolio,
+  PortfolioApiResponse,
+} from "@/types/profileTypes";
 import { ApiError } from "@/types/types";
 import { getImageUrl } from "@/lib/utils";
 
@@ -29,8 +35,10 @@ export default function PortfolioForm() {
     refetch,
     isLoading: isUserLoading,
   } = useGetMeQuery("");
-  const [addPortfolio, { isLoading: isAddingPortfolio }] = useAddPortfolioMutation();
-  const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
+  const [addPortfolio, { isLoading: isAddingPortfolio }] =
+    useAddPortfolioMutation();
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateProfileMutation();
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -39,12 +47,14 @@ export default function PortfolioForm() {
   // ✅ Load user's existing portfolio data
   useEffect(() => {
     if (userData?.profile?.portfolio) {
-      const portfolioList = userData.profile.portfolio.map((p: any) => ({
-        title: p.title || "",
-        description: p.description || "",
-        images: [],
-        portfolioImages: p.portfolioImages || [],
-      }));
+      const portfolioList = userData.profile.portfolio.map(
+        (p: PortfolioApiResponse) => ({
+          title: p.title || "",
+          description: p.description || "",
+          images: [],
+          portfolioImages: p.portfolioImages || [],
+        })
+      );
       setPortfolios(portfolioList);
     }
   }, [userData]);
@@ -272,8 +282,10 @@ export default function PortfolioForm() {
               isUpdatingProfile ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <Save className="w-4 h-4 mr-2" /> 
-            {isUpdatingProfile ? "Saving All Portfolios..." : "Save All Portfolios"}
+            <Save className="w-4 h-4 mr-2" />
+            {isUpdatingProfile
+              ? "Saving All Portfolios..."
+              : "Save All Portfolios"}
           </Button>
         </div>
       </form>
