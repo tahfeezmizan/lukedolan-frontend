@@ -97,7 +97,7 @@ export default function ProfilePage() {
             value="others"
             className="bg-white rounded-lg p-8 shadow-none border-none"
           >
-            <PortfolioForm />
+            <ProfileOthersForm />
           </TabsContent>
         </Tabs>
       </div>

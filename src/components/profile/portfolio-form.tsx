@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { UploadCloud, X, Edit, Trash2, Save } from "lucide-react";
+import { UploadCloud, X, Trash2, Save } from "lucide-react";
 import Image from "next/image";
 import {
   useAddPortfolioMutation,
@@ -20,25 +20,22 @@ import { ApiError } from "@/types/types";
 import { getImageUrl } from "@/lib/utils";
 
 export default function PortfolioForm() {
-  const { register, handleSubmit, reset, setValue, watch } = useForm<Portfolio>(
-    {
-      defaultValues: { images: [] },
-    }
-  );
+  const { register, handleSubmit, reset, setValue } = useForm<Portfolio>({
+    defaultValues: { images: [] },
+  });
 
   const {
     data: userData,
     refetch,
     isLoading: isUserLoading,
   } = useGetMeQuery("");
-  const [addPortfolio] = useAddPortfolioMutation();
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [addPortfolio, { isLoading: isAddingPortfolio }] = useAddPortfolioMutation();
+  const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  console.log("portfolios", portfolios);
   // ✅ Load user's existing portfolio data
   useEffect(() => {
     if (userData?.profile?.portfolio) {
@@ -56,111 +53,40 @@ export default function PortfolioForm() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const currentFiles = watch("images") || [];
-      const updatedFiles = [...currentFiles, ...Array.from(files)];
-      const previews = updatedFiles.map((file) => URL.createObjectURL(file));
+      const newFiles = Array.from(files);
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
 
-      setPreviewImages(previews);
+      // Combine with existing previews and files
+      const updatedPreviews = [...previewImages, ...newPreviews];
+      const updatedFiles = [...uploadedFiles, ...newFiles];
+
+      setPreviewImages(updatedPreviews);
+      setUploadedFiles(updatedFiles);
       setValue("images", updatedFiles);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    const currentFiles = watch("images") || [];
-    const updatedFiles = currentFiles.filter((_, i) => i !== index);
     const updatedPreviews = previewImages.filter((_, i) => i !== index);
+    const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
 
-    setValue("images", updatedFiles);
     setPreviewImages(updatedPreviews);
+    setUploadedFiles(updatedFiles);
+    setValue("images", updatedFiles);
   };
 
-  // ✅ Submit handler (Add or Update)
-  // const onSubmit = async (data: Portfolio) => {
-  //   const formData = new FormData();
-  //   formData.append("title", data.title);
-  //   formData.append("description", data.description);
-
-  //   if (data.images && data.images.length > 0) {
-  //     data.images.forEach((file) => formData.append("portfolio", file));
-  //   }
-
-  //   try {
-  //     // Add new portfolio via API
-  //     const res = (await addPortfolio({ body: formData })) as {
-  //       data?: ApiResponse;
-  //       error?: ApiError;
-  //     };
-
-  //     if (res.data?.success) {
-  //       toast.success("Portfolio added successfully!");
-  //       await refetch();
-  //     } else {
-  //       toast.error(res.error?.data?.message || "Something went wrong");
-  //     }
-
-  //     reset();
-  //     setPreviewImages([]);
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //     toast.error("Failed to add portfolio");
-  //   }
-  // };
-
-  // ✅ Submit handler (Add or Update)
+  // ✅ Submit handler (Add new portfolio only)
   const onSubmit = async (data: Portfolio) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
 
-    if (data.images && data.images.length > 0) {
-      data.images.forEach((file) => formData.append("portfolio", file));
+    if (uploadedFiles.length > 0) {
+      uploadedFiles.forEach((file) => formData.append("portfolio", file));
     }
 
     try {
-      // --- CASE 1: UPDATE existing portfolio ---
-      if (editingIndex !== null) {
-        const res = (await addPortfolio({ body: formData })) as {
-          data?: ApiResponse;
-          error?: ApiError;
-        };
-
-        if (res.data?.success) {
-          // get new image URLs from API
-          const uploadedImages =
-            res.data?.data?.portfolioImages || res.data?.data || [];
-
-          const updatedPortfolios = [...portfolios];
-          const existing = updatedPortfolios[editingIndex];
-
-          updatedPortfolios[editingIndex] = {
-            ...existing,
-            title: data.title,
-            description: data.description,
-            // merge existing + new uploaded images
-            portfolioImages: [
-              ...(existing.portfolioImages || []),
-              ...(uploadedImages || []),
-            ],
-          };
-
-          setPortfolios(updatedPortfolios);
-
-          await updateProfile({
-            body: { portfolio: updatedPortfolios },
-          }).unwrap();
-          toast.success("Portfolio updated successfully!");
-          await refetch();
-        } else {
-          toast.error(res.error?.data?.message || "Failed to update portfolio");
-        }
-
-        reset();
-        setPreviewImages([]);
-        setEditingIndex(null);
-        return;
-      }
-
-      // --- CASE 2: ADD new portfolio ---
+      // Add new portfolio
       const res = (await addPortfolio({ body: formData })) as {
         data?: ApiResponse;
         error?: ApiError;
@@ -168,27 +94,21 @@ export default function PortfolioForm() {
 
       if (res.data?.success) {
         toast.success("Portfolio added successfully!");
+
+        // Refetch user data to get the updated portfolio with proper images
         await refetch();
+
+        // Reset form
+        reset();
+        setPreviewImages([]);
+        setUploadedFiles([]);
       } else {
         toast.error(res.error?.data?.message || "Something went wrong");
       }
-
-      reset();
-      setPreviewImages([]);
     } catch (error) {
       console.log("Error:", error);
-      toast.error("Failed to process portfolio");
+      toast.error("Failed to add portfolio");
     }
-  };
-
-  // ✅ Edit portfolio
-  const handleEditPortfolio = (index: number) => {
-    const p = portfolios[index];
-    setValue("title", p.title);
-    setValue("description", p.description);
-    setPreviewImages(p.portfolioImages || []);
-    setEditingIndex(index);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // ✅ Delete portfolio
@@ -234,11 +154,18 @@ export default function PortfolioForm() {
     }
   };
 
-  // ✅ Cancel edit
-  const handleCancelEdit = () => {
-    setEditingIndex(null);
-    reset();
-    setPreviewImages([]);
+  // ✅ Helper function to determine image source
+  const getImageSource = (src: string) => {
+    // If it's a blob URL (newly uploaded image), use it directly
+    if (src.startsWith("blob:")) {
+      return src;
+    }
+    // If it's already a full URL, use it as is
+    if (src.startsWith("http")) {
+      return src;
+    }
+    // If it's a stored image URL, use getImageUrl
+    return getImageUrl(src);
   };
 
   return (
@@ -266,7 +193,7 @@ export default function PortfolioForm() {
                 {previewImages.map((src, idx) => (
                   <div key={idx} className="relative group">
                     <Image
-                      src={getImageUrl(src)}
+                      src={getImageSource(src)}
                       alt={`preview-${idx}`}
                       width={1000}
                       height={1000}
@@ -294,7 +221,6 @@ export default function PortfolioForm() {
             multiple
             accept="image/*"
             className="hidden"
-            {...register("images")}
             onChange={handleImageChange}
           />
         </div>
@@ -332,30 +258,22 @@ export default function PortfolioForm() {
         <div className="flex gap-4">
           <Button
             type="submit"
+            disabled={isAddingPortfolio}
             className="bg-green-900 hover:bg-green-800 text-white px-6"
           >
-            {editingIndex !== null ? "Update Portfolio" : "Save"}
+            {isAddingPortfolio ? "Adding Portfolio..." : "Add Portfolio"}
           </Button>
-
-          {editingIndex !== null && (
-            <Button
-              type="button"
-              onClick={handleCancelEdit}
-              className="bg-gray-500 hover:bg-gray-600 text-white px-6"
-            >
-              Cancel Edit
-            </Button>
-          )}
 
           <Button
             type="button"
             onClick={handleSaveAll}
-            disabled={isLoading}
+            disabled={isUpdatingProfile}
             className={`bg-green-700 hover:bg-green-800 text-white px-6 ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
+              isUpdatingProfile ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <Save className="w-4 h-4 mr-2" /> Save All Portfolios
+            <Save className="w-4 h-4 mr-2" /> 
+            {isUpdatingProfile ? "Saving All Portfolios..." : "Save All Portfolios"}
           </Button>
         </div>
       </form>
@@ -378,11 +296,7 @@ export default function PortfolioForm() {
               {portfolios.map((p, index) => (
                 <div
                   key={`portfolio-${index}`}
-                  className={`border rounded-lg p-6 bg-white shadow-sm ${
-                    editingIndex === index
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200"
-                  }`}
+                  className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
@@ -404,19 +318,6 @@ export default function PortfolioForm() {
                       </div>
                     </div>
                     <div className="flex gap-2 ml-4">
-                      <Button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleEditPortfolio(index);
-                        }}
-                        size="sm"
-                        variant="outline"
-                        className="p-2"
-                        type="button"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
                       <Button
                         onClick={(e) => {
                           e.preventDefault();

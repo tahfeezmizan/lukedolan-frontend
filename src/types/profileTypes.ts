@@ -9,6 +9,7 @@ export interface UserData {
   roleProfile: string;
   status: string;
   subscribe: boolean;
+  portfolio?: Portfolio[];
   updatedAt: string;
   verified: boolean;
   __v: number;
@@ -82,4 +83,13 @@ export interface ApiResponse {
   success: boolean;
   message: string;
   data: UserData;
+}
+
+export interface PortfolioApiResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  portfolioImages: string[];
+  title: string;
+  description: string;
 }
