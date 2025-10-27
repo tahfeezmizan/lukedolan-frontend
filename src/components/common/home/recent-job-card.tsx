@@ -7,6 +7,7 @@ import Link from "next/link";
 
 export default function RecentJobCard({ job }: { job: PostJobFormData }) {
   const { _id, title, startDate, experianceLabel, user } = job || {};
+  console.log(job);
 
   const { companyName, companyLogo } = user?.profile || {};
 
@@ -16,10 +17,12 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
         <Image
           src={getImageUrl(companyLogo)}
           alt={title}
-          width={1000}
-          height={1000}
-          className="w-20 h-20 border p-2 rounded"
+          width={80}
+          height={80}
+          className="w-20 h-20 border p-2 rounded object-cover"
+          unoptimized
         />
+
         <div className="space-y-1">
           {/* experienceLevel */}
           <h3 className="font-bold">{experianceLabel || "Experienced"}</h3>

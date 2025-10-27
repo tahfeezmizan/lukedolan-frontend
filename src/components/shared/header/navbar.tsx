@@ -14,7 +14,7 @@ import {
 import { cn, getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
-import { RootState } from "@/redux/store"; // adjust import based on your setup
+import Cookies from "js-cookie";
 import {
   Bell,
   CircleUserRound,
@@ -31,7 +31,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // Types for user roles
 type UserRole = "guest" | "applicant" | "recruiter" | "admin";
@@ -41,15 +41,13 @@ export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // 🔹 User from Redux store
-  const { user } = useSelector((state: RootState) => state.user);
+  const { data: userData } = useGetMeQuery(undefined);
 
-  const { data: userData } = useGetMeQuery(undefined, {
-    skip: !user?.accessToken,
-  });
+  console.log(userData);
 
+  const token = Cookies.get("token");
   const activeRole: UserRole = userData?.role || "guest";
-  const token = user?.accessToken || user;
+  // const token = user?.accessToken || user;
 
   // State to control mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -92,7 +90,7 @@ export function Navbar() {
   const navigationLinks = getNavigationLinks(activeRole);
 
   const handleLogout = () => {
-    dispatch(removeUser()); // clears redux state
+    dispatch(removeUser());
     router.push("/");
   };
 
@@ -185,7 +183,7 @@ export function Navbar() {
                         <MessageCircle className="h-6 w-6" />
                       </Link>
                       {/* Notifications Dropdown */}
-                      <DropdownMenu>
+                      {/* <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <button
                             className={cn(
@@ -195,15 +193,13 @@ export function Navbar() {
                             )}
                           >
                             <Bell className="h-6 w-6" />
-                            {/* 🔹 Optional Notification Dot */}
-                            {/* <span className="absolute top-2 right-2 block h-2 w-2 bg-red-500 rounded-full"></span> */}
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                           align="end"
                           className="w-64 p-2 shadow-lg border rounded-lg"
                         >
-                          {/* Example Notification Logic */}
+                          
                           {userData?.notifications &&
                           userData.notifications.length > 0 ? (
                             userData.notifications.map(
@@ -227,7 +223,7 @@ export function Navbar() {
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>
-                      </DropdownMenu>
+                      </DropdownMenu> */}
                     </>
                   )}
 
@@ -248,7 +244,7 @@ export function Navbar() {
                               className="w-10 h-10 rounded-full"
                             />
                           ) : (
-                            <CircleUserRound className="h-6 w-6 text-white" />
+                            <CircleUserRound className="size-9 text-white" />
                           )}
                         </div>
                       </button>
@@ -362,12 +358,177 @@ export function Navbar() {
             <div className="lg:hidden flex items-center">
               <Button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 transition-colors"
+                className="p-2 !bg-transparent "
               >
                 {isMobileMenuOpen ? (
-                  <X className="h-8 w-8 text-white" />
+                  <X
+                    className={cn(
+                      "size-9",
+                      pathname === "/" ? "text-white" : "text-black",
+                      pathname === "/" && isScrolled && "text-black "
+                    )}
+                  />
                 ) : (
-                  <Menu className="h-8 w-8 text-white" />
+                  <>
+                    {token ? (
+                      // Authenticated
+                      <>
+                        {/* Role-based Messages Link */}
+                        {activeRole !== "admin" && (
+                          <>
+                            <Link
+                              href={
+                                activeRole === "applicant"
+                                  ? "/profile/messages"
+                                  : activeRole === "recruiter"
+                                  ? "/recruiter/messages"
+                                  : "#"
+                              }
+                              className={cn(
+                                "p-2 rounded-full hover:bg-white/10 transition-colors",
+                                pathname === "/" ? "text-white" : "text-black",
+                                pathname === "/" &&
+                                  isScrolled &&
+                                  "text-green-900"
+                              )}
+                            >
+                              <MessageCircle className="h-6 w-6 size-9" />
+                            </Link>
+                          </>
+                        )}
+
+                        {/* Profile Dropdown */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-white/10 transition-colors">
+                              <div className="w-9 h-9 rounded-full bg-green-900 flex items-center justify-center overflow-hidden">
+                                {userData?.image ? (
+                                  <Image
+                                    src={getImageUrl(userData?.image)}
+                                    alt={userData?.name}
+                                    width={1000}
+                                    height={1000}
+                                    className="w-full h-full "
+                                  />
+                                ) : (
+                                  <CircleUserRound className="size-8 text-white" />
+                                )}
+                              </div>
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem asChild>
+                              <span className="text-xl font-semibold">
+                                {userData?.name}
+                              </span>
+                            </DropdownMenuItem>
+
+                            {/* applicant dropdown */}
+                            {activeRole === "applicant" && (
+                              <DropdownMenuItem asChild>
+                                <Link
+                                  href="/profile"
+                                  className="flex items-center space-x-2"
+                                >
+                                  <User className="h-4 w-4" />
+                                  <span>Profile</span>
+                                </Link>
+                              </DropdownMenuItem>
+                            )}
+
+                            {/* recruiter dropdown */}
+                            {activeRole === "recruiter" && (
+                              <>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href="/recruiter"
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <LayoutDashboard className="h-4 w-4" />
+                                    <span>Dashboard</span>
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href="/recruiter/jobs/post-job"
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <Plus className="h-4 w-4" />
+                                    <span>Create Job</span>
+                                  </Link>
+                                </DropdownMenuItem>
+                              </>
+                            )}
+
+                            {/* admin dropdown */}
+                            {activeRole === "admin" && (
+                              <>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href="/admin"
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <LayoutDashboard className="h-4 w-4" />
+                                    <span>Dashboard</span>
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href="/admin/jobs"
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <FileText className="h-4 w-4" />
+                                    <span>All Jobs</span>
+                                  </Link>
+                                </DropdownMenuItem>
+                              </>
+                            )}
+
+                            <DropdownMenuItem
+                              onClick={handleLogout}
+                              className="flex items-center space-x-2"
+                            >
+                              <LogOut className="h-4 w-4" />
+                              <span>Logout</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </>
+                    ) : (
+                      // Guest Users
+                      <div className="flex items-center space-x-3">
+                        <Link href={"/login"}>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
+                              pathname === "/"
+                                ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
+                                : "border-green-900 text-black hover:bg-green-900 hover:text-white",
+                              pathname === "/" &&
+                                isScrolled &&
+                                "text-green-900 "
+                            )}
+                          >
+                            Login
+                          </Button>
+                        </Link>
+
+                        <Link href={"/sign-up"}>
+                          <Button className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer">
+                            Sign up
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
+                    <Menu
+                      className={cn(
+                        "size-9",
+                        pathname === "/" ? "text-white" : "text-black",
+                        pathname === "/" && isScrolled && "text-black "
+                      )}
+                    />
+                  </>
                 )}
               </Button>
             </div>
@@ -392,7 +553,7 @@ export function Navbar() {
                   </Link>
                 ))}
 
-                {!token && (
+                {/* {!token && (
                   <div className="px-3 pt-4 border-t border-gray-200">
                     <div className="flex flex-col space-y-3">
                       <Link
@@ -420,7 +581,7 @@ export function Navbar() {
                       </Link>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           )}

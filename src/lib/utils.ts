@@ -20,11 +20,11 @@ export const getImageUrl = (imagePath: unknown): string => {
   }
 
   // Otherwise, prepend the base URL
-  return `${process.env.NEXT_PUBLIC_BASEURL}/${imagePath}`;
+  return `${process.env.NEXT_PUBLIC_BASEURL}${imagePath}`;
 };
 
 export function getAuthData() {
-  if (typeof window === "undefined") return null; // make sure it only runs client-side
+  if (typeof window === "undefined") return null;
 
   const persistRoot = localStorage.getItem("persist:root");
 

@@ -8,6 +8,11 @@ const nextConfig = {
         pathname: "/**",
       },
       {
+        protocol: "https",
+        hostname: "api.goroqit.com",
+        pathname: "/**",
+      },
+      {
         protocol: "http",
         hostname: "**",
         pathname: "/**",

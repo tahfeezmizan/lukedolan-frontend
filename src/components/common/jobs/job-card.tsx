@@ -59,15 +59,17 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
         </div>
 
         {/* Right Info */}
-        <div className="flex flex-row-reverse lg:flex-col justify-between lg:justify-between sm:items-end gap-3 md:gap-5">
-          {role !== "recruiter" && (
-            <Link
-              href={`job/${_id}`}
-              className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
-            >
-              Apply Now
-            </Link>
-          )}
+        <div className="flex flex-row-reverse lg:flex-col justify-between items-center md:items-end gap-4 ">
+          <div className="">
+            {role !== "recruiter" && (
+              <Link
+                href={`job/${_id}`}
+                className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
+              >
+                Apply Now
+              </Link>
+            )}
+          </div>
           <div className="flex items-center justify-between gap-2">
             {" "}
             <CirclePoundSterling
