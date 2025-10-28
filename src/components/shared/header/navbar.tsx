@@ -65,7 +65,7 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  console.log("Navbar hooks initialized"); // add this line
+  // console.log("Navbar hooks initialized"); // add this line
 
   // Navigation links based on user role
   const getNavigationLinks = (role: UserRole) => {

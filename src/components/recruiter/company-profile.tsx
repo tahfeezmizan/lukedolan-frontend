@@ -8,7 +8,7 @@ export default function CompanyProfile() {
   const { data } = useGetMeQuery(undefined);
   const profileData = data?.profile;
 
-  console.log(data)
+  // console.log(data)
 
   // console.log("Active", profileData);
   return (
