@@ -50,7 +50,8 @@ export function Navbar() {
     setIsMounted(true);
     setHasToken(!!Cookies.get("token"));
   }, []);
-  const activeRole: UserRole = isMounted && userData?.role ? userData.role : "guest";
+  const activeRole: UserRole =
+    isMounted && userData?.role ? userData.role : "guest";
   // const token = user?.accessToken || user;
 
   // State to control mobile menu visibility
@@ -177,8 +178,8 @@ export function Navbar() {
                           activeRole === "applicant"
                             ? "/profile/messages"
                             : activeRole === "recruiter"
-                              ? "/recruiter/messages"
-                              : "#"
+                            ? "/recruiter/messages"
+                            : "#"
                         }
                         className={cn(
                           "p-2 rounded-full hover:bg-white/10 transition-colors",
@@ -200,7 +201,7 @@ export function Navbar() {
                             <Image
                               src={getImageUrl(
                                 userData?.profile?.companyLogo ||
-                                userData?.image
+                                  userData?.image
                               )}
                               alt={userData?.name}
                               width={1000}
@@ -347,15 +348,17 @@ export function Navbar() {
                                   activeRole === "applicant"
                                     ? "/profile/messages"
                                     : activeRole === "recruiter"
-                                      ? "/recruiter/messages"
-                                      : "#"
+                                    ? "/recruiter/messages"
+                                    : "#"
                                 }
                                 className={cn(
                                   "p-2 rounded-full hover:bg-white/10 transition-colors",
-                                  pathname === "/" ? "text-white" : "text-black",
+                                  pathname === "/"
+                                    ? "text-white"
+                                    : "text-black",
                                   pathname === "/" &&
-                                  isScrolled &&
-                                  "text-green-900"
+                                    isScrolled &&
+                                    "text-green-900"
                                 )}
                               >
                                 <MessageCircle className="h-6 w-6 size-9" />
@@ -462,30 +465,31 @@ export function Navbar() {
                         </>
                       ) : (
                         // Guest Users
-                        <div className="flex items-center space-x-3">
-                          <Button
-                            asChild
-                            variant="outline"
-                            className={cn(
-                              "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
-                              pathname === "/"
-                                ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
-                                : "border-green-900 text-black hover:bg-green-900 hover:text-white",
-                              pathname === "/" &&
-                              isScrolled &&
-                              "text-green-900 "
-                            )}
-                          >
-                            <Link href="/login">Login</Link>
-                          </Button>
+                        // <div className="flex items-center space-x-3">
+                        //   <Button
+                        //     asChild
+                        //     variant="outline"
+                        //     className={cn(
+                        //       "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
+                        //       pathname === "/"
+                        //         ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
+                        //         : "border-green-900 text-black hover:bg-green-900 hover:text-white",
+                        //       pathname === "/" &&
+                        //       isScrolled &&
+                        //       "text-green-900 "
+                        //     )}
+                        //   >
+                        //     <Link href="/login">Login</Link>
+                        //   </Button>
 
-                          <Button
-                            asChild
-                            className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer"
-                          >
-                            <Link href="/sign-up">Sign up</Link>
-                          </Button>
-                        </div>
+                        //   <Button
+                        //     asChild
+                        //     className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer"
+                        //   >
+                        //     <Link href="/sign-up">Sign up</Link>
+                        //   </Button>
+                        // </div>
+                        ""
                       )}
                       <Menu
                         className={cn(
@@ -519,6 +523,34 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
+                <div className="">
+                  {isMounted && hasToken ? (
+                    ""
+                  ) : (
+                    <div className="flex flex-col space-y-3">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className={cn(
+                          "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
+                          pathname === "/"
+                            ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
+                            : "border-green-900 text-black hover:bg-green-900 hover:text-white",
+                          pathname === "/" && isScrolled && "text-green-900 "
+                        )}
+                      >
+                        <Link href="/login">Login</Link>
+                      </Button>
+
+                      <Button
+                        asChild
+                        className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer"
+                      >
+                        <Link href="/sign-up">Sign up</Link>
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
