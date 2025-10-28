@@ -11,10 +11,6 @@ import { getImageUrl } from "@/lib/utils";
 export function TopNavbar() {
   const { data, isLoading } = useGetMeQuery(undefined);
 
-  console.log(data)
-
-  console.log("Active user", data);
-
   if (isLoading) {
     return <PageLoading />;
   }
