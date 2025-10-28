@@ -11,7 +11,7 @@ export default function AppliedJobsPage() {
     error,
   } = useGetAppliedJobsQuery(undefined);
 
-  console.log(appliedJobsData);
+  // console.log(appliedJobsData);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading jobs</p>;

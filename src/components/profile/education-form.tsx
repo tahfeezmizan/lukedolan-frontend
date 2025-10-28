@@ -46,8 +46,10 @@ export function EducationForm() {
     isLoading: isUserLoading,
   } = useGetMeQuery("");
 
+  // console.log("Educations",userData);
+
   useEffect(() => {
-    console.log("Full user data received:", userData);
+    // console.log("Full user data received:", userData);
     if (userData) {
       if (userData?.profile?.education) {
         if (Array.isArray(userData?.profile?.education)) {

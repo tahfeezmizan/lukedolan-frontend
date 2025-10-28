@@ -46,7 +46,8 @@ export default function ProfileSection() {
       formData.append("image", selectedFile);
 
       try {
-        await updateProfile({ body: formData }).unwrap();
+        const res = await updateProfile({ body: formData }).unwrap();
+        console.log(res)
         toast.success("Profile picture updated");
       } catch {
         toast.error("Image upload failed");

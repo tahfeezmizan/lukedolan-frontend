@@ -108,7 +108,7 @@ export default function OtpVerify() {
     setOtp(Array(6).fill(""));
     setCountdown(60);
     inputRefs.current[0]?.focus();
-    console.log("Resending OTP...");
+    // console.log("Resending OTP...");
 
     try {
       const res = await resendOTP({
@@ -116,12 +116,10 @@ export default function OtpVerify() {
         authType: authType,
       });
       if (res?.data?.success === true) {
-        console.log(res);
+        // console.log(res);
         toast.success("OTP resent successfully");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch {}
   };
 
   const isComplete = otp.every(Boolean);

@@ -13,10 +13,9 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const token = searchParams.get("accessToken");
     const error = searchParams.get("error");
-    console.log("✅ Google login success. Token:", token);
+    // console.log("✅ Google login success. Token:", token);
 
     if (token) {
-
       // Save token & fixed role 'applicant' to localStorage
 
       // Dispatch Redux action with token and fixed role

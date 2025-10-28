@@ -40,7 +40,7 @@ export default function ChatDetail() {
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
 
   // RTK Query hooks
-  const { data, isLoading, isError, error } = useGetMessagesQuery(
+  const { data, isLoading, isError } = useGetMessagesQuery(
     { chatId, page: 1, limit: 50 },
     { skip: !chatId }
   );
@@ -75,33 +75,33 @@ export default function ChatDetail() {
   useEffect(() => {
     if (!chatId || !myId) return;
 
-    console.log("🔌 Connecting to socket for chat:", chatId);
+    // console.log("🔌 Connecting to socket for chat:", chatId);
 
     const newSocket = io("https://api.goroqit.com");
     socketRef.current = newSocket;
 
     newSocket.on("connect", () => {
-      console.log("✅ Socket connected");
+      // console.log("✅ Socket connected");
       setIsSocketConnected(true);
     });
 
     newSocket.on("disconnect", () => {
-      console.log("❌ Socket disconnected");
+      // console.log("❌ Socket disconnected");
       setIsSocketConnected(false);
     });
 
     // Listen for the EXACT event name that backend emits
     const receiveMessageHandler = (newMessage: Message) => {
-      console.log("📨 REAL-TIME MESSAGE RECEIVED:", newMessage);
+      // console.log("📨 REAL-TIME MESSAGE RECEIVED:", newMessage);
 
       setAllMessages((prev) => {
         // Prevent duplicates
         if (prev.some((msg) => msg._id === newMessage._id)) {
-          console.log("🔄 Message already exists, skipping");
+          // console.log("🔄 Message already exists, skipping");
           return prev;
         }
 
-        console.log("✅ Adding new message to UI");
+        // console.log("✅ Adding new message to UI");
         const updatedMessages = [...prev, newMessage];
 
         // Scroll to bottom
@@ -115,23 +115,23 @@ export default function ChatDetail() {
 
     // Listen to the EXACT event name: getMessage::chatId
     const exactEventName = `getMessage::${chatId}`;
-    console.log("👂 Listening for event:", exactEventName);
+    // console.log("👂 Listening for event:", exactEventName);
     newSocket.on(exactEventName, receiveMessageHandler);
 
     // Debug: log all socket events
     newSocket.onAny((eventName, ...args) => {
-      console.log("📡 ALL Socket event:", eventName, args);
+      // console.log("📡 ALL Socket event:", eventName, args);
 
       // If we see the exact event but handler didn't trigger, manually call it
       if (eventName === exactEventName && args[0]) {
-        console.log("🔄 Manually triggering handler for:", eventName);
+        // console.log("🔄 Manually triggering handler for:", eventName);
         receiveMessageHandler(args[0]);
       }
     });
 
     // Cleanup
     return () => {
-      console.log("🧹 Cleaning up socket");
+      // console.log("🧹 Cleaning up socket");
       newSocket.off(exactEventName, receiveMessageHandler);
       newSocket.off("connect");
       newSocket.off("disconnect");
@@ -143,7 +143,7 @@ export default function ChatDetail() {
   // Load initial messages
   useEffect(() => {
     if (data?.data?.messages) {
-      console.log("📦 Loading initial messages:", data.data.messages.length);
+      // console.log("📦 Loading initial messages:", data.data.messages.length);
       setAllMessages(data.data.messages);
       setTimeout(() => scrollToBottom(), 500);
     }
@@ -174,7 +174,7 @@ export default function ChatDetail() {
         type: "TEXT",
       }).unwrap();
 
-      console.log("✅ Message sent to API, response:", response);
+      // console.log("✅ Message sent to API, response:", response);
     } catch (error) {
       console.error("❌ Failed to send message:", error);
     }
@@ -194,7 +194,7 @@ export default function ChatDetail() {
 
   // Debug: Log when allMessages changes
   useEffect(() => {
-    console.log("🔄 allMessages updated, count:", allMessages.length);
+    // console.log("🔄 allMessages updated, count:", allMessages.length);
   }, [allMessages]);
 
   if (isLoading) {

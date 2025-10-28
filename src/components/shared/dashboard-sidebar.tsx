@@ -72,7 +72,7 @@ export function DashboardSidebar({
       <Button
         onClick={handleLogout}
         variant="ghost"
-        className="text-lg !pl-5 flex items-center justify-start hover:bg-green-700 hover:text-white rounded-none"
+        className="text-lg py-6 !pl-5 flex items-center justify-start hover:bg-emerald-600 hover:text-white rounded-none"
       >
         <LogOut className="w-5 h-5" />
         <span>Logout</span>

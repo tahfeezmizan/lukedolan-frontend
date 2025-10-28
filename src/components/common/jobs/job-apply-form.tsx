@@ -5,7 +5,6 @@ import { ApiResponse } from "@/types/profileTypes";
 import { ApiError, JobApplyFormInputs } from "@/types/types";
 import { Loader } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
