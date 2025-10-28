@@ -12,7 +12,7 @@ export function Footer() {
           <div className="col-span-1">
             <Link href={"/"}>
               <Image
-                src={whiteLogo }
+                src={whiteLogo}
                 alt="Logo"
                 width={165}
                 height={40}
@@ -44,7 +44,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/sing-in"
+                  href="/sign-up"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Sign in

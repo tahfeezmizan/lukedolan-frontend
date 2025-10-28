@@ -55,8 +55,6 @@
 //   matcher: ["/recruiter/:path*", "/admin/:path*", "/profile/:path*"],
 // };
 
-
-
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
@@ -86,9 +84,6 @@ export function middleware(req: NextRequest) {
   } else {
     console.log("⚠️ No token found in cookies");
   }
-
-  console.log("🎭 Active Role:", role);
-  console.log("📄 Pathname:", pathname);
 
   // 🔹 Define route categories
   const roleBasedRoutes = {

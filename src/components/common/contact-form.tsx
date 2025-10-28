@@ -116,7 +116,7 @@ export default function ContactForm() {
                   htmlFor="phone"
                   className="block text-xl font-medium  mb-2"
                 >
-                  Phone Number (optional)
+                  Phone Number
                 </label>
                 <Input
                   id="phone"
@@ -164,8 +164,8 @@ export default function ContactForm() {
 
           {/* Contact Info Section */}
           <div className="border-t border-gray-200 pt-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2  gap-8">
+              <div className="col-span-1">
                 <h3 className="text-md md:text-xl font-medium  mb-4">
                   Contact Info
                 </h3>
@@ -174,26 +174,27 @@ export default function ContactForm() {
                 </h2>
               </div>
 
-              <div className="col-span-1">
-                <h4 className="text-xl font-semibold  mb-2">Email Address</h4>
-                <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
-                <p className="text-xl  mb-2">help@info.com</p>
-                <p className="text-lg ">
-                  Assistance hours:
-                  <br />
-                  Monday - Friday 6 am to 8 pm EST
-                </p>
-              </div>
-
-              <div className="col-span-1">
-                <h4 className="text-xl font-semibold  mb-2">Number</h4>
-                <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
-                <p className="text-xl  mb-2">(808) 998-3256</p>
-                <p className="text-lg ">
-                  Assistance hours:
-                  <br />
-                  Monday - Friday 6 am to 8 pm EST
-                </p>
+              <div className="col-span-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                <div className="col-span-1">
+                  <h4 className="text-xl font-semibold  mb-2">Email Address</h4>
+                  <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
+                  <p className="text-xl  mb-2">help@info.com</p>
+                  <p className="text-lg ">
+                    Assistance hours:
+                    <br />
+                    Monday - Friday 6 am to 8 pm EST
+                  </p>
+                </div>
+                <div className="col-span-1">
+                  <h4 className="text-xl font-semibold  mb-2">Number</h4>
+                  <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
+                  <p className="text-xl  mb-2">(808) 998-3256</p>
+                  <p className="text-lg ">
+                    Assistance hours:
+                    <br />
+                    Monday - Friday 6 am to 8 pm EST
+                  </p>
+                </div>
               </div>
             </div>
           </div>

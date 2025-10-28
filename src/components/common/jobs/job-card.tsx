@@ -1,13 +1,11 @@
 // components/JobCard.tsx
 import { CardContent } from "@/components/ui/card";
 import TimeAgo from "@/lib/time-ago";
-import { getImageUrl } from "@/lib/utils";
-import { RootState } from "@/redux/store";
+import { getImageUrl, getTokenAndRole } from "@/lib/utils";
 import { PostJobFormData } from "@/types/types";
 import { Briefcase, Calendar, CirclePoundSterling, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 
 export default function JobCard({ job }: { job: PostJobFormData }) {
   const {
@@ -23,8 +21,7 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
 
   const { companyName, companyLogo } = user?.profile || {};
 
-  const { user: currentUser } = useSelector((state: RootState) => state.user);
-  const role = currentUser?.role;
+  const { role } = getTokenAndRole();
 
   return (
     <div className="w-full bg-white hover:shadow-md transition rounded-lg">
@@ -59,15 +56,19 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
         </div>
 
         {/* Right Info */}
-        <div className="flex flex-row-reverse lg:flex-col justify-between lg:justify-between sm:items-end gap-3 md:gap-5">
-          {role !== "recruiter" && (
-            <Link
-              href={`job/${_id}`}
-              className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
-            >
-              Apply Now
-            </Link>
-          )}
+        <div className="flex flex-row-reverse lg:flex-col justify-between items-center md:items-end gap-4 ">
+          <div className="">
+            {role === "recruiter" ? (
+              ""
+            ) : (
+              <Link
+                href={`job/${_id}`}
+                className="bg-green-900 hover:bg-green-800 text-white px-2 py-1 text-base font-medium rounded-lg"
+              >
+                Apply Now
+              </Link>
+            )}
+          </div>
           <div className="flex items-center justify-between gap-2">
             {" "}
             <CirclePoundSterling
@@ -75,7 +76,7 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
               className="bg-green-900 text-white rounded-full"
             />{" "}
             <p className="font-medium text-gray-700">
-              USD ${minSalary} - ${maxSalary} per year
+              £{minSalary} - £{maxSalary} year
             </p>
           </div>
         </div>

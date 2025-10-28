@@ -16,10 +16,11 @@ export default function RecentJobCard({ job }: { job: PostJobFormData }) {
         <Image
           src={getImageUrl(companyLogo)}
           alt={title}
-          width={1000}
-          height={1000}
-          className="w-20 h-20 border p-2 rounded"
+          width={200}
+          height={200}
+          className="w-24 h-24 border p-2 rounded object-cover"
         />
+
         <div className="space-y-1">
           {/* experienceLevel */}
           <h3 className="font-bold">{experianceLabel || "Experienced"}</h3>

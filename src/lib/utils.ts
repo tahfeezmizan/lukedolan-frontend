@@ -20,11 +20,11 @@ export const getImageUrl = (imagePath: unknown): string => {
   }
 
   // Otherwise, prepend the base URL
-  return `${process.env.NEXT_PUBLIC_BASEURL}/${imagePath}`;
+  return `${process.env.NEXT_PUBLIC_BASEURL}${imagePath}`;
 };
 
 export function getAuthData() {
-  if (typeof window === "undefined") return null; // make sure it only runs client-side
+  if (typeof window === "undefined") return null;
 
   const persistRoot = localStorage.getItem("persist:root");
 
@@ -44,23 +44,45 @@ export function getAuthData() {
   }
 }
 
-export function getToken(): string | null {
+export function getTokenAndRole(): {
+  token: string | null;
+  role: string | null;
+} {
   try {
     // 1️⃣ Try direct key first
     const directToken = localStorage.getItem("accessToken");
-    if (directToken) return directToken;
+    if (directToken) {
+      const role = decodeRoleFromToken(directToken);
+      return { token: directToken, role };
+    }
 
     // 2️⃣ Otherwise, try Redux persisted store
     const persistedData = localStorage.getItem("persist:root");
     if (persistedData) {
       const parsedRoot = JSON.parse(persistedData);
       const userData = JSON.parse(parsedRoot.user || "{}");
-      return userData.accessToken || null;
+      const token = userData.accessToken || null;
+      const role = token ? decodeRoleFromToken(token) : null;
+      return { token, role };
     }
 
-    return null;
+    return { token: null, role: null };
   } catch (error) {
-    console.error("Failed to read token from localStorage:", error);
+    console.error("Failed to read token or role from localStorage:", error);
+    return { token: null, role: null };
+  }
+}
+
+/**
+ * Helper function to decode JWT and extract role
+ */
+function decodeRoleFromToken(token: string): string | null {
+  try {
+    const payload = token.split(".")[1];
+    const decoded = JSON.parse(atob(payload));
+    return decoded.role || null;
+  } catch (error) {
+    console.error("Failed to decode token:", error);
     return null;
   }
 }

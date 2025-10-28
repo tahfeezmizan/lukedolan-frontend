@@ -1,3 +1,6 @@
+
+
+
 import CookieCard from "@/components/shared/CookieCard";
 import { Toaster } from "@/components/ui/sonner";
 import ReduxProvider from "@/provider/redux-provider";
@@ -63,7 +66,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable}`}>
+      <body className={`${montserrat.variable}`} suppressHydrationWarning>
         <ReduxProvider>
           <Suspense>{children}</Suspense>
           <Toaster position="top-right" />
