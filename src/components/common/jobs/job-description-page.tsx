@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { parseCookies } from "nookies"; // lightweight cookie parser
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format-date";
-import { useGetSingleJobQuery } from "@/redux/features/jobsApi";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import JobDetail from "./job-details";
-import { jwtDecode } from "jwt-decode";
 import LoadingSpinner from "@/lib/loading-spinner";
+import { useGetSingleJobQuery } from "@/redux/features/jobsApi";
+import { jwtDecode } from "jwt-decode";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { parseCookies } from "nookies"; // lightweight cookie parser
+import { useEffect } from "react";
+import JobDetail from "./job-details";
 
 type TokenPayload = {
   role?: string;
