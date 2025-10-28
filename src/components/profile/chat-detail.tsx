@@ -40,7 +40,7 @@ export default function ChatDetail() {
   const [containerHeight, setContainerHeight] = useState<string>("100vh");
 
   // RTK Query hooks
-  const { data, isLoading, isError, error } = useGetMessagesQuery(
+  const { data, isLoading, isError } = useGetMessagesQuery(
     { chatId, page: 1, limit: 50 },
     { skip: !chatId }
   );

@@ -225,3 +225,13 @@ export type ApiParams = {
   gender?: string;
   skills?: string | string[];
 };
+
+export type ApiUser = {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  companyName?: string;
+  createdAt: string;
+}

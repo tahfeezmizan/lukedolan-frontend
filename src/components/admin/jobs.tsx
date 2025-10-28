@@ -30,7 +30,7 @@ export default function Jobs() {
     // Memoize jobs to make it stable
     const jobs = useMemo(() => data?.data || [], [data?.data]);
 
-    console.log(data);
+    // console.log(data);
 
     // Add serial + salary formatting
     const jobsWithExtras: JobRow[] = useMemo(
