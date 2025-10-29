@@ -18,7 +18,7 @@ export default function ContactForm() {
     message: "",
   });
 
-  const [addContact, { isLoading }] = useAddContactMutation();
+  const [addContact, { isLoading, reset }] = useAddContactMutation();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,6 +38,13 @@ export default function ContactForm() {
 
       if (res.success) {
         toast.success("Thanks for contacting us! We’ll respond soon.");
+        reset();
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
       } else {
         console.log(res.data?.message);
         toast.error("❌ Job creation failed");
