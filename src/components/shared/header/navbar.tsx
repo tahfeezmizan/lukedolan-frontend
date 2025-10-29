@@ -16,7 +16,6 @@ import { useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import Cookies from "js-cookie";
 import {
-  Bell,
   CircleUserRound,
   FileText,
   LayoutDashboard,
@@ -464,31 +463,6 @@ export function Navbar() {
                           </DropdownMenu>
                         </>
                       ) : (
-                        // Guest Users
-                        // <div className="flex items-center space-x-3">
-                        //   <Button
-                        //     asChild
-                        //     variant="outline"
-                        //     className={cn(
-                        //       "px-6 py-2 text-base font-medium rounded-lg border-2 cursor-pointer",
-                        //       pathname === "/"
-                        //         ? "border-green-900 bg-transparent text-white hover:bg-white hover:border-white hover:text-black"
-                        //         : "border-green-900 text-black hover:bg-green-900 hover:text-white",
-                        //       pathname === "/" &&
-                        //       isScrolled &&
-                        //       "text-green-900 "
-                        //     )}
-                        //   >
-                        //     <Link href="/login">Login</Link>
-                        //   </Button>
-
-                        //   <Button
-                        //     asChild
-                        //     className="bg-green-900 hover:bg-green-800 text-white px-6 py-2 text-base font-medium rounded-lg cursor-pointer"
-                        //   >
-                        //     <Link href="/sign-up">Sign up</Link>
-                        //   </Button>
-                        // </div>
                         ""
                       )}
                       <Menu

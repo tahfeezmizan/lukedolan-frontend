@@ -34,7 +34,6 @@ interface EssentialPersonalData {
   zipCode?: string;
   maritalStatus?: string;
   age?: number;
-  province?: string;
 }
 
 export function PersonalDetailsForm() {
@@ -67,7 +66,6 @@ export function PersonalDetailsForm() {
         zipCode: "",
         maritalStatus: "",
         age: profileData?.age ? Number(profileData.age) : undefined,
-        province: "",
       },
     });
 
@@ -92,7 +90,6 @@ export function PersonalDetailsForm() {
         zipCode: profileData.zipCode || "",
         maritalStatus: profileData.maritalStatus || "",
         age: Number(profileData.age) || undefined,
-        province: profileData.province || "",
       });
     }
   }, [profileData, reset]);
@@ -313,22 +310,7 @@ export function PersonalDetailsForm() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label
-                htmlFor="province"
-                className="text-lg font-medium text-gray-900"
-              >
-                Province
-              </Label>
-              <Input
-                id="province"
-                placeholder="Philippines"
-                {...register("province")}
-                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
-              />
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label
                 htmlFor="zipCode"
@@ -337,7 +319,7 @@ export function PersonalDetailsForm() {
                 Zip/Postal Code
               </Label>
               <Input
-                type="number"
+                type="text"
                 id="zipCode"
                 placeholder="Zip/Postal Code"
                 {...register("zipCode")}

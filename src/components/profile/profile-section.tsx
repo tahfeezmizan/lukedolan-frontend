@@ -1,3 +1,141 @@
+// "use client";
+
+// import LoadingSpinner from "@/lib/loading-spinner";
+// import { cn, getImageUrl } from "@/lib/utils";
+// import {
+//   useGetMeQuery,
+//   useUpdateProfileMutation,
+// } from "@/redux/features/userApi";
+// import { CircleUserRound } from "lucide-react";
+// import Image from "next/image";
+// import { useEffect, useState } from "react";
+// import { toast } from "sonner";
+
+// export default function ProfileSection() {
+//   const { data: userData, isLoading } = useGetMeQuery({});
+//   const [preview, setPreview] = useState<string | null>(null);
+//   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+//   const [openToWorkActive, setOpenToWorkActive] = useState<boolean | undefined>(
+//     undefined
+//   );
+
+//   console.log(userData);
+
+//   useEffect(() => {
+//     if (userData?.profile) {
+//       setOpenToWorkActive(userData.profile.openToWork ?? false);
+//       setPreview(getImageUrl(userData.image));
+//     }
+//   }, [userData]);
+
+//   const handleStatusChange = async (newValue: boolean) => {
+//     const previousValue = openToWorkActive; // store current value
+//     setOpenToWorkActive(newValue); // instant UI update
+
+//     try {
+//       const res = await updateProfile({
+//         body: { openToWork: newValue },
+//       }).unwrap();
+//       toast.success(res?.message || "Status updated successfully");
+//       console.log("Update status", res);
+//     } catch (error: any) {
+//       // revert if failed
+//       setOpenToWorkActive(previousValue);
+
+//       // extract backend message safely
+//       const errorMsg =
+//         error?.data?.message ||
+//         error?.data?.errorMessages?.[0]?.message ||
+//         "Failed to update status";
+
+//       toast.error(errorMsg);
+//     }
+//   };
+
+//   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const selectedFile = e.target.files?.[0];
+//     if (selectedFile) {
+//       const imageUrl = URL.createObjectURL(selectedFile);
+//       setPreview(imageUrl);
+
+//       const formData = new FormData();
+//       formData.append("image", selectedFile);
+
+//       try {
+//         const res = await updateProfile({ body: formData }).unwrap();
+//         console.log(res);
+//         toast.success("Profile picture updated");
+//       } catch {
+//         toast.error("Image upload failed");
+//       }
+//     }
+//   };
+
+//   if (isLoading) return <LoadingSpinner />;
+
+//   return (
+//     <div className="flex flex-col items-center space-y-8">
+//       <div className="flex items-center rounded-full bg-gray-100 p-1 w-[300px] justify-between">
+//         <button
+//           onClick={() => handleStatusChange(true)}
+//           disabled={isUpdating}
+//           className={cn(
+//             "flex-1 py-2 text-sm font-medium rounded-full transition",
+//             openToWorkActive
+//               ? "bg-green-700 text-white"
+//               : "text-gray-600 hover:bg-gray-200"
+//           )}
+//         >
+//           {isUpdating && openToWorkActive ? "Updating..." : "Open to work"}
+//         </button>
+
+//         <button
+//           onClick={() => handleStatusChange(false)}
+//           disabled={isUpdating}
+//           className={cn(
+//             "flex-1 py-2 text-sm font-medium rounded-full transition",
+//             !openToWorkActive
+//               ? "bg-green-700 text-white"
+//               : "text-gray-600 hover:bg-gray-200"
+//           )}
+//         >
+//           {isUpdating && !openToWorkActive ? "Updating..." : "Not available"}
+//         </button>
+//       </div>
+
+//       <div className="flex flex-col items-center space-y-4">
+//         <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+//           {preview || userData?.image ? (
+//             <Image
+//               width={200}
+//               height={200}
+//               src={preview || getImageUrl(userData?.image)}
+//               alt="Profile Preview"
+//               className="w-full h-full object-cover"
+//             />
+//           ) : (
+//             <CircleUserRound className="size-25" />
+//           )}
+//         </div>
+
+//         <input
+//           type="file"
+//           id="file-upload"
+//           className="hidden"
+//           accept="image/*"
+//           onChange={handleFileChange}
+//         />
+//         <label
+//           htmlFor="file-upload"
+//           className="px-4 py-1 border border-green-700 rounded text-green-800 text-sm cursor-pointer hover:bg-green-50"
+//         >
+//           {isUpdating ? "Uploading..." : "Choose File"}
+//         </label>
+//       </div>
+//     </div>
+//   );
+// }
+
 "use client";
 
 import LoadingSpinner from "@/lib/loading-spinner";
@@ -22,17 +160,27 @@ export default function ProfileSection() {
   useEffect(() => {
     if (userData?.profile) {
       setOpenToWorkActive(userData.profile.openToWork ?? false);
-      setPreview(getImageUrl(userData.image));
+      const imgUrl = userData?.image ? getImageUrl(userData.image) : null;
+      setPreview(imgUrl);
     }
   }, [userData]);
 
   const handleStatusChange = async (newValue: boolean) => {
-    setOpenToWorkActive(newValue); // ✅ Update instantly for real-time feedback
+    const previousValue = openToWorkActive;
+    setOpenToWorkActive(newValue);
+
     try {
-      await updateProfile({ body: { openToWork: newValue } }).unwrap();
-      toast.success("Status updated successfully");
-    } catch {
-      toast.error("Failed to update status");
+      const res = await updateProfile({
+        body: { openToWork: newValue },
+      }).unwrap();
+      toast.success(res?.message || "Status updated successfully");
+    } catch (error: any) {
+      setOpenToWorkActive(previousValue);
+      const errorMsg =
+        error?.data?.message ||
+        error?.data?.errorMessages?.[0]?.message ||
+        "Failed to update status";
+      toast.error(errorMsg);
     }
   };
 
@@ -47,7 +195,6 @@ export default function ProfileSection() {
 
       try {
         const res = await updateProfile({ body: formData }).unwrap();
-        console.log(res)
         toast.success("Profile picture updated");
       } catch {
         toast.error("Image upload failed");
@@ -56,6 +203,14 @@ export default function ProfileSection() {
   };
 
   if (isLoading) return <LoadingSpinner />;
+
+  // ✅ ensure valid image URL only if it's non-empty
+  const validImage =
+    preview && preview.trim() !== ""
+      ? preview
+      : userData?.image && getImageUrl(userData.image)?.trim() !== ""
+      ? getImageUrl(userData.image)
+      : null;
 
   return (
     <div className="flex flex-col items-center space-y-8">
@@ -89,16 +244,16 @@ export default function ProfileSection() {
 
       <div className="flex flex-col items-center space-y-4">
         <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-          {preview || userData?.image ? (
+          {validImage ? (
             <Image
-              width={1000}
-              height={1000}
-              src={preview || getImageUrl(userData?.image)}
+              width={200}
+              height={200}
+              src={validImage}
               alt="Profile Preview"
               className="w-full h-full object-cover"
             />
           ) : (
-            <CircleUserRound className="size-25" />
+            <CircleUserRound className="size-25 text-gray-500" />
           )}
         </div>
 
