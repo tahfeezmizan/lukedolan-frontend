@@ -85,7 +85,6 @@ const userApi = baseApi.injectEndpoints({
     // Update general user profile
     UpdateProfile: builder.mutation({
       query: ({ body }) => {
-        console.log("UpdateProfile body:", body);
         return {
           url: "/user/profile",
           method: "PATCH",
@@ -130,18 +129,16 @@ const userApi = baseApi.injectEndpoints({
       },
     }),
 
-AddPortfolio: builder.mutation({
-  query: ({ body }) => {
-    console.log("Add Portfolio body type:", body);
-    return {
-      url: "/user/applicants/portfolio",
-      method: "POST",
-      body,
-      // Don't set Content-Type header for FormData
-      // The browser will set it automatically with boundary
-    };
-  },
-}),
+    AddPortfolio: builder.mutation({
+      query: ({ body }) => {
+        console.log("Add Portfolio body type:", body);
+        return {
+          url: "/user/applicants/portfolio",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     /** ======================
      *  EDUCATION
@@ -156,6 +153,12 @@ AddPortfolio: builder.mutation({
           method: "DELETE",
         };
       },
+    }),
+    deleteUser: builder.mutation<void, void>({
+      query: () => ({
+        url: "/user/me",
+        method: "DELETE",
+      }),
     }),
   }),
 });
@@ -172,4 +175,5 @@ export const {
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
   useUpdateCompnayProfileMutation,
+  useDeleteUserMutation
 } = userApi;

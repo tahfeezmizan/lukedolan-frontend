@@ -5,7 +5,7 @@ import {
   CheckCircle,
   CirclePoundSterling,
   CircleUserRound,
-  Scissors
+  Scissors,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,6 +41,8 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
 
   //   return [];
   // }, [talent.workExperience]);
+
+  console.log(talent);
 
   return (
     <div
@@ -99,7 +101,7 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
             <div className="flex items-center gap-4">
               <Briefcase className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
               <span className="text-lg leading-tight text-gray-700">
-                5 years experience
+                {talent?.yearsOfExperience} years experience
               </span>
             </div>
 

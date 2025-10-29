@@ -31,9 +31,9 @@ export default function JobCard({ job }: { job: PostJobFormData }) {
           <Image
             src={getImageUrl(companyLogo)}
             alt={"image"}
-            width={80}
-            height={80}
-            className="w-24 h-24 object-contain border p-2 rounded mb-2"
+            width={200}
+            height={200}
+            className="w-24 h-24 object-cover border p-2 rounded mb-2"
           />
           <h3 className="text-xl font-semibold leading-loose">{title}</h3>
           <p className="text-gray-800">
