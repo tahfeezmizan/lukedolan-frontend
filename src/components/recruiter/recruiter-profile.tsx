@@ -44,7 +44,6 @@ export default function MergedProfileForm() {
   } = useForm<EssentialPersonalData>({
     defaultValues: {
       name: "",
-      email: "",
     },
   });
 
@@ -158,7 +157,7 @@ export default function MergedProfileForm() {
           </div>
 
           <div>
-            <Label htmlFor="email" className="text-lg text-gray-900">
+            <Label htmlFor="emails" className="text-lg text-gray-900">
               Email
             </Label>
             <Input

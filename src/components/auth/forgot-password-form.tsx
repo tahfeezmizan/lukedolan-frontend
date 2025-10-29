@@ -51,8 +51,8 @@ export default function SetNewPasswordForm() {
         const err = res.error as ApiError;
         toast.error(err?.data?.message || "Something went wrong");
       }
-    } catch (error) {
-      console.log("Catch Error", error);
+    } catch {
+      // console.log("Catch Error", error);
       toast.error("An unexpected error occurred");
     }
   };

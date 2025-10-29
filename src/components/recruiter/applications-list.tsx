@@ -5,10 +5,21 @@ import { formatDate } from "@/lib/format-date";
 import { useGetApplicationQuery } from "@/redux/features/application";
 import { AppliedJob } from "@/types/types";
 import Link from "next/link";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function ApplicationsList() {
   const { data: appliedUser } = useGetApplicationQuery("");
-  console.log("people apply ", appliedUser);
+  const [selectedApplicant, setSelectedApplicant] = useState<AppliedJob | null>(
+    null
+  );
 
   return (
     <div className="">
@@ -52,11 +63,65 @@ export function ApplicationsList() {
                   </td>
 
                   <td className="py-4 px-6">
-                    <Link href={`/recruiter/applications`} target="_blank">
-                      <Button className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold">
-                        View Details
-                      </Button>
-                    </Link>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          className="bg-green-50 text-green-900 hover:bg-green-900 hover:text-white duration-300 font-semibold"
+                          onClick={() => setSelectedApplicant(job)}
+                        >
+                          View Details
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Applicant Details</DialogTitle>
+                          <DialogDescription>
+                            Review the applicant’s submitted information.
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        {selectedApplicant && (
+                          <div className="space-y-3 mt-4 text-gray-800">
+                            <p>
+                              <span className="font-semibold">Full Name:</span>{" "}
+                              {selectedApplicant?.name}
+                            </p>
+                            <p>
+                              <span className="font-semibold">Email:</span>{" "}
+                              {selectedApplicant?.email}
+                            </p>
+                            <p>
+                              <span className="font-semibold">Phone:</span>{" "}
+                              {selectedApplicant?.phone}
+                            </p>
+                            <p>
+                              <span className="font-semibold">Applied On:</span>{" "}
+                              {formatDate(selectedApplicant?.createdAt)}
+                            </p>
+                            {/* {selectedApplicant?.coverLetter && (
+                              <p>
+                                <span className="font-semibold">
+                                  Cover Letter:
+                                </span>{" "}
+                                {selectedApplicant?.coverLetter}
+                              </p>
+                            )} */}
+                            {selectedApplicant?.resume && (
+                              <p>
+                                <span className="font-semibold">Resume:</span>{" "}
+                                <Link
+                                  href={selectedApplicant?.resume}
+                                  target="_blank"
+                                  className="text-blue-600 underline"
+                                >
+                                  View Resume
+                                </Link>
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </DialogContent>
+                    </Dialog>
                   </td>
                 </tr>
               ))}

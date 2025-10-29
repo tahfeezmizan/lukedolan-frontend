@@ -51,10 +51,10 @@ export function PostJobForm() {
   const [createJob] = useCreateJobMutation();
   const { data: categories } = useGetAllCategoryQuery(undefined);
 
-  console.log("Category", categories);
+  // console.log("Category", categories);
 
   const onSubmit = async (data: PostJobFormData) => {
-    console.log(data);
+    // console.log(data);
     try {
       const res = await createJob({
         title: data.title,

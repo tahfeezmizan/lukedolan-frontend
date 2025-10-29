@@ -110,15 +110,15 @@ export default function ChatList() {
 
   // Socket connection for real-time updates
   useEffect(() => {
-    console.log("🔌 Connecting socket for chat list...");
-    console.log("Current User ID:", currentUserId);
-    console.log("Current User Role:", currentUserRole);
+    // console.log("🔌 Connecting socket for chat list...");
+    // console.log("Current User ID:", currentUserId);
+    // console.log("Current User Role:", currentUserRole);
 
     const socket = io("https://api.goroqit.com");
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      console.log("✅ Chat list socket connected");
+      // console.log("✅ Chat list socket connected");
       setIsSocketConnected(true);
     });
 

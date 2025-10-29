@@ -102,6 +102,8 @@ export default function PortfolioForm() {
         error?: ApiError;
       };
 
+      console.log(res);
+
       if (res.data?.success) {
         toast.success("Portfolio added successfully!");
 
@@ -155,7 +157,10 @@ export default function PortfolioForm() {
   // ✅ Save all portfolios to database
   const handleSaveAll = async () => {
     try {
-      await updateProfile({ body: { portfolio: portfolios } }).unwrap();
+      const res = await updateProfile({
+        body: { portfolio: portfolios },
+      }).unwrap();
+      console.log(res);
       toast.success("All portfolio data saved successfully!");
       await refetch();
     } catch (error: any) {

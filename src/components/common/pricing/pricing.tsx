@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useGetPlansQuery } from "@/redux/features/planApi";
@@ -29,19 +28,26 @@ export default function PricingPage() {
           <LoadingSpinner />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {planData.map((plan) => (
-              <PricingCard
-                key={plan._id}
-                _id={plan._id}
-                title={plan.title}
-                price={plan.price ?? 0}
-                duration={plan.duration}
-                features={plan.features ?? []}
-                paymentLink={plan.paymentLink ?? "/"}
-                // isPopular={plan.title === "Pro"} // You can tweak logic for popular badge
-                // onGetStarted={() => handleGetStarted(plan.title)}
-              />
-            ))}
+            {planData.length > 0 ? (
+              <>
+                {planData.map((plan) => (
+                  <PricingCard
+                    key={plan._id}
+                    _id={plan._id}
+                    title={plan.title}
+                    price={plan.price ?? 0}
+                    duration={plan.duration}
+                    features={plan.features ?? []}
+                    paymentLink={plan.paymentLink ?? "/"}
+                  />
+                ))}
+              </>
+            ) : (
+              <div className="col-span-1 md:col-end-2 lg:col-span-3 text-center">
+                {" "}
+                No pricing plans are currently public.
+              </div>
+            )}
           </div>
         )}
       </div>

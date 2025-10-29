@@ -92,7 +92,7 @@ export function LoginForm() {
       const apiError = error as ApiError;
       // ✅ show toast from caught error
       toast.error(apiError?.data?.message || "Login failed");
-      console.log("Errors:", error);
+      // console.log("Errors:", error);
     }
   };
 

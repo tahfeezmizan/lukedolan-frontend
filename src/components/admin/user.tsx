@@ -7,6 +7,7 @@ import { StatsCard } from "../shared/stats-card";
 import AdminTable from "./table";
 import { useGetAllUserQuery } from "@/redux/features/userApi";
 import { useState, useMemo } from "react";
+import LoadingSpinner from "@/lib/loading-spinner";
 
 const columns: Column<UserData>[] = [
   { key: "_id", label: "Serial Id" },
@@ -59,7 +60,7 @@ export default function User() {
       <StatsCard stats={stats} />
 
       {isLoading ? (
-        <p className="text-gray-500">Loading users...</p>
+       <LoadingSpinner />
       ) : (
         <AdminTable
           data={usersWithSerial}

@@ -6,14 +6,13 @@ import FeaturePurchaseChart from "@/components/admin/feature-purchase-chart";
 import RevenueChart from "@/components/admin/revenue-chart";
 import { Briefcase, DollarSign, Users } from "lucide-react";
 import { useGetStatisticsQuery } from "@/redux/features/adminStatics";
+import LoadingSpinner from "@/lib/loading-spinner";
 
 export default function DashboardPage() {
   const [year, setYear] = useState(new Date().getFullYear());
 
   // Pass year as a parameter to fetch stats
   const { data, isLoading } = useGetStatisticsQuery({ year });
-
-  if (isLoading) return <p className="text-gray-500">Loading dashboard...</p>;
 
   const stats = [
     {
@@ -35,6 +34,7 @@ export default function DashboardPage() {
     },
   ];
 
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div>
       <div className="mb-8">
