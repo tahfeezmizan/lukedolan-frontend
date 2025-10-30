@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getImageUrl } from "@/lib/utils";
+import { getImageUrl, getTokenAndRole } from "@/lib/utils";
 import { useDeleteUserMutation, useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { CircleUserRound } from "lucide-react";
@@ -22,6 +22,9 @@ export function TopNavbar() {
   const [deleteUser] = useDeleteUserMutation();
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const { role } = getTokenAndRole();
+  console.log(role);
 
   if (isLoading) {
     return <PageLoading />;
@@ -104,12 +107,14 @@ export function TopNavbar() {
             <DropdownMenuItem onClick={handleLogout} className="">
               Logout
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={handleDeleteAccount}
-            >
-              Delete Account
-            </DropdownMenuItem>
+            {role !== "admin" && (
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={handleDeleteAccount}
+              >
+                Delete Account
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
