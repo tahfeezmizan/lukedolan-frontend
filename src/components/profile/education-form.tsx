@@ -289,13 +289,13 @@ export function EducationForm() {
               className="text-lg font-medium text-gray-900"
               htmlFor="degreeTitle"
             >
-              Degree Title
+              Qualification Type
             </Label>
             <Input
               id="degreeTitle"
               value={formData.degreeTitle}
               onChange={(e) => handleInputChange("degreeTitle", e.target.value)}
-              placeholder="Bachelor of Computer Science"
+              placeholder="e.g. NVQ Level 2 in Barbering"
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
@@ -305,25 +305,25 @@ export function EducationForm() {
               className="text-lg font-medium text-gray-900"
               htmlFor="major"
             >
-              Major
+              Level / Year Completed
             </Label>
             <Input
               id="major"
               value={formData.major}
               onChange={(e) => handleInputChange("major", e.target.value)}
-              placeholder="BSc in CSE"
+              placeholder="e.g. Level 3 (Completed 2022)"
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
             <Label
               className="text-lg font-medium text-gray-900"
               htmlFor="instituteName"
             >
-              Institute Name
+              Institution / Training Provider
             </Label>
             <Input
               id="instituteName"
@@ -331,42 +331,11 @@ export function EducationForm() {
               onChange={(e) =>
                 handleInputChange("instituteName", e.target.value)
               }
-              placeholder="X International University"
+              placeholder="e.g. London Hair Academy or City & Guilds"
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-lg font-medium text-gray-900" htmlFor="cgpa">
-              CGPA
-            </Label>
-            <Input
-              id="cgpa"
-              value={formData.cgpa}
-              onChange={(e) => handleInputChange("cgpa", e.target.value)}
-              placeholder="3.00"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label
-              className="text-lg font-medium text-gray-900"
-              htmlFor="scale"
-            >
-              Scale
-            </Label>
-            <Input
-              id="scale"
-              value={formData.scale}
-              onChange={(e) => handleInputChange("scale", e.target.value)}
-              placeholder="4"
-              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="space-y-2">
             <Label
               className="text-lg font-medium text-gray-900"
@@ -380,23 +349,38 @@ export function EducationForm() {
               onChange={(e) =>
                 handleInputChange("yearOfPassing", e.target.value)
               }
-              placeholder="2022"
+              placeholder="e.g. 2022"
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>
 
+          {/* <div className="space-y-2">
+            <Label className="text-lg font-medium text-gray-900" htmlFor="cgpa">
+              CGPA
+            </Label>
+            <Input
+              id="cgpa"
+              value={formData.cgpa}
+              onChange={(e) => handleInputChange("cgpa", e.target.value)}
+              placeholder="3.00"
+              className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
+            />
+          </div> */}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="space-y-2">
             <Label
               className="text-lg font-medium text-gray-900"
               htmlFor="duration"
             >
-              Duration
+              Duration / Hours
             </Label>
             <Input
               id="duration"
               value={formData.duration}
               onChange={(e) => handleInputChange("duration", e.target.value)}
-              placeholder="4 Years"
+              placeholder="e.g. 6 months full-time or 120 hours"
               className="mt-1 p-4 rounded-lg !text-lg text-black w-full bg-gray-100"
             />
           </div>

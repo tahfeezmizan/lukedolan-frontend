@@ -24,7 +24,7 @@ interface EssentialPersonalData {
   lastName: string;
   mobile: string;
   dateOfBirth: string;
-  gender: string;
+
   streetAddress: string;
   city: string;
   country: string;
@@ -32,9 +32,8 @@ interface EssentialPersonalData {
   yearsOfExperience?: string;
   landLine: string;
   zipCode?: string;
-  maritalStatus?: string;
+
   age?: number;
-  province?: string;
 }
 
 export function PersonalDetailsForm() {
@@ -57,7 +56,7 @@ export function PersonalDetailsForm() {
 
         mobile: "",
         dateOfBirth: "",
-        gender: "",
+
         streetAddress: "",
         city: "",
         country: "",
@@ -65,9 +64,8 @@ export function PersonalDetailsForm() {
         yearsOfExperience: "",
         landLine: "",
         zipCode: "",
-        maritalStatus: "",
+
         age: profileData?.age ? Number(profileData.age) : undefined,
-        province: "",
       },
     });
 
@@ -82,7 +80,7 @@ export function PersonalDetailsForm() {
         dateOfBirth: profileData.dateOfBirth
           ? new Date(profileData.dateOfBirth).toISOString().split("T")[0]
           : "",
-        gender: profileData.gender || "",
+
         streetAddress: profileData.streetAddress || "",
         city: profileData.city || "",
         country: profileData.country || "",
@@ -90,9 +88,8 @@ export function PersonalDetailsForm() {
         yearsOfExperience: profileData.yearsOfExperience || "",
         landLine: profileData.landLine || "",
         zipCode: profileData.zipCode || "",
-        maritalStatus: profileData.maritalStatus || "",
+
         age: Number(profileData.age) || undefined,
-        province: profileData.province || "",
       });
     }
   }, [profileData, reset]);
@@ -167,8 +164,8 @@ export function PersonalDetailsForm() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          {/* <div>
             <Label
               htmlFor="gender"
               className="text-lg font-medium text-gray-900"
@@ -215,13 +212,13 @@ export function PersonalDetailsForm() {
                 </Select>
               )}
             />
-          </div>
+          </div> */}
           <div>
             <Label
               htmlFor="citizenship"
               className="text-lg font-medium text-gray-900"
             >
-              Citizenship
+              Nationality
             </Label>
             <Input
               id="citizenship"
@@ -230,9 +227,6 @@ export function PersonalDetailsForm() {
               className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div>
             <Label
               htmlFor="dateOfBirth"
@@ -247,7 +241,9 @@ export function PersonalDetailsForm() {
               className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
             />
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div className="">
             <Label htmlFor="age" className="text-lg font-medium text-gray-900">
               Age
@@ -313,22 +309,7 @@ export function PersonalDetailsForm() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label
-                htmlFor="province"
-                className="text-lg font-medium text-gray-900"
-              >
-                Province
-              </Label>
-              <Input
-                id="province"
-                placeholder="Philippines"
-                {...register("province")}
-                className="mt-1 p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
-              />
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label
                 htmlFor="zipCode"
@@ -337,7 +318,7 @@ export function PersonalDetailsForm() {
                 Zip/Postal Code
               </Label>
               <Input
-                type="number"
+                type="text"
                 id="zipCode"
                 placeholder="Zip/Postal Code"
                 {...register("zipCode")}

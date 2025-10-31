@@ -8,7 +8,6 @@ import { Building, Calendar, CircleUserRound, MapPin } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 
-// Type definitions based on your data structure
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
@@ -48,6 +47,8 @@ export function ProfileOverview() {
         </div>
       </div>
 
+
+
       <Card className="mb-8">
         <CardContent className="p-8 space-y-5">
           {/* Header Section */}
@@ -74,7 +75,9 @@ export function ProfileOverview() {
                       ? `${userData?.name}`
                       : profileData?.name || "Unknown User"}
                   </h2>
-                  <p className="text-sm  font-medium">2 years of exp</p>
+                  <p className="text-sm  font-medium">
+                    {profileData?.yearsOfExperience} years of exp
+                  </p>
 
                   {profileData?.openToWork ? (
                     <Badge

@@ -64,6 +64,19 @@ export default function PortfolioForm() {
     const files = e.target.files;
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
+
+      // 🚫 Validation for .webp images
+      const invalidFiles = newFiles.filter(
+        (file) => file.type === "image/webp"
+      );
+
+      if (invalidFiles.length > 0) {
+        toast.error(
+          "WebP format is not supported. Please upload JPG or PNG images."
+        );
+        return;
+      }
+
       const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
 
       // Combine with existing previews and files

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import LoadingSpinner from "@/lib/loading-spinner";
@@ -22,17 +24,27 @@ export default function ProfileSection() {
   useEffect(() => {
     if (userData?.profile) {
       setOpenToWorkActive(userData.profile.openToWork ?? false);
-      setPreview(getImageUrl(userData.image));
+      const imgUrl = userData?.image ? getImageUrl(userData.image) : null;
+      setPreview(imgUrl);
     }
   }, [userData]);
 
   const handleStatusChange = async (newValue: boolean) => {
-    setOpenToWorkActive(newValue); // ✅ Update instantly for real-time feedback
+    const previousValue = openToWorkActive;
+    setOpenToWorkActive(newValue);
+
     try {
-      await updateProfile({ body: { openToWork: newValue } }).unwrap();
-      toast.success("Status updated successfully");
-    } catch {
-      toast.error("Failed to update status");
+      const res = await updateProfile({
+        body: { openToWork: newValue },
+      }).unwrap();
+      toast.success(res?.message || "Status updated successfully");
+    } catch (error: any) {
+      setOpenToWorkActive(previousValue);
+      const errorMsg =
+        error?.data?.message ||
+        error?.data?.errorMessages?.[0]?.message ||
+        "Failed to update status";
+      toast.error(errorMsg);
     }
   };
 
@@ -47,7 +59,6 @@ export default function ProfileSection() {
 
       try {
         const res = await updateProfile({ body: formData }).unwrap();
-        console.log(res)
         toast.success("Profile picture updated");
       } catch {
         toast.error("Image upload failed");
@@ -56,6 +67,14 @@ export default function ProfileSection() {
   };
 
   if (isLoading) return <LoadingSpinner />;
+
+  // ✅ ensure valid image URL only if it's non-empty
+  const validImage =
+    preview && preview.trim() !== ""
+      ? preview
+      : userData?.image && getImageUrl(userData.image)?.trim() !== ""
+      ? getImageUrl(userData.image)
+      : null;
 
   return (
     <div className="flex flex-col items-center space-y-8">
@@ -89,16 +108,16 @@ export default function ProfileSection() {
 
       <div className="flex flex-col items-center space-y-4">
         <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-          {preview || userData?.image ? (
+          {validImage ? (
             <Image
-              width={1000}
-              height={1000}
-              src={preview || getImageUrl(userData?.image)}
+              width={200}
+              height={200}
+              src={validImage}
               alt="Profile Preview"
               className="w-full h-full object-cover"
             />
           ) : (
-            <CircleUserRound className="size-25" />
+            <CircleUserRound className="size-25 text-gray-500" />
           )}
         </div>
 

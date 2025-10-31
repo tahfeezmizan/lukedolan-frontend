@@ -62,6 +62,7 @@ export interface TalentProps {
   location?: string;
   preferredWorkType?: string | null;
   bio?: string | null;
+  yearsOfExperience: string;
 
   education: Education[];
 
@@ -234,4 +235,4 @@ export type ApiUser = {
   status: string;
   companyName?: string;
   createdAt: string;
-}
+};

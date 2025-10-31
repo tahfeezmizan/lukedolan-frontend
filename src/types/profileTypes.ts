@@ -62,6 +62,7 @@ export interface Profile {
   skills: string[];
   expartes: string[];
   portfolio?: Portfolio[];
+  yearsOfExperience?: string;
   streetAddress: string;
   updatedAt: string;
   userId: string;

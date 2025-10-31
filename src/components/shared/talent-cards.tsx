@@ -5,43 +5,14 @@ import {
   CheckCircle,
   CirclePoundSterling,
   CircleUserRound,
-  Scissors
+  Scissors,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 
 export default function TalentCards({ talent }: { talent: TalentProps }) {
-  // Safely handle skills data - convert to array if it's a string or ensure it's an array
-  // const safeSkills = React.useMemo(() => {
-  //   if (!talent.skills) return [];
-
-  //   if (Array.isArray(talent.skills)) {
-  //     return talent.skills;
-  //   }
-
-  //   if (typeof talent.skills === "string") {
-  //     // If it's a comma-separated string, split it
-  //     return (talent.skills as string)
-  //       .split(",")
-  //       .map((skill: string) => skill.trim())
-  //       .filter((skill) => skill.length > 0);
-  //   }
-
-  //   return [];
-  // }, [talent.skills]);
-
-  // Safely handle work experience
-  // const safeWorkExperience = React.useMemo(() => {
-  //   if (!talent.workExperience) return [];
-
-  //   if (Array.isArray(talent.workExperience)) {
-  //     return talent.workExperience;
-  //   }
-
-  //   return [];
-  // }, [talent.workExperience]);
-
+  console.log(talent);
   return (
     <div
       key={talent.id}
@@ -99,18 +70,18 @@ export default function TalentCards({ talent }: { talent: TalentProps }) {
             <div className="flex items-center gap-4">
               <Briefcase className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
               <span className="text-lg leading-tight text-gray-700">
-                5 years experience
+                {talent?.yearsOfExperience} years experience
               </span>
             </div>
 
             {/* Skills */}
             <div className="flex items-center gap-4 ">
               <Scissors className="w-8 h-8 bg-white shadow-lg p-1 rounded-full  text-green-900 flex-shrink-0" />
-              <span className="text-lg leading-tight text-gray-700">
+              <span className=" leading-tight text-gray-700">
                 {/* Skills:{" "} */}
                 {talent?.skills && talent?.skills?.length > 0 ? (
                   talent?.skills?.map((s, i) => (
-                    <Badge variant={"outline"} key={i} className="mx-0.5">
+                    <Badge variant={"outline"} key={i} className="mx-0.5 mb-1 ">
                       {s}
                       {i < talent?.skills?.length - 1 && ""}
                     </Badge>
