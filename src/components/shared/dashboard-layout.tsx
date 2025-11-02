@@ -39,14 +39,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="h-screen overflow-x-auto grid grid-cols-6 gap-0 bg-[#F5F6FA]">
-      <div className="col-span-1">
+      <div className=" lg:col-span-1">
         <DashboardSidebar sidebarItems={sidebarItems} />
       </div>
 
       {/* Main Content Area */}
-      <main className="col-span-5 overflow-y-auto">
+      <main className="col-span-6 lg:col-span-5 overflow-y-auto">
         <TopNavbar />
-        <div className="p-8 bg-[#EBF1FA]">{children}</div>
+        <div className="p-2 lg:p-8 bg-[#EBF1FA]">{children}</div>
       </main>
     </div>
   );
