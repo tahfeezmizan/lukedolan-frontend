@@ -133,6 +133,7 @@ export type UserData = {
   profile?: string;
   roleProfile?: string;
   image?: string | null;
+  action?: React.ReactNode;
 };
 
 export type CompanyData = {
