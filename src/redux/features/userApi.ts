@@ -28,6 +28,7 @@ const userApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["Auth"],
     }),
 
     // Get all talents/applicants
@@ -130,14 +131,11 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     AddPortfolio: builder.mutation({
-      query: ({ body }) => {
-        console.log("Add Portfolio body type:", body);
-        return {
-          url: "/user/applicants/portfolio",
-          method: "POST",
-          body,
-        };
-      },
+      query: ({ body }) => ({
+        url: "/user/applicants/portfolio",
+        method: "POST",
+        body,
+      }),
     }),
 
     /** ======================
@@ -160,6 +158,13 @@ const userApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    deleteSingleUser: builder.mutation({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
@@ -175,5 +180,6 @@ export const {
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
   useUpdateCompnayProfileMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useDeleteSingleUserMutation,
 } = userApi;

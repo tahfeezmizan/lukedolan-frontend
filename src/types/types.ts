@@ -124,7 +124,7 @@ export type UserData = {
   _id: string;
   name: string;
   email: string;
-  role: "applicant" | "recruiter";
+  role: "applicant" | "recruiter" | "admin" | string;
   status: "active" | "restricted" | string;
   companyName?: string | null;
   subscribe?: boolean;
