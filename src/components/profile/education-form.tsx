@@ -504,7 +504,6 @@
 // }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -516,10 +515,12 @@ import { toast } from "sonner";
 import {
   useAddEducationMutation,
   useGetMeQuery,
+  useDeleteEducationMutation,
 } from "@/redux/features/userApi";
 import LoadingSpinner from "@/lib/loading-spinner";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
+import Swal from "sweetalert2";
 
 interface EducationData {
   degreeTitle: string;
@@ -527,7 +528,7 @@ interface EducationData {
   instituteName: string;
   yearOfPassing: string;
   duration: string;
-  certificate?: File | null;
+  certificate?: File | null | undefined;
 }
 
 export function EducationForm() {
@@ -542,8 +543,6 @@ export function EducationForm() {
     },
   });
 
-  const [addEducation, { isLoading }] = useAddEducationMutation();
-
   // Get user data
   const {
     data: userData,
@@ -551,9 +550,10 @@ export function EducationForm() {
     refetch,
   } = useGetMeQuery("");
 
-  const education = userData?.profile?.education;
+  const [addEducation, { isLoading }] = useAddEducationMutation();
+  const [deleteEducation] = useDeleteEducationMutation();
 
-  console.log("Others data:", education);
+  const education = userData?.profile?.education;
 
   const onSubmit = async (data: EducationData) => {
     const formData = new FormData();
@@ -572,6 +572,7 @@ export function EducationForm() {
       if (res?.success) {
         toast.success("Education added successfully!");
         reset();
+        refetch(); // Refresh the data to show the new education
       }
 
       console.log("Education added successfully:", res);
@@ -596,6 +597,56 @@ export function EducationForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setValue("certificate", file);
+  };
+
+  // Handle delete education
+  // const handleDeleteEducation = async (index: number) => {
+  //   try {
+  //     const res = await deleteEducation({ index }).unwrap();
+  //     console.log("Delete", index, res);
+
+  //     if (res?.success) {
+  //       toast.success("Education deleted successfully!");
+  //       refetch(); // Refresh the data to reflect the deletion
+  //     }
+
+  //     console.log("Education deleted successfully:", res);
+  //   } catch (error) {
+  //     console.log("Error deleting education:", error);
+  //     toast.error("Failed to delete education");
+  //   }
+  // };
+  const handleDeleteEducation = async (title: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await deleteEducation({ title }).unwrap();
+
+        if (res?.success) {
+          Swal.fire(
+            "Deleted!",
+            "Education has been deleted successfully.",
+            "success"
+          );
+          refetch();
+        }
+
+        console.log("Education deleted successfully:", res);
+      } catch (error) {
+        console.log("Error deleting education:", error);
+        Swal.fire("Error!", "Failed to delete education.", "error");
+      }
+    }
   };
 
   return (
@@ -729,7 +780,7 @@ export function EducationForm() {
             <LoadingSpinner />
           ) : (
             <div className="space-y-4">
-              {education.map((p, index) => (
+              {education?.map((p: EducationData, index: number) => (
                 <div
                   key={`portfolio-${index}`}
                   className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm"
@@ -737,20 +788,20 @@ export function EducationForm() {
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h5 className="text-lg font-semibold text-gray-900">
-                        {p.degreeTitle}
+                        {p?.degreeTitle}
                       </h5>
-                      <p className="text-gray-600 mb-2">{p.instituteName}</p>
+                      <p className="text-gray-600 mb-2">{p?.instituteName}</p>
                       <div className="grid grid-cols-8 gap-3 mt-3">
-                        {p.certificate?.map((img, idx) => (
-                          <Image
-                            key={idx}
-                            src={getImageUrl(img)}
-                            alt={p.title}
-                            width={200}
-                            height={200}
-                            className="w-40 h-32 object-cover rounded-md border"
-                          />
-                        ))}
+                        {/* {p?.certificate?.map((img: string, idx: number) => ( */}
+                        <Image
+                          key={`edu-cert-${index}`}
+                          src={getImageUrl(p?.certificate?.toString() || "")}
+                          alt={p?.degreeTitle}
+                          width={200}
+                          height={200}
+                          className="w-40 h-32 object-cover rounded-md border"
+                        />
+                        {/* ))} */}
                       </div>
                     </div>
                     <div className="flex gap-2 ml-4">
@@ -758,7 +809,7 @@ export function EducationForm() {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          // handleDeletePortfolio(index);
+                          handleDeleteEducation(p?.degreeTitle);
                         }}
                         size="sm"
                         variant="outline"

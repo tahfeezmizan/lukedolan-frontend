@@ -155,15 +155,16 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     // Delete specific education by index
-    DeleteEducation: builder.mutation({
-      query: ({ index }) => {
-        console.log("DeleteEducation index:", index);
+    deleteEducation: builder.mutation({
+      query: ({ title }) => {
+        console.log("DeleteEducation title:", title);
         return {
-          url: `/user/profile/education/${index}`,
+          url: `/user/applicants/education/${title}`,
           method: "DELETE",
         };
       },
     }),
+
     deleteUser: builder.mutation<void, void>({
       query: () => ({
         url: "/user/me",
@@ -189,10 +190,10 @@ export const {
   useUpdateProfileMutation,
   useAddEducationMutation,
   useDeleteWorkExperienceMutation,
-  useDeleteEducationMutation,
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
   useUpdateCompnayProfileMutation,
   useDeleteUserMutation,
+  useDeleteEducationMutation,
   useDeleteSingleUserMutation,
 } = userApi;

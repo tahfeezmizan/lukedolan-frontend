@@ -251,7 +251,7 @@ export function SignupForm() {
 
         <Button
           type="submit"
-          disabled={!watch("agreeToTerms")}
+          disabled={!watch("agreeToTerms") || isLoading}
           className="w-full mt-4 bg-green-900 hover:bg-green-800 text-white px-8 py-6 text-xl font-medium rounded-lg"
         >
           {isLoading ? <Loader className="animate-spin size-8" /> : "Sign up"}
