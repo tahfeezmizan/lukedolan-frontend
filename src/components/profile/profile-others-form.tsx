@@ -432,7 +432,7 @@ export function ProfileOthersForm() {
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
             onKeyPress={handleSkillKeyPress}
-            placeholder="Add a skill (e.g., JavaScript, React)"
+            placeholder="Add a skill (e.g.  barbers, stylists, and beauticians)"
             className="p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
           />
           <Button
@@ -475,7 +475,7 @@ export function ProfileOthersForm() {
             value={expertiseInput}
             onChange={(e) => setExpertiseInput(e.target.value)}
             onKeyPress={handleExpertiseKeyPress}
-            placeholder="Add an expertise (e.g., Frontend Development)"
+            placeholder="Add an expertise (e.g. Barbers stylists)"
             className="p-4 rounded-sm !text-lg text-black w-full bg-gray-50"
           />
           <Button

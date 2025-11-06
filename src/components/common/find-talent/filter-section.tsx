@@ -69,6 +69,11 @@ export default function FilterSection() {
       title: talent.workExperience?.[0]?.jobTitle || "Not specified",
       experience:
         talent.workExperience?.[0]?.experience || "Experience not specified",
+      expartes: Array.isArray(talent.expartes)
+        ? talent.expartes
+        : Array.isArray(talent.expartes)
+        ? talent.expartes
+        : [],
       skills: Array.isArray(talent.skills)
         ? talent.skills
         : Array.isArray(talent.expartes)

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import build from "next/dist/build";
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -28,6 +29,7 @@ const userApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["Auth"],
     }),
 
     // Get all talents/applicants
@@ -130,35 +132,51 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     AddPortfolio: builder.mutation({
-      query: ({ body }) => {
-        console.log("Add Portfolio body type:", body);
-        return {
-          url: "/user/applicants/portfolio",
-          method: "POST",
-          body,
-        };
-      },
+      query: ({ body }) => ({
+        url: "/user/applicants/portfolio",
+        method: "POST",
+        body,
+      }),
     }),
 
     /** ======================
      *  EDUCATION
      * =====================*/
 
-    // Delete specific education by index
-    DeleteEducation: builder.mutation({
-      query: ({ index }) => {
-        console.log("DeleteEducation index:", index);
+    addEducation: builder.mutation({
+      query: ({ body }) => {
+        console.log("addEducations", body);
         return {
-          url: `/user/profile/education/${index}`,
+          url: `/user/applicants/education`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
+
+    // Delete specific education by index
+    deleteEducation: builder.mutation({
+      query: ({ title }) => {
+        console.log("DeleteEducation title:", title);
+        return {
+          url: `/user/applicants/education/${title}`,
           method: "DELETE",
         };
       },
     }),
+
     deleteUser: builder.mutation<void, void>({
       query: () => ({
         url: "/user/me",
         method: "DELETE",
       }),
+    }),
+    deleteSingleUser: builder.mutation({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Auth"],
     }),
   }),
 });
@@ -170,10 +188,12 @@ export const {
   useGetAllUserQuery,
   useAddPortfolioMutation,
   useUpdateProfileMutation,
+  useAddEducationMutation,
   useDeleteWorkExperienceMutation,
-  useDeleteEducationMutation,
   useAddWorkExperienceMutation,
   useUpdateWorkExperienceMutation,
   useUpdateCompnayProfileMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useDeleteEducationMutation,
+  useDeleteSingleUserMutation,
 } = userApi;

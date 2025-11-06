@@ -24,6 +24,7 @@ import {
 } from "@/types/profileTypes";
 import { ApiError } from "@/types/types";
 import { getImageUrl } from "@/lib/utils";
+import LoadingSpinner from "@/lib/loading-spinner";
 
 export default function PortfolioForm() {
   const { register, handleSubmit, reset, setValue } = useForm<Portfolio>({
@@ -318,9 +319,7 @@ export default function PortfolioForm() {
           </h4>
 
           {isUserLoading ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin h-8 w-8 border-2 border-green-600 border-t-transparent rounded-full"></div>
-            </div>
+            <LoadingSpinner />
           ) : (
             <div className="space-y-4">
               {portfolios.map((p, index) => (

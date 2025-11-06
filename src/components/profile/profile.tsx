@@ -22,35 +22,38 @@ export default function ProfilePage() {
 
   return (
     <div className="bg-[#EBF1FA]  ">
-      <div className="p-4  overflow-hidden ">
+      <div className="p-1 md:p-4 overflow-hidden ">
         {/* Tabs */}
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
-          className="w-full"
+          className="w-full "
         >
-          <TabsList className="grid w-full grid-cols-3  md:grid-cols-7 bg-white mb-8 ">
-            <TabsTrigger value="profile" className="cursor-pointer">
-              Over View
-            </TabsTrigger>
-            <TabsTrigger value="personal-details" className="cursor-pointer">
-              Personal Details
-            </TabsTrigger>
-            <TabsTrigger value="resume" className="cursor-pointer">
-              Resume / CV
-            </TabsTrigger>
-            <TabsTrigger value="education" className="cursor-pointer">
-              Education
-            </TabsTrigger>
-            <TabsTrigger value="work-experience" className="cursor-pointer">
-              Work Experience
-            </TabsTrigger>
-            <TabsTrigger value="portfolio" className="cursor-pointer">
-              Portfolio
-            </TabsTrigger>
-            <TabsTrigger value="others" className="cursor-pointer">
-              Others
-            </TabsTrigger>
+          {/* <TabsList className="grid w-full grid-cols-3  md:grid-cols-7 bg-white mb-8 overflow-x-auto"> */}
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 bg-white mb-8 sm:overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+            <div className="flex space-x-2">
+              <TabsTrigger value="profile" className="cursor-pointer">
+                Over View
+              </TabsTrigger>
+              <TabsTrigger value="personal-details" className="cursor-pointer">
+                Personal Details
+              </TabsTrigger>
+              <TabsTrigger value="resume" className="cursor-pointer">
+                Resume / CV
+              </TabsTrigger>
+              <TabsTrigger value="education" className="cursor-pointer">
+                Education
+              </TabsTrigger>
+              <TabsTrigger value="work-experience" className="cursor-pointer">
+                Work Experience
+              </TabsTrigger>
+              <TabsTrigger value="portfolio" className="cursor-pointer">
+                Portfolio
+              </TabsTrigger>
+              <TabsTrigger value="others" className="cursor-pointer">
+                Others
+              </TabsTrigger>
+            </div>
           </TabsList>
 
           <TabsContent

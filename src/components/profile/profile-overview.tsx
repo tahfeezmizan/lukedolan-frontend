@@ -4,10 +4,16 @@ import LoadingSpinner from "@/lib/loading-spinner";
 import { getImageUrl } from "@/lib/utils";
 import { useGetMeQuery } from "@/redux/features/userApi";
 import { Education, Profile, WorkExperience } from "@/types/profileTypes";
-import { Building, Calendar, CircleUserRound, MapPin } from "lucide-react";
+import {
+  Building,
+  Calendar,
+  CircleUserRound,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
-
 
 export function ProfileOverview() {
   // RTK Query call with proper typing
@@ -23,7 +29,7 @@ export function ProfileOverview() {
 
   return (
     <div className="">
-      <div className="flex justify-between items-end mb-8  ">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4 ">
         <h1 className="text-2xl font-bold text-gray-900 ">
           What recruiters will see
         </h1>
@@ -47,14 +53,13 @@ export function ProfileOverview() {
         </div>
       </div>
 
-
-
       <Card className="mb-8">
-        <CardContent className="p-8 space-y-5">
+        <CardContent className="p-3 md:p-8 space-y-5">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between gap-6 mb-8">
             <div className="flex gap-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden mx-auto shadow-lg ">
+              {/* profile image  */}
+              <div className="w-20 h-20 rounded-full overflow-hidden md:mx-auto shadow-lg ">
                 {userData?.image ? (
                   <Image
                     width={1000}
@@ -68,6 +73,7 @@ export function ProfileOverview() {
                 )}
               </div>
 
+              {/* Profile Name */}
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900">
@@ -76,7 +82,7 @@ export function ProfileOverview() {
                       : profileData?.name || "Unknown User"}
                   </h2>
                   <p className="text-sm  font-medium">
-                    {profileData?.yearsOfExperience} years of exp
+                    {profileData?.yearsOfExperience || "1"} years of exp
                   </p>
 
                   {profileData?.openToWork ? (
@@ -98,10 +104,22 @@ export function ProfileOverview() {
               </div>
             </div>
 
-            <div className="text-right text-sm text-gray-600">
-              <p>{`${profileData?.city}, ${profileData?.country}` || "UK"}</p>
-              <p>{userData?.email || "goroqit@gmail.com"}</p>
-              <p>{profileData?.mobile || "+447362342247"}</p>
+            <div className="!text-right text-sm text-gray-900 font-medium">
+              <p className="flex gap-2 items-center justify-start md:justify-end">
+                {" "}
+                <MapPin className="size-4" />
+                {`${profileData?.city || "Ruislip"}, ${
+                  profileData?.country || "England"
+                }` || "England"}
+              </p>
+              <p className="flex gap-2 items-center justify-start md:justify-end">
+                <Mail className="size-4" />{" "}
+                {userData?.email || "goroqit@gmail.com"}
+              </p>
+              <p className="flex gap-2 items-center justify-start md:justify-end">
+                <Phone className="size-4" />{" "}
+                {profileData?.mobile || "+447362342247"}
+              </p>
             </div>
           </div>
 

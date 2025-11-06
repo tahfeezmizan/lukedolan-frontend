@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getImageUrl } from "@/lib/utils";
+import { getImageUrl, getTokenAndRole } from "@/lib/utils";
 import { useDeleteUserMutation, useGetMeQuery } from "@/redux/features/userApi";
 import { removeUser } from "@/redux/slice/userSlice";
 import { CircleUserRound } from "lucide-react";
@@ -22,6 +22,9 @@ export function TopNavbar() {
   const [deleteUser] = useDeleteUserMutation();
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const { role } = getTokenAndRole();
+  console.log(role);
 
   if (isLoading) {
     return <PageLoading />;
@@ -59,7 +62,7 @@ export function TopNavbar() {
     <div className="h-16 bg-white border-b border-gray-200 z-30">
       <div className="flex items-center justify-between h-full px-6">
         {/* Page Title */}
-        <h1 className="text-2xl font-bold text-gray-900 capitalize">
+        <h1 className="text-2xl font-bold text-gray-900 capitalize pl-8 lg:pl-0">
           {data?.role} Panel
         </h1>
 
@@ -84,7 +87,9 @@ export function TopNavbar() {
                 )}
               </div>
 
-              <div className="flex flex-col text-start">
+              <div
+                className="md:flex flex-col text-start hidden "
+              >
                 <span className="!text-lg font-semibold text-gray-900 leading-none">
                   {data?.name}
                 </span>
@@ -104,12 +109,14 @@ export function TopNavbar() {
             <DropdownMenuItem onClick={handleLogout} className="">
               Logout
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={handleDeleteAccount}
-            >
-              Delete Account
-            </DropdownMenuItem>
+            {role !== "admin" && (
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={handleDeleteAccount}
+              >
+                Delete Account
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

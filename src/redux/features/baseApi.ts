@@ -13,9 +13,10 @@ export const baseApi = createApi({
 
       if (userData) {
         // Extract the accessToken from the user data
-        const token = typeof userData === 'object' && userData.accessToken ? 
-          userData.accessToken : 
-          userData; // Fallback to the entire token if it's not an object
+        const token =
+          typeof userData === "object" && userData.accessToken
+            ? userData.accessToken
+            : userData; // Fallback to the entire token if it's not an object
 
         headers.set("Authorization", `Bearer ${token}`);
       }
