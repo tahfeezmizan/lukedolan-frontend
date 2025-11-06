@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import build from "next/dist/build";
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -142,6 +143,17 @@ const userApi = baseApi.injectEndpoints({
      *  EDUCATION
      * =====================*/
 
+    addEducation: builder.mutation({
+      query: ({ body }) => {
+        console.log("addEducations", body);
+        return {
+          url: `/user/applicants/education`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
+
     // Delete specific education by index
     DeleteEducation: builder.mutation({
       query: ({ index }) => {
@@ -175,6 +187,7 @@ export const {
   useGetAllUserQuery,
   useAddPortfolioMutation,
   useUpdateProfileMutation,
+  useAddEducationMutation,
   useDeleteWorkExperienceMutation,
   useDeleteEducationMutation,
   useAddWorkExperienceMutation,

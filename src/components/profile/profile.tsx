@@ -30,8 +30,8 @@ export default function ProfilePage() {
           className="w-full "
         >
           {/* <TabsList className="grid w-full grid-cols-3  md:grid-cols-7 bg-white mb-8 overflow-x-auto"> */}
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 bg-white mb-8 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-            <div className="flex w-max space-x-2">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 bg-white mb-8 sm:overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+            <div className="flex space-x-2">
               <TabsTrigger value="profile" className="cursor-pointer">
                 Over View
               </TabsTrigger>

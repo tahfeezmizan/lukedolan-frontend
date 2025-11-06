@@ -5,6 +5,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import LoadingSpinner from "@/lib/loading-spinner";
 import { formatWorkDuration } from "@/lib/utils";
 import {
   useGetMeQuery,
@@ -676,15 +677,15 @@ export function WorkExperienceForm() {
       {(workExperiences.length > 0 || isUserLoading) && (
         <div className="mt-8">
           <h4 className="text-2xl font-semibold text-gray-900 mb-4">
-            {isUserLoading
-              ? "Loading work experience data..."
-              : `Added Work Experience (${workExperiences.length})`}
+            {isUserLoading ? (
+              <LoadingSpinner />
+            ) : (
+              `Added Work Experience (${workExperiences.length})`
+            )}
           </h4>
 
           {isUserLoading ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin h-8 w-8 border-2 border-green-600 border-t-transparent rounded-full"></div>
-            </div>
+            <LoadingSpinner />
           ) : (
             <div className="space-y-4">
               {workExperiences.map((experience, index) => (
