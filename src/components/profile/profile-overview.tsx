@@ -82,7 +82,7 @@ export function ProfileOverview() {
                       : profileData?.name || "Unknown User"}
                   </h2>
                   <p className="text-sm  font-medium">
-                    {profileData?.yearsOfExperience} years of exp
+                    {profileData?.yearsOfExperience || "1"} years of exp
                   </p>
 
                   {profileData?.openToWork ? (
@@ -107,14 +107,18 @@ export function ProfileOverview() {
             <div className="!text-right text-sm text-gray-900 font-medium">
               <p className="flex gap-2 items-center justify-start md:justify-end">
                 {" "}
-                <MapPin className="size-4"  />
-                {`${profileData?.city}, ${profileData?.country}` || "UK"}
+                <MapPin className="size-4" />
+                {`${profileData?.city || "Ruislip"}, ${
+                  profileData?.country || "England"
+                }` || "England"}
               </p>
               <p className="flex gap-2 items-center justify-start md:justify-end">
-                <Mail  className="size-4" /> {userData?.email || "goroqit@gmail.com"}
+                <Mail className="size-4" />{" "}
+                {userData?.email || "goroqit@gmail.com"}
               </p>
               <p className="flex gap-2 items-center justify-start md:justify-end">
-                <Phone  className="size-4" /> {profileData?.mobile || "+447362342247"}
+                <Phone className="size-4" />{" "}
+                {profileData?.mobile || "+447362342247"}
               </p>
             </div>
           </div>
