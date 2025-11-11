@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/lib/loading-spinner";
 import {
   useDeleteSingleUserMutation,
-  useGetAllUserQuery
+  useGetAllUserQuery,
 } from "@/redux/features/userApi";
 import { Column, StatItem, UserData } from "@/types/types";
 import { Calendar, Trash2, Users } from "lucide-react";
@@ -55,7 +55,7 @@ export default function User() {
         const res = await deleteSingleUser(userId).unwrap();
         console.log(res);
         Swal.fire("Deleted!", "User has been deleted.", "success");
-      } catch (error) {
+      } catch {
         Swal.fire("Error!", "Failed to delete user.", "error");
       }
     }
@@ -108,6 +108,10 @@ export default function User() {
 
       {isLoading ? (
         <LoadingSpinner />
+      ) : users.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-lg text-gray-600">No users are registered</p>
+        </div>
       ) : (
         <AdminTable
           data={usersWithSerial}

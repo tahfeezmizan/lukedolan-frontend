@@ -173,8 +173,6 @@ export default function ChatDetail() {
         text: messageTextToSend,
         type: "TEXT",
       }).unwrap();
-
-      // console.log("✅ Message sent to API, response:", response);
     } catch (error) {
       console.error("❌ Failed to send message:", error);
     }

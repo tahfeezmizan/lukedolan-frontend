@@ -171,7 +171,7 @@ export default function ContactForm() {
 
           {/* Contact Info Section */}
           <div className="border-t border-gray-200 pt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2  gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="col-span-1">
                 <h3 className="text-md md:text-xl font-medium  mb-4">
                   Contact Info
@@ -181,15 +181,15 @@ export default function ContactForm() {
                 </h2>
               </div>
 
-              <div className="col-span-1 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+              <div className="col-span-1 grid grid-cols-1 md:grid-cols-2 gap-6 ">
                 <div className="col-span-1">
                   <h4 className="text-xl font-semibold  mb-2">Email Address</h4>
                   <div className="w-8 h-0.5 bg-gray-900 mb-4"></div>
-                  <p className="text-xl  mb-2">help@info.com</p>
+                  <p className="text-xl  mb-2">info@goroqit.com</p>
                   <p className="text-lg ">
                     Assistance hours:
                     <br />
-                    Monday - Friday 6 am to 8 pm EST
+                    Monday - Friday 6 am to 8 pm
                   </p>
                 </div>
                 <div className="col-span-1">
@@ -199,7 +199,7 @@ export default function ContactForm() {
                   <p className="text-lg ">
                     Assistance hours:
                     <br />
-                    Monday - Friday 6 am to 8 pm EST
+                    Monday - Friday 6 am to 8 pm
                   </p>
                 </div>
               </div>

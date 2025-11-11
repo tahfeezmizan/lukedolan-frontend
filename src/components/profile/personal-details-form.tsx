@@ -3,20 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import LoadingSpinner from "@/lib/loading-spinner";
 import {
   useGetMeQuery,
   useUpdateProfileMutation,
 } from "@/redux/features/userApi";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface EssentialPersonalData {
@@ -48,26 +41,25 @@ export function PersonalDetailsForm() {
 
   console.log("Profile data:", profileData);
 
-  const { register, handleSubmit, control, reset } =
-    useForm<EssentialPersonalData>({
-      defaultValues: {
-        firstName: "",
-        lastName: "",
+  const { register, handleSubmit, reset } = useForm<EssentialPersonalData>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
 
-        mobile: "",
-        dateOfBirth: "",
+      mobile: "",
+      dateOfBirth: "",
 
-        streetAddress: "",
-        city: "",
-        country: "",
-        citizenship: "",
-        yearsOfExperience: "",
-        landLine: "",
-        zipCode: "",
+      streetAddress: "",
+      city: "",
+      country: "",
+      citizenship: "",
+      yearsOfExperience: "",
+      landLine: "",
+      zipCode: "",
 
-        age: profileData?.age ? Number(profileData.age) : undefined,
-      },
-    });
+      age: profileData?.age ? Number(profileData.age) : undefined,
+    },
+  });
 
   // ✅ Set form values when user data is loaded (Bio fix included)
   useEffect(() => {

@@ -59,7 +59,7 @@ export function JobPostTable() {
         try {
           await deleteJob(id).unwrap();
           Swal.fire("Deleted!", "Job has been deleted.", "success");
-        } catch (error) {
+        } catch {
           Swal.fire(
             "Error!",
             "Failed to delete job. Please try again.",
