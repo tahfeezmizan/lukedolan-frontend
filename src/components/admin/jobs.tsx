@@ -187,7 +187,7 @@ export default function Jobs() {
           "The job has been deleted successfully.",
           "success"
         );
-      } catch (error) {
+      } catch {
         Swal.fire("Error!", "Failed to delete the job.", "error");
       }
     }
@@ -265,6 +265,10 @@ export default function Jobs() {
 
       {isLoading ? (
         <LoadingSpinner />
+      ) : jobs.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-lg text-gray-600">No jobs are available</p>
+        </div>
       ) : (
         <AdminTable<JobRow>
           data={jobsWithExtras}

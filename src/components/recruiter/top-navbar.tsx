@@ -52,7 +52,7 @@ export function TopNavbar() {
         Swal.fire("Deleted!", "Your account has been deleted.", "success");
         dispatch(removeUser());
         router.push("/");
-      } catch (error) {
+      } catch{
         Swal.fire("Error!", "Failed to delete account.", "error");
       }
     }
