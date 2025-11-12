@@ -629,7 +629,7 @@ export function WorkExperienceForm() {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <Button
           onClick={handleAddExperience}
           type="button"
