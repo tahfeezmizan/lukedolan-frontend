@@ -369,7 +369,7 @@ export default function OtpVerify() {
         <p className="text-gray-500">Resend in {countdown}s</p>
       ) : (
         <>
-          <p className="text-gray-600 mb-2">Don't receive any code</p>
+          <p className="text-gray-600 mb-2">Don&apos;t receive any code</p>
           <Button
             onClick={handleResend}
             className="bg-transparent text-green-900 hover:bg-transparent hover:border font-medium"

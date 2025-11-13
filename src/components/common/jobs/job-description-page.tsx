@@ -5,9 +5,8 @@ import { formatDate } from "@/lib/format-date";
 import LoadingSpinner from "@/lib/loading-spinner";
 import { useGetSingleJobQuery } from "@/redux/features/jobsApi";
 import { jwtDecode } from "jwt-decode";
-import { useParams, useRouter, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { parseCookies } from "nookies"; // lightweight cookie parser
-import { useEffect } from "react";
 import JobDetail from "./job-details";
 
 type TokenPayload = {

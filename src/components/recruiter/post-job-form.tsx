@@ -219,7 +219,7 @@ export function PostJobForm() {
                       htmlFor="Temp"
                       className="text-md font-medium text-gray-600"
                     >
-                      Temp
+                      Temporary
                     </Label>
                   </div>
                 </RadioGroup>
@@ -252,12 +252,44 @@ export function PostJobForm() {
             )}
           </div>
         </div>
+
         {/* Date Range */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1 space-y-2">
+            <Label
+              htmlFor="experianceLabel"
+              className="text-lg font-medium text-gray-900"
+            >
+              Expricene Level
+            </Label>
+            <Controller
+              name="experianceLabel"
+              control={control}
+              rules={{ required: "Expricene Level is required" }}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
+                    <SelectValue placeholder="Select Expricene Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Freshers">Entry Level</SelectItem>
+                    <SelectItem value="Beginner">Beginners</SelectItem>
+                    <SelectItem value="Experienced">Experience</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.experianceLabel && (
+              <p className="text-red-500 text-sm">
+                {errors.experianceLabel.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex-1 space-y-1">
             <Label
               htmlFor="startDate"
-              className="text-lg font-medium text-gray-90"
+              className="text-lg font-medium text-gray-900"
             >
               Starting Date
             </Label>
@@ -274,26 +306,6 @@ export function PostJobForm() {
             </div>
             {errors.startDate && (
               <p className="text-red-500 text-sm">{errors.startDate.message}</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label
-              htmlFor="endDate"
-              className="text-lg font-medium text-gray-90"
-            >
-              End date
-            </Label>
-            <div className="relative">
-              <Input
-                id="endDate"
-                type="date"
-                {...register("endDate", { required: "End date is required" })}
-                className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full pl-10"
-              />
-              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            </div>
-            {errors.endDate && (
-              <p className="text-red-500 text-sm">{errors.endDate.message}</p>
             )}
           </div>
         </div>
@@ -323,37 +335,6 @@ export function PostJobForm() {
           </div>
           {(errors.minSalary || errors.maxSalary) && (
             <p className="text-red-500 text-sm">Salary range is required</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label
-            htmlFor="experianceLabel"
-            className="text-lg font-medium text-gray-90"
-          >
-            Expricene Level
-          </Label>
-          <Controller
-            name="experianceLabel"
-            control={control}
-            rules={{ required: "Expricene Level is required" }}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
-                  <SelectValue placeholder="Select Expricene Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Freshers">Freshers</SelectItem>
-                  <SelectItem value="Beginner">Beginners</SelectItem>
-                  <SelectItem value="Experienced">Experience</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.experianceLabel && (
-            <p className="text-red-500 text-sm">
-              {errors.experianceLabel.message}
-            </p>
           )}
         </div>
 
