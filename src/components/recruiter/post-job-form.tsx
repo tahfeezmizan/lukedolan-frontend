@@ -186,21 +186,40 @@ export function PostJobForm() {
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Remote" id="Remote" />
+                    <RadioGroupItem value="Part-time" id="Part-time" />
                     <Label
-                      htmlFor="Remote"
+                      htmlFor="Part-time"
                       className="text-md font-medium text-gray-600"
                     >
-                      Remote
+                      Part-time
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Self-employed" id="Self-employed" />
+                    <Label
+                      htmlFor="Self-employed"
+                      className="text-md font-medium text-gray-600"
+                    >
+                      Self-employed
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Freelance" id="Freelance" />
+                    <RadioGroupItem value="Chair-rental" id="Chair-rental" />
                     <Label
-                      htmlFor="Freelance"
+                      htmlFor="Chair-rental"
                       className="text-md font-medium text-gray-600"
                     >
-                      Freelance
+                      Chair-rental
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Temp" id="Temp" />
+                    <Label
+                      htmlFor="Temp"
+                      className="text-md font-medium text-gray-600"
+                    >
+                      Temp
                     </Label>
                   </div>
                 </RadioGroup>

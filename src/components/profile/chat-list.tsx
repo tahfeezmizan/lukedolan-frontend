@@ -276,13 +276,14 @@ export default function ChatList() {
         {/* 🔍 Search bar with connection status */}
         <div className="p-3 py-3.5 border-b border-gray-200">
           <div className="relative mb-2">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <h3 className="text-2xl font-semibold">All Messages</h3>
+            {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               placeholder="Search messages"
               className="pl-10 bg-gray-50 border-gray-200"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            /> */}
           </div>
           <div className="flex items-center justify-between text-xs">
             <span className="text-gray-500">

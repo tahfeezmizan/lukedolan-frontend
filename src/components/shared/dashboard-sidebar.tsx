@@ -23,10 +23,6 @@ export function DashboardSidebar({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  // const { data: userData } = useGetMeQuery({});
-
-  // console.log("User data", userData);
-
   const handleLogout = () => {
     dispatch(removeUser());
     router.push("/");
