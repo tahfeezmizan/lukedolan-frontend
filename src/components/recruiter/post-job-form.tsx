@@ -186,40 +186,21 @@ export function PostJobForm() {
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Part-time" id="Part-time" />
+                    <RadioGroupItem value="Remote" id="Remote" />
                     <Label
-                      htmlFor="Part-time"
+                      htmlFor="Remote"
                       className="text-md font-medium text-gray-600"
                     >
-                      Part-time
-                    </Label>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Self-employed" id="Self-employed" />
-                    <Label
-                      htmlFor="Self-employed"
-                      className="text-md font-medium text-gray-600"
-                    >
-                      Self-employed
+                      Remote
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Chair-rental" id="Chair-rental" />
+                    <RadioGroupItem value="Freelance" id="Freelance" />
                     <Label
-                      htmlFor="Chair-rental"
+                      htmlFor="Freelance"
                       className="text-md font-medium text-gray-600"
                     >
-                      Chair-rental
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Temp" id="Temp" />
-                    <Label
-                      htmlFor="Temp"
-                      className="text-md font-medium text-gray-600"
-                    >
-                      Temporary
+                      Freelance
                     </Label>
                   </div>
                 </RadioGroup>
@@ -252,44 +233,12 @@ export function PostJobForm() {
             )}
           </div>
         </div>
-
         {/* Date Range */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 space-y-2">
-            <Label
-              htmlFor="experianceLabel"
-              className="text-lg font-medium text-gray-900"
-            >
-              Expricene Level
-            </Label>
-            <Controller
-              name="experianceLabel"
-              control={control}
-              rules={{ required: "Expricene Level is required" }}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
-                    <SelectValue placeholder="Select Expricene Level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Freshers">Entry Level</SelectItem>
-                    <SelectItem value="Beginner">Beginners</SelectItem>
-                    <SelectItem value="Experienced">Experience</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {errors.experianceLabel && (
-              <p className="text-red-500 text-sm">
-                {errors.experianceLabel.message}
-              </p>
-            )}
-          </div>
-
-          <div className="flex-1 space-y-1">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
             <Label
               htmlFor="startDate"
-              className="text-lg font-medium text-gray-900"
+              className="text-lg font-medium text-gray-90"
             >
               Starting Date
             </Label>
@@ -306,6 +255,26 @@ export function PostJobForm() {
             </div>
             {errors.startDate && (
               <p className="text-red-500 text-sm">{errors.startDate.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label
+              htmlFor="endDate"
+              className="text-lg font-medium text-gray-90"
+            >
+              End date
+            </Label>
+            <div className="relative">
+              <Input
+                id="endDate"
+                type="date"
+                {...register("endDate", { required: "End date is required" })}
+                className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full pl-10"
+              />
+              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            </div>
+            {errors.endDate && (
+              <p className="text-red-500 text-sm">{errors.endDate.message}</p>
             )}
           </div>
         </div>
@@ -335,6 +304,37 @@ export function PostJobForm() {
           </div>
           {(errors.minSalary || errors.maxSalary) && (
             <p className="text-red-500 text-sm">Salary range is required</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label
+            htmlFor="experianceLabel"
+            className="text-lg font-medium text-gray-90"
+          >
+            Expricene Level
+          </Label>
+          <Controller
+            name="experianceLabel"
+            control={control}
+            rules={{ required: "Expricene Level is required" }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="mt-1 p-4 rounded-lg bg-gray-50 !text-lg text-black w-full">
+                  <SelectValue placeholder="Select Expricene Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Freshers">Freshers</SelectItem>
+                  <SelectItem value="Beginner">Beginners</SelectItem>
+                  <SelectItem value="Experienced">Experience</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.experianceLabel && (
+            <p className="text-red-500 text-sm">
+              {errors.experianceLabel.message}
+            </p>
           )}
         </div>
 
